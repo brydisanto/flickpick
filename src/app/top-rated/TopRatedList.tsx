@@ -1,15 +1,16 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
+import { ChevronUp, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getTmdbImageUrl } from "@/types";
 import type { RankedMovie } from "./page";
 
 function scoreColor(score: number): string {
-  if (score >= 75) return "#34D399";
-  if (score >= 60) return "#60A5FA";
-  if (score >= 40) return "#FBBF24";
+  if (score >= 75) return "#059669";
+  if (score >= 60) return "#2563EB";
+  if (score >= 40) return "#D97706";
   return "#6B7280";
 }
 
@@ -18,13 +19,54 @@ interface TopRatedListProps {
   allGenres: string[];
 }
 
+type SortColumn = "flickpick" | "rt" | "imdb" | "mc";
+type SortDirection = "asc" | "desc";
+
+function getSortValue(movie: RankedMovie, col: SortColumn): number {
+  switch (col) {
+    case "rt":
+      return movie.ratings?.rotten_tomatoes_score ?? -1;
+    case "imdb":
+      return movie.ratings?.imdb_rating ?? -1;
+    case "mc":
+      return movie.ratings?.metacritic_score ?? -1;
+    case "flickpick":
+      return movie.flickpickScore;
+  }
+}
+
 export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
+  const [sortColumn, setSortColumn] = useState<SortColumn>("flickpick");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+
+  const handleSort = useCallback(
+    (col: SortColumn) => {
+      if (sortColumn === col) {
+        setSortDirection((d) => (d === "desc" ? "asc" : "desc"));
+      } else {
+        setSortColumn(col);
+        setSortDirection("desc");
+      }
+    },
+    [sortColumn]
+  );
 
   const filtered = useMemo(() => {
-    if (!selectedGenre) return movies;
-    return movies.filter((m) => m.genres.includes(selectedGenre));
-  }, [movies, selectedGenre]);
+    let list = selectedGenre
+      ? movies.filter((m) => m.genres.includes(selectedGenre))
+      : [...movies];
+
+    list.sort((a, b) => {
+      const aVal = getSortValue(a, sortColumn);
+      const bVal = getSortValue(b, sortColumn);
+      const diff = sortDirection === "desc" ? bVal - aVal : aVal - bVal;
+      if (diff !== 0) return diff;
+      return b.flickpickScore - a.flickpickScore;
+    });
+
+    return list;
+  }, [movies, selectedGenre, sortColumn, sortDirection]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -109,10 +151,31 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
       <div className="hidden md:grid grid-cols-[3.5rem_1fr_5rem_5rem_5rem_5.5rem] gap-4 px-4 py-2 text-xs font-semibold uppercase tracking-[0.06em] text-text-tertiary border-b border-border-subtle mb-2">
         <span className="text-center">#</span>
         <span>Film</span>
-        <span className="text-center">RT</span>
-        <span className="text-center">IMDb</span>
-        <span className="text-center">MC</span>
-        <span className="text-center text-gold">Flickpick</span>
+        {(
+          [
+            { key: "rt", label: "RT" },
+            { key: "imdb", label: "IMDb" },
+            { key: "mc", label: "MC" },
+            { key: "flickpick", label: "Flickpick" },
+          ] as const
+        ).map((col) => (
+          <button
+            key={col.key}
+            onClick={() => handleSort(col.key)}
+            className={`flex items-center justify-center gap-0.5 cursor-pointer hover:text-text-primary transition-colors ${
+              col.key === "flickpick" ? "text-gold" : ""
+            } ${sortColumn === col.key ? "text-text-primary" : ""}`}
+          >
+            {col.label}
+            {sortColumn === col.key && (
+              sortDirection === "desc" ? (
+                <ChevronDown size={12} />
+              ) : (
+                <ChevronUp size={12} />
+              )
+            )}
+          </button>
+        ))}
       </div>
 
       {/* Movie rows */}
@@ -291,8 +354,7 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
       {/* Footer note */}
       <p className="text-center text-xs text-text-tertiary mt-10">
         Flickpick Score = IMDb (50%) + Rotten Tomatoes (30%) + Metacritic (20%).
-        Weights redistribute when a source is missing. Falls back to TMDB when
-        no critic scores are available.
+        Missing scores default to 75%. Click column headers to sort.
       </p>
     </div>
   );

@@ -20,37 +20,16 @@ function computeFlickpickScore(
   ratings: ParsedRatings | null,
   tmdbVoteAverage: number
 ): number {
-  // IMDb is the primary signal
-  // If IMDb exists, it anchors the score; RT and MC adjust it
-  if (ratings?.imdb_rating != null) {
-    const imdbNorm = ratings.imdb_rating * 10; // 0-100 scale
-    const sources: { value: number; weight: number }[] = [
-      { value: imdbNorm, weight: 50 },
-    ];
-
-    if (ratings.rotten_tomatoes_score != null) {
-      sources.push({ value: ratings.rotten_tomatoes_score, weight: 30 });
-    }
-    if (ratings.metacritic_score != null) {
-      sources.push({ value: ratings.metacritic_score, weight: 20 });
-    }
-
-    const totalWeight = sources.reduce((sum, s) => sum + s.weight, 0);
-    return Math.round(
-      sources.reduce((sum, s) => sum + s.value * (s.weight / totalWeight), 0)
-    );
-  }
-
-  // No IMDb — use RT or MC if available
-  if (ratings?.rotten_tomatoes_score != null) {
-    return ratings.rotten_tomatoes_score;
-  }
-  if (ratings?.metacritic_score != null) {
-    return ratings.metacritic_score;
-  }
-
-  // Last resort: TMDB
-  return Math.round(tmdbVoteAverage * 10);
+  const PLACEHOLDER = 75;
+  const imdbNorm =
+    ratings?.imdb_rating != null
+      ? ratings.imdb_rating * 10
+      : tmdbVoteAverage > 0
+        ? Math.round(tmdbVoteAverage * 10)
+        : PLACEHOLDER;
+  const rt = ratings?.rotten_tomatoes_score ?? PLACEHOLDER;
+  const mc = ratings?.metacritic_score ?? PLACEHOLDER;
+  return Math.round(imdbNorm * 0.5 + rt * 0.3 + mc * 0.2);
 }
 
 // Genre ID → name mapping (TMDB standard)
