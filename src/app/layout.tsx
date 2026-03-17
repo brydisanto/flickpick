@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import { Bebas_Neue, Inter } from "next/font/google";
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Search, Menu, X } from "lucide-react";
 import { AuthProvider } from "@/lib/auth-context";
 import { HeaderAuth } from "./HeaderAuth";
+import MobileNav from "./MobileNav";
 import "./globals.css";
 
-const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-geist-sans",
+const bebas = Bebas_Neue({
+  variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400"],
 });
 
-const jetbrains = JetBrains_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-body",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["400", "500", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -47,14 +48,14 @@ function HeaderSearchForm() {
   return (
     <form action="/search" method="GET" className="relative">
       <Search
-        size={16}
+        size={14}
         className="absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary pointer-events-none"
       />
       <input
         type="text"
         name="q"
-        placeholder="Search movies..."
-        className="w-48 lg:w-72 h-9 pl-9 pr-3 rounded-[var(--radius-md)] bg-bg-tertiary border border-border-subtle text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-border-accent transition-all"
+        placeholder="Search films..."
+        className="w-44 lg:w-64 h-9 pl-8 pr-3 bg-bg-elevated border border-border-subtle rounded-[var(--radius-md)] text-xs font-medium text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-gold transition-colors uppercase tracking-wide"
       />
     </form>
   );
@@ -66,73 +67,65 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body
-        className={`${jakarta.variable} ${jetbrains.variable} antialiased`}
-      >
+    <html lang="en">
+      <body className={`${bebas.variable} ${inter.variable} antialiased`}>
         <AuthProvider>
-        {/* Film grain overlay */}
+        {/* Film grain */}
         <div className="film-grain" aria-hidden="true" />
 
         <header className="sticky top-0 z-50 glass">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between">
-            <div className="flex items-center gap-10">
-              <Link href="/" className="flex items-center gap-2.5 group">
-                <div className="w-8 h-8 rounded-[6px] bg-gold flex items-center justify-center shrink-0 group-hover:shadow-[0_0_16px_rgba(212,168,67,0.4)] transition-shadow">
-                  <span className="text-[13px] font-bold text-bg-primary tracking-tight">Fp</span>
-                </div>
-                <span className="text-[22px] font-bold tracking-tight">
-                  <span className="text-text-primary">Flick</span>
-                  <span className="text-gold">pick</span>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+            <div className="flex items-center gap-8">
+              <Link href="/" className="flex items-center gap-2 group">
+                <span className="text-[28px] tracking-[2px] font-[family-name:var(--font-display)]">
+                  FLICKPICK
                 </span>
+                <span className="text-gold text-lg leading-none">•</span>
               </Link>
-              <nav className="hidden sm:flex items-center gap-8">
+              <nav className="hidden sm:flex items-center gap-6">
                 <Link
                   href="/"
-                  className="text-[13px] font-medium uppercase tracking-[0.06em] text-text-tertiary hover:text-text-primary transition-colors"
+                  className="t-meta text-text-secondary hover:text-gold transition-colors"
                 >
                   Discover
                 </Link>
                 <Link
                   href="/top-rated"
-                  className="text-[13px] font-medium uppercase tracking-[0.06em] text-text-tertiary hover:text-text-primary transition-colors"
+                  className="t-meta text-text-secondary hover:text-gold transition-colors"
                 >
                   Top Rated
                 </Link>
               </nav>
             </div>
-            <div className="flex items-center gap-4">
-              <HeaderSearchForm />
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:block">
+                <HeaderSearchForm />
+              </div>
               <HeaderAuth />
+              <MobileNav />
             </div>
           </div>
         </header>
 
-        <main className="min-h-[calc(100vh-4.5rem)]">{children}</main>
+        <main className="relative z-[2] min-h-[calc(100vh-3.5rem)]">{children}</main>
 
-        <footer className="border-t border-border-subtle bg-bg-secondary">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-5 h-5 rounded-[3px] bg-gold flex items-center justify-center">
-                <span className="text-[8px] font-bold text-bg-primary">Fp</span>
-              </div>
-              <p className="text-sm text-text-tertiary">
-                Flickpick. Ratings powered by TMDB, OMDb, Rotten Tomatoes,
-                Metacritic.
+        <footer className="relative z-[2] border-t-[1.5px] border-border bg-bg-primary">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span className="text-sm tracking-[1px] font-[family-name:var(--font-display)]">
+                FLICKPICK
+              </span>
+              <span className="text-gold text-xs">•</span>
+              <p className="t-meta text-text-tertiary">
+                Ratings via TMDB, OMDb, RT, Metacritic
               </p>
             </div>
             <div className="flex items-center gap-4">
-              <Link
-                href="/"
-                className="text-sm text-text-tertiary hover:text-text-secondary transition-colors"
-              >
+              <Link href="/" className="t-meta text-text-tertiary hover:text-text-secondary transition-colors">
                 Home
               </Link>
-              <Link
-                href="/search?q=popular"
-                className="text-sm text-text-tertiary hover:text-text-secondary transition-colors"
-              >
-                Browse
+              <Link href="/top-rated" className="t-meta text-text-tertiary hover:text-text-secondary transition-colors">
+                Top Rated
               </Link>
             </div>
           </div>

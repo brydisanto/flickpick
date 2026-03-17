@@ -41,6 +41,12 @@ See `.env.local` for required keys (TMDB, OMDB, Supabase, OpenAI).
 
 ## Design System
 CSS variables defined in `src/app/globals.css`. Key tokens:
-- Colors: primary (indigo #6366F1), accent (amber), score-high/good/mixed/low
-- Dark mode: automatic via prefers-color-scheme
+- Background: cream (#EFECD5), secondary (#E8E5CE), elevated (#F8F6E9)
+- Text: ink (#1C1612), secondary (#4A3F35), tertiary (#7A7060)
+- Brand accent: amber `--gold` (#E05A22), hover (#F06A32)
+- Score source brands: `--brand-rt` (#FA320A), `--brand-imdb` (#F5C518), `--brand-mc` (#60A5FA)
+- Score levels: high (#059669), good (#2563EB), mixed (#B45309), low (#6B7280)
+- Radii: sm (4px), md (6px), lg (8px), pill (9999px)
+- Fonts: Bebas Neue (display, headings), Inter (body)
 - Tailwind tokens mapped via `@theme inline` block
+- No dark mode (single light theme)

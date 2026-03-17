@@ -23,14 +23,14 @@ import { getTmdbImageUrl } from "@/types";
 type InputMode = "seeds" | "natural" | "moods";
 
 const MOOD_OPTIONS = [
-  { icon: Heart, label: "Date Night", mood: "date-night", emoji: "\u{1F339}", gradient: "linear-gradient(145deg, rgba(239,68,68,0.08), rgba(168,85,247,0.06))" },
-  { icon: Brain, label: "Mind-Bending", mood: "mind-bending", emoji: "\u{1FA90}", gradient: "linear-gradient(145deg, rgba(96,165,250,0.08), rgba(139,92,246,0.06))" },
-  { icon: Sparkles, label: "Feel-Good", mood: "feel-good", emoji: "\u2600\uFE0F", gradient: "linear-gradient(145deg, rgba(250,204,21,0.08), rgba(251,146,60,0.06))" },
-  { icon: Gem, label: "Hidden Gems", mood: "hidden-gems", emoji: "\u{1F48E}", gradient: "linear-gradient(145deg, rgba(52,211,153,0.08), rgba(96,165,250,0.06))" },
-  { icon: Trophy, label: "Award Winners", mood: "award-winners", emoji: "\u{1F3C6}", gradient: "linear-gradient(145deg, rgba(212,168,67,0.10), rgba(161,98,7,0.06))" },
-  { icon: Star, label: "Underrated", mood: "underrated", emoji: "\u{1F576}\uFE0F", gradient: "linear-gradient(145deg, rgba(168,85,247,0.08), rgba(236,72,153,0.06))" },
-  { icon: Sofa, label: "Comfort Rewatch", mood: "comfort-rewatch", emoji: "\u{1F37F}", gradient: "linear-gradient(145deg, rgba(251,146,60,0.08), rgba(245,158,11,0.06))" },
-  { icon: Landmark, label: "Based on True Events", mood: "true-events", emoji: "\u{1F4F0}", gradient: "linear-gradient(145deg, rgba(148,163,184,0.08), rgba(100,116,139,0.06))" },
+  { icon: Heart, label: "Date Night", mood: "date-night" },
+  { icon: Brain, label: "Mind-Bending", mood: "mind-bending" },
+  { icon: Sparkles, label: "Feel-Good", mood: "feel-good" },
+  { icon: Gem, label: "Hidden Gems", mood: "hidden-gems" },
+  { icon: Trophy, label: "Award Winners", mood: "award-winners" },
+  { icon: Star, label: "Underrated", mood: "underrated" },
+  { icon: Sofa, label: "Comfort Rewatch", mood: "comfort-rewatch" },
+  { icon: Landmark, label: "Based on True Events", mood: "true-events" },
 ] as const;
 
 const NL_PLACEHOLDERS = [
@@ -192,7 +192,7 @@ export default function HeroRecommender() {
     <div className="space-y-6">
       {/* Mode Tabs */}
       <div className="flex justify-center">
-        <div className="inline-flex bg-bg-tertiary border border-border rounded-[12px] p-1 gap-1">
+        <div className="inline-flex bg-bg-tertiary border border-border-subtle rounded-[var(--radius-lg)] p-1 gap-1">
           {([
             { key: "seeds", label: "Pick Favorites" },
             { key: "natural", label: "Describe It" },
@@ -202,10 +202,10 @@ export default function HeroRecommender() {
               key={tab.key}
               onClick={() => setMode(tab.key)}
               className={`
-                px-4 sm:px-6 py-2 rounded-[8px] text-sm font-medium transition-all duration-200
+                px-4 sm:px-6 py-2 rounded-[var(--radius-md)] text-sm font-medium transition-all duration-200
                 ${
                   mode === tab.key
-                    ? "bg-bg-elevated text-text-primary shadow"
+                    ? "bg-bg-elevated text-text-primary shadow-[var(--shadow-sm)]"
                     : "text-text-tertiary hover:text-text-primary"
                 }
               `}
@@ -233,7 +233,7 @@ export default function HeroRecommender() {
                 {seeds.map((seed) => (
                   <span
                     key={seed.id}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gold-subtle text-gold border border-border-accent rounded-full text-sm font-medium"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gold-subtle text-gold border border-border-accent rounded-[var(--radius-pill)] text-sm font-medium"
                   >
                     {seed.title}
                     {seed.year && (
@@ -272,9 +272,9 @@ export default function HeroRecommender() {
                 rows={3}
                 className="
                   w-full pl-10 pr-4 py-3 rounded-[var(--radius-md)]
-                  bg-bg-secondary border border-border
+                  bg-bg-secondary border border-border-subtle
                   text-text-primary text-sm placeholder:text-text-tertiary
-                  focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold
+                  focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold
                   transition-colors resize-none
                 "
               />
@@ -296,8 +296,6 @@ export default function HeroRecommender() {
                   icon={opt.icon}
                   label={opt.label}
                   mood={opt.mood}
-                  emoji={opt.emoji}
-                  gradient={opt.gradient}
                   selected={selectedMood === opt.mood}
                   onClick={(mood) =>
                     setSelectedMood(mood === selectedMood ? null : mood)
@@ -316,10 +314,11 @@ export default function HeroRecommender() {
           disabled={!canSubmit || isLoading}
           className={`
             inline-flex items-center gap-2 text-base font-semibold transition-all duration-200
+            rounded-[var(--radius-md)] px-10 py-3.5
             ${
               canSubmit && !isLoading
-                ? "bg-gold text-bg-primary rounded-[10px] px-10 py-3.5 shadow-[0_4px_16px_rgba(212,168,67,0.25)] hover:bg-gold-light hover:shadow-[0_4px_24px_rgba(212,168,67,0.4)] hover:-translate-y-0.5 active:scale-[0.98]"
-                : "bg-bg-tertiary text-text-tertiary cursor-not-allowed rounded-[10px] px-10 py-3.5"
+                ? "bg-gold text-bg-primary shadow-[var(--shadow-md)] hover:bg-gold-hover hover:shadow-[var(--shadow-lg)] active:scale-[0.98]"
+                : "bg-bg-tertiary text-text-tertiary cursor-not-allowed"
             }
           `}
         >

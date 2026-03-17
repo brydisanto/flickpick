@@ -34,20 +34,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-/* ── Score color helpers ── */
+/* -- Score color helpers -- */
 
 const SCORE_COLOR: Record<string, string> = {
-  high: "#34D399",
-  good: "#60A5FA",
-  mixed: "#FBBF24",
-  low: "#6B7280",
+  high: "var(--score-high)",
+  good: "var(--score-good)",
+  mixed: "var(--score-mixed)",
+  low: "var(--score-low)",
 };
 
 function scoreColor(level: string): string {
-  return SCORE_COLOR[level] ?? "#6B7280";
+  return SCORE_COLOR[level] ?? "var(--score-low)";
 }
 
-/* ── SVG circular gauge ── */
+/* -- SVG circular gauge -- */
 
 function ScoreGauge({ score, size = 72 }: { score: number; size?: number }) {
   const level = getScoreLevel(score);
@@ -77,7 +77,7 @@ function ScoreGauge({ score, size = 72 }: { score: number; size?: number }) {
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="rgba(255,255,255,0.06)"
+          stroke="rgba(0,0,0,0.08)"
           strokeWidth={stroke}
         />
         {/* Progress */}
@@ -107,21 +107,21 @@ function ScoreGauge({ score, size = 72 }: { score: number; size?: number }) {
           dominantBaseline="central"
           textAnchor="middle"
           fill={color}
-          fontSize="22"
+          fontSize="20"
           fontWeight="700"
           className="score-count-animate"
         >
           {score}
         </text>
       </svg>
-      <span className="text-text-tertiary text-[11px] tracking-wide">
+      <span className="text-text-tertiary text-xs tracking-wide">
         Flickpick Score
       </span>
     </div>
   );
 }
 
-/* ── Consensus badge ── */
+/* -- Consensus badge -- */
 
 function ConsensusBadge({
   rt,
@@ -144,7 +144,7 @@ function ConsensusBadge({
 
   if (spread <= 10) {
     return (
-      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-[#34D399]/15 text-[#34D399] border border-[#34D399]/20">
+      <span className="inline-flex items-center px-2.5 py-0.5 rounded-[var(--radius-pill)] text-xs font-semibold uppercase tracking-wider bg-score-high/10 text-score-high border border-score-high/20">
         Critics Agree
       </span>
     );
@@ -152,7 +152,7 @@ function ConsensusBadge({
 
   if (spread >= 30) {
     return (
-      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-[#FBBF24]/15 text-[#FBBF24] border border-[#FBBF24]/20">
+      <span className="inline-flex items-center px-2.5 py-0.5 rounded-[var(--radius-pill)] text-xs font-semibold uppercase tracking-wider bg-score-mixed/10 text-score-mixed border border-score-mixed/20">
         Divisive
       </span>
     );
@@ -161,7 +161,7 @@ function ConsensusBadge({
   return null;
 }
 
-/* ── Source score column ── */
+/* -- Source score column -- */
 
 function SourceScore({
   label,
@@ -177,20 +177,20 @@ function SourceScore({
   return (
     <div className="flex flex-col items-center gap-1.5 px-4 sm:px-6">
       <span
-        className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded"
+        className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-[var(--radius-sm)]"
         style={{ backgroundColor: `${color}20`, color }}
       >
         {label}
       </span>
-      <span className="text-[20px] font-bold text-text-primary leading-none">
+      <span className="text-xl font-bold text-text-primary leading-none">
         {value}
       </span>
-      <span className="text-[11px] text-text-tertiary">{scale}</span>
+      <span className="text-xs text-text-tertiary">{scale}</span>
     </div>
   );
 }
 
-/* ── Main page ── */
+/* -- Main page -- */
 
 export default async function MoviePage({ params }: PageProps) {
   const { id } = await params;
@@ -243,7 +243,7 @@ export default async function MoviePage({ params }: PageProps) {
 
   return (
     <div className="bg-bg-primary">
-      {/* ── Backdrop ── */}
+      {/* -- Backdrop -- */}
       {movie.backdrop_path && (
         <div className="relative w-full h-[350px] sm:h-[450px] lg:h-[520px]">
           <Image
@@ -258,27 +258,20 @@ export default async function MoviePage({ params }: PageProps) {
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to top, var(--bg-primary) 0%, rgba(8,9,12,0.7) 50%, rgba(8,9,12,0.3) 100%)",
+                "linear-gradient(to top, var(--bg-primary) 0%, rgba(239,236,213,0.85) 50%, rgba(239,236,213,0.4) 100%)",
             }}
           />
         </div>
       )}
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* ── Hero: Poster + Title/Meta ── */}
+        {/* -- Hero: Poster + Title/Meta -- */}
         <div
           className={`flex flex-col sm:flex-row gap-6 sm:gap-8 ${movie.backdrop_path ? "-mt-32 relative z-10" : "pt-8"}`}
         >
           {/* Poster */}
           <div className="shrink-0 w-48 sm:w-56 mx-auto sm:mx-0">
-            <div
-              className="relative aspect-[2/3] overflow-hidden bg-bg-tertiary"
-              style={{
-                boxShadow: "0 8px 40px rgba(0,0,0,0.5)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: "14px",
-              }}
-            >
+            <div className="relative aspect-[2/3] overflow-hidden bg-bg-tertiary border border-border-subtle shadow-[var(--shadow-lg)]">
               <Image
                 src={getTmdbImageUrl(movie.poster_path, "w500")}
                 alt={`${movie.title} poster`}
@@ -325,13 +318,13 @@ export default async function MoviePage({ params }: PageProps) {
               )}
             </div>
 
-            {/* Genre chips — gold-tinted */}
+            {/* Genre chips */}
             {movie.genres && movie.genres.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-4">
                 {movie.genres.map((g) => (
                   <span
                     key={g.id}
-                    className="bg-gold-subtle text-gold border border-border-accent text-[11px] uppercase tracking-[0.05em] font-semibold rounded-[6px] px-3 py-1"
+                    className="bg-gold-subtle text-gold border border-border-accent text-xs uppercase tracking-[0.05em] font-semibold rounded-[var(--radius-sm)] px-3 py-1"
                   >
                     {g.name}
                   </span>
@@ -346,9 +339,9 @@ export default async function MoviePage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* ── Score Card Bar ── */}
+        {/* -- Score Card Bar -- */}
         {displayAggregate && displayLevel && (
-          <div className="mt-8 bg-bg-elevated/80 backdrop-blur-xl border border-border rounded-[var(--radius-md)] p-5 sm:p-6">
+          <div className="mt-8 bg-bg-elevated border border-border-subtle rounded-[var(--radius-md)] p-5 sm:p-6">
             <div className="flex flex-col sm:flex-row items-center gap-6">
               {/* Left: Flickpick aggregate gauge */}
               <div className="shrink-0">
@@ -356,9 +349,9 @@ export default async function MoviePage({ params }: PageProps) {
               </div>
 
               {/* Vertical divider (desktop) */}
-              <div className="hidden sm:block w-px self-stretch bg-border" />
+              <div className="hidden sm:block w-px self-stretch bg-border-subtle" />
               {/* Horizontal divider (mobile) */}
-              <div className="block sm:hidden h-px w-full bg-border" />
+              <div className="block sm:hidden h-px w-full bg-border-subtle" />
 
               {/* Right: Individual source scores */}
               <div className="flex items-center justify-center flex-1">
@@ -367,29 +360,29 @@ export default async function MoviePage({ params }: PageProps) {
                     {ratings.rotten_tomatoes_score != null && (
                       <SourceScore
                         label="RT"
-                        color="#FA320A"
+                        color="var(--brand-rt)"
                         value={`${ratings.rotten_tomatoes_score}`}
                         scale="/100"
                       />
                     )}
                     {ratings.rotten_tomatoes_score != null && ratings.imdb_rating != null && (
-                      <div className="w-px h-10 bg-border" />
+                      <div className="w-px h-10 bg-border-subtle" />
                     )}
                     {ratings.imdb_rating != null && (
                       <SourceScore
                         label="IMDb"
-                        color="#F5C518"
+                        color="var(--brand-imdb)"
                         value={`${ratings.imdb_rating}`}
                         scale="/10"
                       />
                     )}
                     {ratings.imdb_rating != null && ratings.metacritic_score != null && (
-                      <div className="w-px h-10 bg-border" />
+                      <div className="w-px h-10 bg-border-subtle" />
                     )}
                     {ratings.metacritic_score != null && (
                       <SourceScore
                         label="MC"
-                        color={scoreColor(getScoreLevel(ratings.metacritic_score))}
+                        color="var(--brand-mc)"
                         value={`${ratings.metacritic_score}`}
                         scale="/100"
                       />
@@ -398,7 +391,7 @@ export default async function MoviePage({ params }: PageProps) {
                 ) : useTmdbFallback ? (
                   <SourceScore
                     label="TMDB"
-                    color="#01D277"
+                    color="var(--brand-tmdb)"
                     value={`${movie.vote_average?.toFixed(1)}`}
                     scale="/10"
                   />
@@ -408,7 +401,7 @@ export default async function MoviePage({ params }: PageProps) {
               {/* Consensus badge */}
               {hasMultipleSources && (
                 <>
-                  <div className="hidden sm:block w-px self-stretch bg-border" />
+                  <div className="hidden sm:block w-px self-stretch bg-border-subtle" />
                   <div className="shrink-0">
                     <ConsensusBadge
                       rt={ratings?.rotten_tomatoes_score ?? null}
@@ -429,9 +422,9 @@ export default async function MoviePage({ params }: PageProps) {
           </div>
         )}
 
-        {/* ── Overview ── */}
+        {/* -- Overview -- */}
         {movie.overview && (
-          <section className="mt-10">
+          <section className="mt-16">
             <h2 className="section-heading text-xl font-semibold text-text-primary mb-3">
               Overview
             </h2>
@@ -441,9 +434,9 @@ export default async function MoviePage({ params }: PageProps) {
           </section>
         )}
 
-        {/* ── Cast ── */}
+        {/* -- Cast -- */}
         {cast.length > 0 && (
-          <section className="mt-10">
+          <section className="mt-16">
             <h2 className="section-heading text-xl font-semibold text-text-primary mb-4">
               Cast
             </h2>
@@ -453,7 +446,7 @@ export default async function MoviePage({ params }: PageProps) {
                   key={person.id}
                   className="text-center group"
                 >
-                  <div className="relative w-20 h-20 mx-auto rounded-full overflow-hidden bg-bg-tertiary transition-transform duration-200 ease-out group-hover:scale-105">
+                  <div className="relative w-20 h-20 mx-auto rounded-full overflow-hidden bg-bg-tertiary">
                     {person.profile_path ? (
                       <Image
                         src={getTmdbImageUrl(person.profile_path, "w200")}
@@ -463,7 +456,7 @@ export default async function MoviePage({ params }: PageProps) {
                         className="object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-bg-hover text-text-secondary text-xl font-semibold">
+                      <div className="w-full h-full flex items-center justify-center bg-bg-hover text-text-secondary text-2xl font-semibold">
                         {person.name.charAt(0).toUpperCase()}
                       </div>
                     )}
@@ -480,37 +473,37 @@ export default async function MoviePage({ params }: PageProps) {
           </section>
         )}
 
-        {/* ── Write Review ── */}
+        {/* -- Write Review -- */}
         <WriteReview
           movieId={String(tmdbId)}
           movieTitle={movie.title}
         />
 
-        {/* ── Review Section ── */}
+        {/* -- Review Section -- */}
         <ReviewSection
           movieId={String(tmdbId)}
           movieTitle={movie.title}
         />
 
-        {/* ── Similar Movies ── */}
+        {/* -- Similar Movies -- */}
         {similar && similar.results.length > 0 && (
-          <section className="mt-10 pb-16">
+          <section className="mt-16 pb-16">
             <h2 className="section-heading text-xl font-semibold text-text-primary mb-4">
               Similar Movies
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {similar.results.slice(0, 6).map((m) => (
                 <Link key={m.id} href={`/movie/${m.id}`} className="group block">
-                  <div className="relative aspect-[2/3] rounded-[var(--radius-md)] overflow-hidden bg-bg-tertiary shadow-[var(--shadow-card)] group-hover:shadow-[var(--shadow-md)] transition-shadow">
+                  <div className="poster-card relative aspect-[2/3] rounded-[var(--radius-md)] overflow-hidden bg-bg-tertiary">
                     <Image
                       src={getTmdbImageUrl(m.poster_path, "w500")}
                       alt={`${m.title} poster`}
                       fill
                       sizes="(max-width: 640px) 45vw, 160px"
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="object-cover"
                     />
                   </div>
-                  <p className="mt-2 text-sm font-medium text-text-primary truncate group-hover:text-primary transition-colors">
+                  <p className="mt-2 text-sm font-medium text-text-primary truncate group-hover:text-gold transition-colors">
                     {m.title}
                   </p>
                 </Link>

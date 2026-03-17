@@ -200,7 +200,7 @@ export default function WriteReview({
           placeholder="Write your review (optional)"
           rows={4}
           maxLength={5000}
-          className="w-full px-3 py-2.5 text-sm bg-bg-primary text-text-primary placeholder:text-text-tertiary border border-border rounded-[var(--radius-md)] resize-y focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+          className="w-full px-3 py-2.5 text-sm bg-bg-primary text-text-primary placeholder:text-text-tertiary border border-border rounded-[var(--radius-md)] resize-y focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors"
         />
 
         <div className="flex items-center justify-between mt-3 flex-wrap gap-3">
@@ -227,7 +227,7 @@ export default function WriteReview({
             <button
               onClick={handleSubmit}
               disabled={submitting || rating === 0}
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-full bg-primary text-white hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium rounded-[var(--radius-pill)] bg-gold text-bg-primary hover:bg-gold-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {submitting ? (
                 "Submitting..."

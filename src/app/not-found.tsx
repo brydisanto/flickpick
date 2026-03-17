@@ -48,7 +48,7 @@ export default function NotFound() {
       {/* CTA */}
       <Link
         href="/"
-        className="mt-10 inline-flex items-center gap-2 px-8 py-3.5 bg-gold text-bg-primary rounded-[10px] font-semibold shadow-[0_4px_16px_rgba(212,168,67,0.25)] hover:bg-gold-light hover:shadow-[0_4px_24px_rgba(212,168,67,0.4)] hover:-translate-y-0.5 transition-all duration-200"
+        className="mt-10 inline-flex items-center gap-2 px-8 py-3.5 bg-gold text-bg-primary rounded-[var(--radius-md)] font-semibold shadow-[var(--shadow-md)] hover:bg-gold-hover hover:shadow-[var(--shadow-lg)] transition-all duration-200"
       >
         <ArrowLeft size={18} />
         Back to Home

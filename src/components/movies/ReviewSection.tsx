@@ -114,7 +114,7 @@ function ReviewCard({
             <button
               onClick={() => onLike(review.id)}
               disabled={!userId}
-              className="inline-flex items-center gap-1 text-xs text-text-tertiary hover:text-primary disabled:opacity-50 disabled:cursor-default transition-colors"
+              className="inline-flex items-center gap-1 text-xs text-text-tertiary hover:text-gold disabled:opacity-50 disabled:cursor-default transition-colors"
               aria-label={`Like review (${review.like_count} likes)`}
             >
               <ThumbsUp size={13} />
@@ -251,7 +251,7 @@ export default function ReviewSection({
                 onClick={() => handleSortChange(opt.value)}
                 className={`px-3 py-1 text-xs font-medium rounded-full transition-colors ${
                   sort === opt.value
-                    ? "bg-primary text-white"
+                    ? "bg-gold text-bg-primary"
                     : "bg-bg-tertiary text-text-secondary hover:text-text-primary"
                 }`}
               >

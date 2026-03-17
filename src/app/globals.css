@@ -1,87 +1,82 @@
 @import "tailwindcss";
 
-/* ═══════════════════════════════════════════════════
-   FLICKPICK DESIGN SYSTEM — "Midnight Premiere"
-   Dark-first cinematic palette with Projector Gold
-   ═══════════════════════════════════════════════════ */
+/* ===================================================
+   FLICKPICK — Design System
+   Cream + ink + amber · Editorial meets discovery
+   =================================================== */
 
 :root {
-  /* Surface colors — dark default (cinema is dark) */
-  --bg-primary: #08090C;
-  --bg-secondary: #0F1117;
-  --bg-tertiary: #171B24;
-  --bg-elevated: #1C2030;
-  --bg-hover: #232838;
-  --text-primary: #ECEEF4;
-  --text-secondary: #8B90A0;
-  --text-tertiary: #4E5468;
-  --border-color: #1E2333;
-  --border-subtle: #151926;
-  --border-accent: rgba(212, 168, 67, 0.25);
+  /* Backgrounds */
+  --bg-primary: #EFECD5;
+  --bg-secondary: #E8E5CE;
+  --bg-tertiary: #DDD9C2;
+  --bg-elevated: #F8F6E9;
+  --bg-hover: #E2DFCA;
 
-  /* Brand — Projector Gold */
-  --primary: #D4A843;
-  --primary-hover: #E8BC57;
-  --primary-light: rgba(212, 168, 67, 0.10);
-  --accent: #D4A843;
-  --accent-hover: #E8BC57;
-  --gold: #D4A843;
-  --gold-light: #F5E6B8;
-  --gold-dark: #A07D2E;
-  --gold-subtle: rgba(212, 168, 67, 0.08);
-  --gold-glow: rgba(212, 168, 67, 0.15);
+  /* Text */
+  --text-primary: #1C1612;
+  --text-secondary: #4A3F35;
+  --text-tertiary: #7A7060;
 
-  /* Curtain Red — warm accent, used sparingly */
-  --curtain-red: #B91C1C;
+  /* Borders */
+  --border-color: #1C1612;
+  --border-subtle: rgba(28, 22, 18, 0.15);
+  --border-accent: rgba(224, 90, 34, 0.3);
 
-  /* Score colors */
-  --score-high: #34D399;
-  --score-good: #60A5FA;
-  --score-mixed: #FBBF24;
+  /* Brand — Amber (single source of truth) */
+  --gold: #E05A22;
+  --gold-hover: #F06A32;
+  --gold-dark: #C04A18;
+  --gold-subtle: rgba(224, 90, 34, 0.06);
+  --gold-glow: rgba(224, 90, 34, 0.15);
+
+  /* Score source brand colors */
+  --brand-rt: #FA320A;
+  --brand-imdb: #F5C518;
+  --brand-mc: #60A5FA;
+  --brand-tmdb: #01D277;
+
+  /* Score level colors */
+  --score-high: #059669;
+  --score-good: #2563EB;
+  --score-mixed: #B45309;
   --score-low: #6B7280;
 
-  /* Shadows — deeper for dark mode */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
-  --shadow-card: 0 2px 12px rgba(0,0,0,0.3);
+  /* Consensus colors */
+  --consensus-agree: #059669;
+  --consensus-divisive: #D97706;
 
-  /* Radii */
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-full: 9999px;
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.10);
+  --shadow-card: 0 1px 4px rgba(0,0,0,0.06);
+
+  /* Radii — sharp for containers, small for interactive elements */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-pill: 9999px;
+
+  /* Spacing scale */
+  --space-section: 4rem;
+  --space-block: 2rem;
+  --space-element: 1rem;
 
   /* Timing */
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --duration-fast: 150ms;
-  --duration-normal: 300ms;
-  --duration-slow: 500ms;
-}
+  --duration-normal: 250ms;
 
-/* Light mode override */
-@media (prefers-color-scheme: light) {
-  :root:not(.dark) {
-    --bg-primary: #F7F7F8;
-    --bg-secondary: #FFFFFF;
-    --bg-tertiary: #EDEDF0;
-    --bg-elevated: #FFFFFF;
-    --bg-hover: #E5E5EA;
-    --text-primary: #111318;
-    --text-secondary: #5C6070;
-    --text-tertiary: #9498A6;
-    --border-color: #DDDFE5;
-    --border-subtle: #EDEDF0;
-    --border-accent: rgba(212, 168, 67, 0.35);
-    --primary-light: rgba(212, 168, 67, 0.12);
-    --gold-subtle: rgba(212, 168, 67, 0.08);
-    --gold-glow: rgba(212, 168, 67, 0.2);
-    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-    --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
-    --shadow-card: 0 2px 8px rgba(0,0,0,0.06);
-  }
+  /* Type scale: 12 / 14 / 16 / 20 / 24 / 32 / 48 */
+  --text-xs: 0.75rem;   /* 12px */
+  --text-sm: 0.875rem;  /* 14px */
+  --text-base: 1rem;    /* 16px */
+  --text-lg: 1.25rem;   /* 20px */
+  --text-xl: 1.5rem;    /* 24px */
+  --text-2xl: 2rem;     /* 32px */
+  --text-3xl: 3rem;     /* 48px */
 }
 
 @theme inline {
@@ -96,72 +91,74 @@
   --color-border: var(--border-color);
   --color-border-subtle: var(--border-subtle);
   --color-border-accent: var(--border-accent);
-  --color-primary: var(--primary);
-  --color-primary-hover: var(--primary-hover);
-  --color-primary-light: var(--primary-light);
-  --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
   --color-gold: var(--gold);
-  --color-gold-light: var(--gold-light);
+  --color-gold-hover: var(--gold-hover);
   --color-gold-dark: var(--gold-dark);
   --color-gold-subtle: var(--gold-subtle);
   --color-gold-glow: var(--gold-glow);
-  --color-curtain-red: var(--curtain-red);
+  --color-brand-rt: var(--brand-rt);
+  --color-brand-imdb: var(--brand-imdb);
+  --color-brand-mc: var(--brand-mc);
+  --color-brand-tmdb: var(--brand-tmdb);
   --color-score-high: var(--score-high);
   --color-score-good: var(--score-good);
   --color-score-mixed: var(--score-mixed);
   --color-score-low: var(--score-low);
 }
 
-/* ═══════════════════════════════════════════════════
-   BASE STYLES
-   ═══════════════════════════════════════════════════ */
+/* ===================================================
+   BASE
+   =================================================== */
 
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
-  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-body), 'Inter', -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar — cinematic dark */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--bg-primary); }
-::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display), 'Bebas Neue', sans-serif;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
 
-/* ═══════════════════════════════════════════════════
-   FILM GRAIN OVERLAY
-   ═══════════════════════════════════════════════════ */
+::selection {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+/* Global focus ring */
+*:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: rgba(28,22,18,0.25); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(28,22,18,0.4); }
+
+/* ===================================================
+   FILM GRAIN — static, lightweight
+   =================================================== */
 
 .film-grain {
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: 1;
   pointer-events: none;
-  opacity: 0.024;
-  mix-blend-mode: overlay;
+  opacity: 0.03;
+  mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
   background-size: 200px 200px;
-  animation: grain 0.5s steps(4) infinite;
 }
 
-@keyframes grain {
-  0%   { background-position: 0 0; }
-  25%  { background-position: -100px -50px; }
-  50%  { background-position: 50px -100px; }
-  75%  { background-position: -50px 100px; }
-  100% { background-position: 100px 50px; }
-}
-
-@media (max-width: 640px) {
-  .film-grain { opacity: 0.012; }
-}
-
-/* ═══════════════════════════════════════════════════
+/* ===================================================
    SCORE ANIMATIONS
-   ═══════════════════════════════════════════════════ */
+   =================================================== */
 
 @keyframes score-fill {
   from { stroke-dashoffset: var(--circumference); }
@@ -181,14 +178,9 @@ body {
   animation: score-count 0.4s ease-out 0.3s both;
 }
 
-/* Score glow for high scores */
-.score-glow-high {
-  box-shadow: 0 0 20px rgba(52, 211, 153, 0.25), 0 0 40px rgba(52, 211, 153, 0.08);
-}
-
-/* ═══════════════════════════════════════════════════
-   STAR RATING ANIMATIONS
-   ═══════════════════════════════════════════════════ */
+/* ===================================================
+   STAR ANIMATIONS
+   =================================================== */
 
 @keyframes star-fill {
   0% { transform: scale(0.6); opacity: 0; }
@@ -201,9 +193,9 @@ body {
   100% { transform: translate(var(--burst-x), var(--burst-y)) scale(0); opacity: 0; }
 }
 
-/* ═══════════════════════════════════════════════════
-   MICRO-INTERACTION ANIMATIONS
-   ═══════════════════════════════════════════════════ */
+/* ===================================================
+   MICRO ANIMATIONS
+   =================================================== */
 
 @keyframes fade-in-up {
   from { opacity: 0; transform: translateY(12px); }
@@ -215,51 +207,11 @@ body {
   to { opacity: 1; }
 }
 
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+.animate-fade-in-up { animation: fade-in-up 0.5s var(--ease-spring) both; }
+.animate-fade-in { animation: fade-in 0.3s ease-out both; }
 
-@keyframes wiggle {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-3deg); }
-  75% { transform: rotate(3deg); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes pulse-gold {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 168, 67, 0.3); }
-  50% { box-shadow: 0 0 0 8px rgba(212, 168, 67, 0); }
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.5s var(--ease-spring) both;
-}
-
-.animate-fade-in {
-  animation: fade-in 0.3s ease-out both;
-}
-
-.animate-slide-up {
-  animation: slide-up 0.6s var(--ease-spring) both;
-}
-
-.animate-wiggle {
-  animation: wiggle 0.4s ease-in-out;
-}
-
-.animate-pulse-gold {
-  animation: pulse-gold 2s ease-in-out infinite;
-}
-
-/* Stagger children entrance */
-.stagger-children > * {
-  animation: fade-in-up 0.5s var(--ease-spring) both;
-}
+/* Stagger children */
+.stagger-children > * { animation: fade-in-up 0.5s var(--ease-spring) both; }
 .stagger-children > *:nth-child(1) { animation-delay: 0ms; }
 .stagger-children > *:nth-child(2) { animation-delay: 50ms; }
 .stagger-children > *:nth-child(3) { animation-delay: 100ms; }
@@ -273,35 +225,32 @@ body {
 .stagger-children > *:nth-child(11) { animation-delay: 500ms; }
 .stagger-children > *:nth-child(12) { animation-delay: 550ms; }
 
-/* ═══════════════════════════════════════════════════
-   POSTER CARD HOVER OVERLAY
-   ═══════════════════════════════════════════════════ */
+/* ===================================================
+   POSTER CARD — clean hover with border highlight
+   =================================================== */
 
 .poster-card {
   position: relative;
-  border: 1px solid rgba(255,255,255,0.06);
-  transition: transform 400ms var(--ease-spring), box-shadow 400ms var(--ease-spring);
+  border: 1.5px solid var(--border-subtle);
+  transition: border-color var(--duration-normal) ease, box-shadow var(--duration-normal) ease;
 }
 
 .poster-card:hover {
-  transform: scale(1.04);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(212, 168, 67, 0.15);
+  border-color: var(--gold);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
 
 .poster-card::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(8,9,12,0.85) 0%, transparent 60%);
+  background: linear-gradient(to top, rgba(28,22,18,0.85) 0%, transparent 55%);
   opacity: 0;
-  transition: opacity 300ms ease;
+  transition: opacity var(--duration-normal) ease;
   pointer-events: none;
-  border-radius: inherit;
 }
 
-.poster-card:hover::after {
-  opacity: 1;
-}
+.poster-card:hover::after { opacity: 1; }
 
 .poster-card .poster-title-overlay {
   position: absolute;
@@ -311,8 +260,8 @@ body {
   padding: 12px;
   z-index: 2;
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 300ms ease, transform 300ms var(--ease-spring);
+  transform: translateY(6px);
+  transition: opacity var(--duration-normal) ease, transform var(--duration-normal) var(--ease-spring);
 }
 
 .poster-card:hover .poster-title-overlay {
@@ -320,20 +269,20 @@ body {
   transform: translateY(0);
 }
 
-/* ═══════════════════════════════════════════════════
-   GOLD GRADIENT TEXT
-   ═══════════════════════════════════════════════════ */
+/* ===================================================
+   BRAND GRADIENT TEXT
+   =================================================== */
 
 .text-gold-gradient {
-  background: linear-gradient(135deg, #D4A843 0%, #F5E6B8 50%, #D4A843 100%);
+  background: linear-gradient(135deg, #E05A22 0%, #FF8C00 50%, #E05A22 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* ═══════════════════════════════════════════════════
-   SECTION ACCENT BAR
-   ═══════════════════════════════════════════════════ */
+/* ===================================================
+   SECTION HEADING — ink bar
+   =================================================== */
 
 .section-heading {
   position: relative;
@@ -347,25 +296,31 @@ body {
   top: 2px;
   bottom: 2px;
   width: 3px;
-  border-radius: 2px;
   background: var(--gold);
 }
 
-/* ═══════════════════════════════════════════════════
-   GLASS SURFACE
-   ═══════════════════════════════════════════════════ */
+/* ===================================================
+   HEADER
+   =================================================== */
 
 .glass {
-  background: rgba(15, 17, 23, 0.7);
-  backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: var(--bg-primary);
+  border-bottom: 1.5px solid var(--border-color);
 }
 
-/* ═══════════════════════════════════════════════════
-   BUTTON PRESS FEEDBACK
-   ═══════════════════════════════════════════════════ */
+/* ===================================================
+   BUTTONS
+   =================================================== */
 
 .btn-press:active {
   transform: scale(0.97);
   transition: transform 100ms ease;
+}
+
+/* Meta label */
+.t-meta {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }

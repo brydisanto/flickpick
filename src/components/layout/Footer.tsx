@@ -10,7 +10,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="flex items-center gap-1.5">
             <span className="text-lg font-bold tracking-tight text-text-primary">
-              flick<span className="text-primary">pick</span>
+              flick<span className="text-gold">pick</span>
             </span>
           </div>
 

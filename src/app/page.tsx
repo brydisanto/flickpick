@@ -30,8 +30,8 @@ async function TrendingSection() {
           </p>
         </div>
         <Link
-          href="/search?q=popular"
-          className="text-sm font-medium text-gold hover:text-gold-light transition-colors hidden sm:inline"
+          href="/top-rated"
+          className="text-sm font-medium text-gold hover:text-gold-hover transition-colors hidden sm:inline"
         >
           See all
         </Link>
@@ -63,7 +63,7 @@ async function TrendingSection() {
                 />
                 {scoreDisplay != null && (
                   <div
-                    className={`absolute top-2 right-2 z-10 w-8 h-8 flex items-center justify-center rounded-[6px] text-white text-xs font-bold ${getScoreColor(scoreDisplay)}`}
+                    className={`absolute top-2 right-2 z-10 w-8 h-8 flex items-center justify-center rounded-[var(--radius-sm)] text-white text-xs font-bold ${getScoreColor(scoreDisplay)}`}
                   >
                     {scoreDisplay}
                   </div>
@@ -73,7 +73,7 @@ async function TrendingSection() {
                     {m.title}
                   </p>
                   {year && (
-                    <p className="text-xs text-text-secondary mt-0.5">
+                    <p className="text-xs text-white/70 mt-0.5">
                       {year}
                     </p>
                   )}
@@ -110,15 +110,6 @@ export default function HomePage() {
     <div className="bg-bg-primary">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        {/* Dual radial gradient glows — gold + curtain-red */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse 60% 50% at 30% 20%, rgba(212,168,67,0.06) 0%, transparent 70%), radial-gradient(ellipse 50% 60% at 75% 30%, rgba(185,28,28,0.04) 0%, transparent 70%)",
-          }}
-        />
-
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-28 pb-14">
           <div className="text-center mb-10">
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-text-primary tracking-[-0.03em] leading-[1.05]">
@@ -126,7 +117,7 @@ export default function HomePage() {
               <br />
               <span className="text-gold-gradient">mood for?</span>
             </h1>
-            <p className="mt-5 text-text-secondary max-w-xl mx-auto leading-relaxed" style={{ fontSize: "17px" }}>
+            <p className="mt-5 text-text-secondary max-w-xl mx-auto text-base leading-relaxed">
               Tell us what you love. We&rsquo;ll find your next obsession.
             </p>
           </div>

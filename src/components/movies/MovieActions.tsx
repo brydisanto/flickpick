@@ -157,7 +157,7 @@ export default function MovieActions({
           disabled={watchlistLoading}
           className={`${buttonBase} ${
             inWatchlist
-              ? "bg-gold text-bg-primary hover:bg-gold-light"
+              ? "bg-gold text-bg-primary hover:bg-gold-hover"
               : "bg-bg-tertiary text-text-secondary hover:text-text-primary"
           } disabled:opacity-50`}
           aria-label={

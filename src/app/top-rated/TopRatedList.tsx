@@ -8,10 +8,10 @@ import { getTmdbImageUrl } from "@/types";
 import type { RankedMovie } from "./page";
 
 function scoreColor(score: number): string {
-  if (score >= 75) return "#059669";
-  if (score >= 60) return "#2563EB";
-  if (score >= 40) return "#D97706";
-  return "#6B7280";
+  if (score >= 75) return "var(--score-high)";
+  if (score >= 60) return "var(--score-good)";
+  if (score >= 40) return "var(--score-mixed)";
+  return "var(--score-low)";
 }
 
 interface TopRatedListProps {
@@ -69,7 +69,7 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
   }, [movies, selectedGenre, sortColumn, sortDirection]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       {/* Header */}
       <div className="mb-8">
         <h1 className="section-heading text-3xl sm:text-4xl font-bold text-text-primary">
@@ -83,24 +83,15 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
         {/* Legend */}
         <div className="flex flex-wrap items-center gap-4 mt-5 ml-4 text-xs text-text-tertiary">
           <span className="flex items-center gap-1.5">
-            <span
-              className="inline-block w-3 h-3 rounded-sm"
-              style={{ background: "#FA320A" }}
-            />
+            <span className="inline-block w-3 h-3 rounded-sm bg-brand-rt" />
             RT
           </span>
           <span className="flex items-center gap-1.5">
-            <span
-              className="inline-block w-3 h-3 rounded-sm"
-              style={{ background: "#F5C518" }}
-            />
+            <span className="inline-block w-3 h-3 rounded-sm bg-brand-imdb" />
             IMDb
           </span>
           <span className="flex items-center gap-1.5">
-            <span
-              className="inline-block w-3 h-3 rounded-sm"
-              style={{ background: "#60A5FA" }}
-            />
+            <span className="inline-block w-3 h-3 rounded-sm bg-brand-mc" />
             Metacritic
           </span>
           <span className="flex items-center gap-1.5">
@@ -114,7 +105,7 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
       <div className="mb-6 flex flex-wrap gap-2">
         <button
           onClick={() => setSelectedGenre(null)}
-          className={`px-3 py-1.5 text-xs font-semibold rounded-full border transition-colors ${
+          className={`px-3 py-1.5 text-xs font-semibold rounded-[var(--radius-pill)] border transition-colors ${
             selectedGenre === null
               ? "bg-gold text-bg-primary border-gold"
               : "bg-bg-tertiary text-text-secondary border-border-subtle hover:text-text-primary hover:border-border-accent"
@@ -128,7 +119,7 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
             onClick={() =>
               setSelectedGenre(selectedGenre === genre ? null : genre)
             }
-            className={`px-3 py-1.5 text-xs font-semibold rounded-full border transition-colors ${
+            className={`px-3 py-1.5 text-xs font-semibold rounded-[var(--radius-pill)] border transition-colors ${
               selectedGenre === genre
                 ? "bg-gold text-bg-primary border-gold"
                 : "bg-bg-tertiary text-text-secondary border-border-subtle hover:text-text-primary hover:border-border-accent"
@@ -191,7 +182,9 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
             <Link
               key={movie.id}
               href={`/movie/${movie.id}`}
-              className="group grid grid-cols-[3rem_1fr] md:grid-cols-[3.5rem_1fr_5rem_5rem_5rem_5.5rem] gap-3 md:gap-4 items-center px-3 md:px-4 py-3 md:py-2.5 hover:bg-bg-hover/50 transition-colors rounded-[var(--radius-sm)]"
+              className={`group grid grid-cols-[3rem_1fr] md:grid-cols-[3.5rem_1fr_5rem_5rem_5rem_5.5rem] gap-3 md:gap-4 items-center px-3 md:px-4 py-3 md:py-2.5 hover:bg-bg-hover/50 transition-colors rounded-[var(--radius-sm)] ${
+                idx % 2 === 1 ? "bg-bg-secondary/30" : ""
+              }`}
             >
               {/* Rank */}
               <span
@@ -208,7 +201,7 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
 
               {/* Movie info */}
               <div className="flex items-center gap-3 min-w-0">
-                <div className="relative w-10 h-[60px] md:w-11 md:h-[66px] shrink-0 rounded-[6px] overflow-hidden bg-bg-tertiary">
+                <div className="relative w-10 h-[60px] md:w-11 md:h-[66px] shrink-0 rounded-[var(--radius-sm)] overflow-hidden bg-bg-tertiary">
                   {movie.poster_path && (
                     <Image
                       src={getTmdbImageUrl(movie.poster_path, "w200")}
@@ -238,10 +231,7 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
                   <div className="flex items-center gap-2 mt-1.5 md:hidden">
                     {rt != null && (
                       <span className="flex items-center gap-1">
-                        <span
-                          className="w-2 h-2 rounded-sm"
-                          style={{ background: "#FA320A" }}
-                        />
+                        <span className="w-2 h-2 rounded-sm bg-brand-rt" />
                         <span className="text-xs font-semibold text-text-secondary">
                           {rt}%
                         </span>
@@ -249,10 +239,7 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
                     )}
                     {imdb != null && (
                       <span className="flex items-center gap-1">
-                        <span
-                          className="w-2 h-2 rounded-sm"
-                          style={{ background: "#F5C518" }}
-                        />
+                        <span className="w-2 h-2 rounded-sm bg-brand-imdb" />
                         <span className="text-xs font-semibold text-text-secondary">
                           {imdb}
                         </span>
@@ -260,19 +247,16 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
                     )}
                     {mc != null && (
                       <span className="flex items-center gap-1">
-                        <span
-                          className="w-2 h-2 rounded-sm"
-                          style={{ background: "#60A5FA" }}
-                        />
+                        <span className="w-2 h-2 rounded-sm bg-brand-mc" />
                         <span className="text-xs font-semibold text-text-secondary">
                           {mc}
                         </span>
                       </span>
                     )}
                     <span
-                      className="ml-auto text-xs font-bold px-1.5 py-0.5 rounded-[4px]"
+                      className="ml-auto text-xs font-bold px-1.5 py-0.5 rounded-[var(--radius-sm)]"
                       style={{
-                        background: `${fpColor}15`,
+                        background: `color-mix(in srgb, ${fpColor} 12%, transparent)`,
                         color: fpColor,
                       }}
                     >
@@ -285,13 +269,7 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
               {/* Desktop score columns */}
               <span className="hidden md:flex justify-center">
                 {rt != null ? (
-                  <span
-                    className="inline-flex items-center justify-center w-11 h-7 rounded-[6px] text-xs font-bold"
-                    style={{
-                      background: "rgba(250,50,10,0.12)",
-                      color: "#FA320A",
-                    }}
-                  >
+                  <span className="inline-flex items-center justify-center w-11 h-7 rounded-[var(--radius-sm)] text-xs font-bold bg-brand-rt/12 text-brand-rt">
                     {rt}%
                   </span>
                 ) : (
@@ -301,13 +279,7 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
 
               <span className="hidden md:flex justify-center">
                 {imdb != null ? (
-                  <span
-                    className="inline-flex items-center justify-center w-11 h-7 rounded-[6px] text-xs font-bold"
-                    style={{
-                      background: "rgba(245,197,24,0.12)",
-                      color: "#F5C518",
-                    }}
-                  >
+                  <span className="inline-flex items-center justify-center w-11 h-7 rounded-[var(--radius-sm)] text-xs font-bold bg-brand-imdb/12 text-brand-imdb">
                     {imdb}
                   </span>
                 ) : (
@@ -317,13 +289,7 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
 
               <span className="hidden md:flex justify-center">
                 {mc != null ? (
-                  <span
-                    className="inline-flex items-center justify-center w-11 h-7 rounded-[6px] text-xs font-bold"
-                    style={{
-                      background: "rgba(96,165,250,0.12)",
-                      color: "#60A5FA",
-                    }}
-                  >
+                  <span className="inline-flex items-center justify-center w-11 h-7 rounded-[var(--radius-sm)] text-xs font-bold bg-brand-mc/12 text-brand-mc">
                     {mc}
                   </span>
                 ) : (
@@ -333,14 +299,10 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
 
               <span className="hidden md:flex justify-center">
                 <span
-                  className="inline-flex items-center justify-center w-12 h-8 rounded-[8px] text-sm font-bold"
+                  className="inline-flex items-center justify-center w-12 h-8 rounded-[var(--radius-md)] text-sm font-bold"
                   style={{
-                    background: `${fpColor}18`,
+                    background: `color-mix(in srgb, ${fpColor} 12%, transparent)`,
                     color: fpColor,
-                    boxShadow:
-                      movie.flickpickScore >= 75
-                        ? `0 0 12px ${fpColor}20`
-                        : undefined,
                   }}
                 >
                   {movie.flickpickScore}
