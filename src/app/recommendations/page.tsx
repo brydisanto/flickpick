@@ -26,13 +26,21 @@ export default function RecommendationsPage() {
   const [results, setResults] = useState<RecResult[]>([]);
   const [input, setInput] = useState<Record<string, unknown> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [revealedCount, setRevealedCount] = useState(0);
 
   useEffect(() => {
     const stored = sessionStorage.getItem("flickpick_results");
     const storedInput = sessionStorage.getItem("flickpick_input");
     if (stored) {
       try {
-        setResults(JSON.parse(stored));
+        const parsed = JSON.parse(stored) as RecResult[];
+        setResults(parsed);
+        // Stagger reveal cards
+        parsed.forEach((_, idx) => {
+          setTimeout(() => {
+            setRevealedCount((prev) => Math.max(prev, idx + 1));
+          }, idx * 250);
+        });
       } catch {
         // ignore
       }
@@ -49,6 +57,7 @@ export default function RecommendationsPage() {
   const handleRefresh = async () => {
     if (!input) return;
     setIsLoading(true);
+    setRevealedCount(0);
     try {
       const res = await fetch("/api/recommend/instant", {
         method: "POST",
@@ -57,8 +66,15 @@ export default function RecommendationsPage() {
       });
       if (!res.ok) throw new Error("Failed");
       const data = await res.json();
-      setResults(data.results);
-      sessionStorage.setItem("flickpick_results", JSON.stringify(data.results));
+      const newResults = data.results as RecResult[];
+      setResults(newResults);
+      sessionStorage.setItem("flickpick_results", JSON.stringify(newResults));
+      // Stagger reveal
+      newResults.forEach((_, idx) => {
+        setTimeout(() => {
+          setRevealedCount((prev) => Math.max(prev, idx + 1));
+        }, idx * 250);
+      });
     } catch {
       // ignore
     } finally {
@@ -66,18 +82,30 @@ export default function RecommendationsPage() {
     }
   };
 
+  // Determine pre-reveal line based on input mode
+  const getPreRevealLine = () => {
+    if (!input) return null;
+    if (input.seeds) return "Based on your picks, here\u2019s what you\u2019re missing...";
+    if (input.mood) {
+      const moodLabel = String(input.mood).replace(/-/g, " ");
+      return `Your ${moodLabel} lineup is ready.`;
+    }
+    if (input.natural_language) return String(input.natural_language);
+    return null;
+  };
+
   if (results.length === 0 && !isLoading) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center">
         <h1 className="text-2xl font-bold text-text-primary mb-4">
-          No recommendations yet
+          We searched every reel. Nothing here yet.
         </h1>
         <p className="text-text-secondary mb-8">
-          Head back to the homepage and tell us what you are in the mood for.
+          Head back and tell us what you&apos;re in the mood for.
         </p>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary-hover transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-gold text-bg-primary rounded-[10px] font-medium hover:bg-gold-light transition-colors"
         >
           <ArrowLeft size={18} />
           Back to Discover
@@ -85,6 +113,8 @@ export default function RecommendationsPage() {
       </div>
     );
   }
+
+  const preRevealLine = getPreRevealLine();
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -101,7 +131,12 @@ export default function RecommendationsPage() {
           <h1 className="text-2xl sm:text-3xl font-bold text-text-primary">
             Your Recommendations
           </h1>
-          <p className="text-text-secondary mt-1">
+          {preRevealLine && (
+            <p className="text-text-secondary mt-1 italic">
+              {preRevealLine}
+            </p>
+          )}
+          <p className="text-text-tertiary text-sm mt-1">
             {results.length} movies picked for you
           </p>
         </div>
@@ -120,12 +155,20 @@ export default function RecommendationsPage() {
         {results.map((rec, idx) => {
           const aggregate = computeAggregateScore(rec.movie);
           const level = aggregate ? getScoreLevel(aggregate) : null;
+          const isRevealed = idx < revealedCount;
 
           return (
             <Link
               key={rec.movie.tmdb_id || idx}
               href={`/movie/${rec.movie.tmdb_id}`}
-              className="group block bg-bg-elevated rounded-[var(--radius-lg)] border border-border-subtle hover:border-border hover:shadow-[var(--shadow-md)] transition-all overflow-hidden"
+              className={`group block bg-bg-elevated rounded-[var(--radius-lg)] border border-border-subtle hover:border-border hover:shadow-[var(--shadow-md)] transition-all overflow-hidden ${
+                isRevealed
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
+              }`}
+              style={{
+                transition: "opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1), border-color 0.2s, box-shadow 0.2s",
+              }}
             >
               <div className="flex flex-col sm:flex-row">
                 {/* Poster */}
@@ -149,7 +192,7 @@ export default function RecommendationsPage() {
                 <div className="flex-1 p-4 sm:p-5 flex flex-col gap-3">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <h2 className="text-lg font-semibold text-text-primary group-hover:text-primary transition-colors">
+                      <h2 className="text-lg font-semibold text-text-primary group-hover:text-gold transition-colors">
                         {rec.movie.title}
                       </h2>
                       <div className="flex items-center gap-2 mt-0.5 text-sm text-text-secondary">
@@ -202,7 +245,7 @@ export default function RecommendationsPage() {
                         e.preventDefault();
                         e.stopPropagation();
                       }}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-bg-tertiary text-text-secondary hover:text-primary hover:bg-primary-light transition-colors"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-bg-tertiary text-text-secondary hover:text-gold hover:bg-gold-subtle transition-colors"
                     >
                       <Bookmark size={14} />
                       Save
@@ -244,7 +287,7 @@ export default function RecommendationsPage() {
           Create a free account to save your picks, rate movies, and get
           recommendations that improve over time.
         </p>
-        <button className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-full font-medium hover:bg-primary-hover transition-colors">
+        <button className="inline-flex items-center gap-2 px-6 py-2.5 bg-gold text-bg-primary rounded-[10px] font-medium hover:bg-gold-light transition-colors">
           Create Free Account
         </button>
       </div>

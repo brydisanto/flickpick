@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { Star } from "lucide-react";
 
 interface StarRatingProps {
@@ -19,8 +19,16 @@ export default function StarRating({
   className = "",
 }: StarRatingProps) {
   const [hoverValue, setHoverValue] = useState<number | null>(null);
+  const [justRated, setJustRated] = useState(false);
+  const ratedTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
   const displayValue = hoverValue ?? value;
   const interactive = !readOnly && !!onChange;
+
+  useEffect(() => {
+    return () => {
+      if (ratedTimerRef.current) clearTimeout(ratedTimerRef.current);
+    };
+  }, []);
 
   const getStarFill = useCallback(
     (starIndex: number): "full" | "half" | "empty" => {
@@ -50,7 +58,12 @@ export default function StarRating({
       const x = e.clientX - rect.left;
       const isHalf = x < rect.width / 2;
       const newRating = starIndex + (isHalf ? 0.5 : 1);
-      onChange?.(newRating === value ? 0 : newRating);
+      const finalRating = newRating === value ? 0 : newRating;
+      onChange?.(finalRating);
+
+      setJustRated(true);
+      if (ratedTimerRef.current) clearTimeout(ratedTimerRef.current);
+      ratedTimerRef.current = setTimeout(() => setJustRated(false), 600);
     },
     [interactive, onChange, value],
   );
@@ -78,7 +91,8 @@ export default function StarRating({
     >
       {Array.from({ length: 5 }, (_, i) => {
         const fill = getStarFill(i);
-        const clipId = `star-clip-${i}`;
+        const isFilled = fill !== "empty";
+        const isHovered = hoverValue !== null && i < Math.ceil(hoverValue);
 
         return (
           <button
@@ -93,6 +107,11 @@ export default function StarRating({
                 ? "cursor-pointer hover:scale-110 transition-transform"
                 : "cursor-default"
             }`}
+            style={
+              isHovered
+                ? { filter: "drop-shadow(0 0 4px rgba(212,168,67,0.4))" }
+                : undefined
+            }
             tabIndex={interactive && i === 0 ? 0 : -1}
             role="radio"
             aria-checked={value >= i + 1}
@@ -106,7 +125,7 @@ export default function StarRating({
             />
 
             {/* Filled overlay */}
-            {fill !== "empty" && (
+            {isFilled && (
               <div
                 className="absolute inset-0"
                 style={{
@@ -114,11 +133,14 @@ export default function StarRating({
                     fill === "half"
                       ? "inset(0 50% 0 0)"
                       : undefined,
+                  animation: justRated
+                    ? `star-fill 0.3s ease-out ${i * 0.08}s both`
+                    : undefined,
                 }}
               >
                 <Star
                   size={size}
-                  className="text-accent fill-accent"
+                  className="text-gold fill-gold"
                   strokeWidth={1.5}
                 />
               </div>

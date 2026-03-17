@@ -1,19 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import Link from "next/link";
-import { Search, Film } from "lucide-react";
+import { Search } from "lucide-react";
 import { AuthProvider } from "@/lib/auth-context";
 import { HeaderAuth } from "./HeaderAuth";
 import "./globals.css";
 
-const geistSans = Geist({
+const jakarta = Plus_Jakarta_Sans({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
+const jetbrains = JetBrains_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -21,7 +23,6 @@ export const metadata: Metadata = {
   description:
     "Discover your next favorite movie. Flickpick aggregates ratings from Rotten Tomatoes, IMDb, and Metacritic, then uses AI to recommend films tailored to your taste.",
   manifest: "/manifest.json",
-  themeColor: "#6366F1",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -53,7 +54,7 @@ function HeaderSearchForm() {
         type="text"
         name="q"
         placeholder="Search movies..."
-        className="w-48 lg:w-64 h-9 pl-9 pr-3 rounded-full bg-bg-tertiary border border-border-subtle text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+        className="w-48 lg:w-72 h-9 pl-9 pr-3 rounded-[var(--radius-md)] bg-bg-tertiary border border-border-subtle text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-border-accent transition-all"
       />
     </form>
   );
@@ -65,33 +66,36 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${jakarta.variable} ${jetbrains.variable} antialiased`}
       >
         <AuthProvider>
-        <header className="sticky top-0 z-50 bg-bg-secondary/80 backdrop-blur-xl border-b border-border-subtle">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div className="flex items-center gap-8">
-              <Link href="/" className="flex items-center gap-2 group">
-                <Film
-                  size={24}
-                  className="text-primary group-hover:text-primary-hover transition-colors"
-                />
-                <span className="text-xl font-bold text-text-primary tracking-tight">
-                  Flickpick
+        {/* Film grain overlay */}
+        <div className="film-grain" aria-hidden="true" />
+
+        <header className="sticky top-0 z-50 glass">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between">
+            <div className="flex items-center gap-10">
+              <Link href="/" className="flex items-center gap-2.5 group">
+                <div className="w-8 h-8 rounded-[6px] bg-gold flex items-center justify-center shrink-0 group-hover:shadow-[0_0_16px_rgba(212,168,67,0.4)] transition-shadow">
+                  <span className="text-[13px] font-bold text-bg-primary tracking-tight">Fp</span>
+                </div>
+                <span className="text-[22px] font-bold tracking-tight">
+                  <span className="text-text-primary">Flick</span>
+                  <span className="text-gold">pick</span>
                 </span>
               </Link>
-              <nav className="hidden sm:flex items-center gap-6">
+              <nav className="hidden sm:flex items-center gap-8">
                 <Link
                   href="/"
-                  className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
+                  className="text-[13px] font-medium uppercase tracking-[0.06em] text-text-tertiary hover:text-text-primary transition-colors"
                 >
                   Discover
                 </Link>
                 <Link
-                  href="/search?q=top+rated"
-                  className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
+                  href="/top-rated"
+                  className="text-[13px] font-medium uppercase tracking-[0.06em] text-text-tertiary hover:text-text-primary transition-colors"
                 >
                   Top Rated
                 </Link>
@@ -104,14 +108,19 @@ export default function RootLayout({
           </div>
         </header>
 
-        <main className="min-h-[calc(100vh-4rem)]">{children}</main>
+        <main className="min-h-[calc(100vh-4.5rem)]">{children}</main>
 
         <footer className="border-t border-border-subtle bg-bg-secondary">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-text-tertiary">
-              Flickpick. Ratings powered by TMDB, OMDb, Rotten Tomatoes,
-              Metacritic.
-            </p>
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded-[3px] bg-gold flex items-center justify-center">
+                <span className="text-[8px] font-bold text-bg-primary">Fp</span>
+              </div>
+              <p className="text-sm text-text-tertiary">
+                Flickpick. Ratings powered by TMDB, OMDb, Rotten Tomatoes,
+                Metacritic.
+              </p>
+            </div>
             <div className="flex items-center gap-4">
               <Link
                 href="/"

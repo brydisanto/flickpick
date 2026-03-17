@@ -13,9 +13,11 @@ export default function GenreChip({ genre, onClick, className = "" }: GenreChipP
     <Tag
       {...(onClick && { onClick: () => onClick(genre), type: "button" as const })}
       className={`
-        inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
-        bg-primary-light text-primary
-        ${onClick ? "cursor-pointer hover:bg-primary hover:text-white transition-colors" : ""}
+        inline-flex items-center
+        text-[11px] uppercase tracking-[0.05em] font-semibold
+        rounded-[6px] px-3 py-1
+        bg-gold-subtle text-gold border border-border-accent
+        ${onClick ? "cursor-pointer hover:bg-gold hover:text-bg-primary transition-colors" : ""}
         ${className}
       `}
     >

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   Heart,
@@ -23,22 +23,41 @@ import { getTmdbImageUrl } from "@/types";
 type InputMode = "seeds" | "natural" | "moods";
 
 const MOOD_OPTIONS = [
-  { icon: Heart, label: "Date Night", mood: "date-night" },
-  { icon: Brain, label: "Mind-Bending", mood: "mind-bending" },
-  { icon: Sparkles, label: "Feel-Good", mood: "feel-good" },
-  { icon: Gem, label: "Hidden Gems", mood: "hidden-gems" },
-  { icon: Trophy, label: "Award Winners", mood: "award-winners" },
-  { icon: Star, label: "Underrated", mood: "underrated" },
-  { icon: Sofa, label: "Comfort Rewatch", mood: "comfort-rewatch" },
-  { icon: Landmark, label: "Based on True Events", mood: "true-events" },
+  { icon: Heart, label: "Date Night", mood: "date-night", emoji: "\u{1F339}", gradient: "linear-gradient(145deg, rgba(239,68,68,0.08), rgba(168,85,247,0.06))" },
+  { icon: Brain, label: "Mind-Bending", mood: "mind-bending", emoji: "\u{1FA90}", gradient: "linear-gradient(145deg, rgba(96,165,250,0.08), rgba(139,92,246,0.06))" },
+  { icon: Sparkles, label: "Feel-Good", mood: "feel-good", emoji: "\u2600\uFE0F", gradient: "linear-gradient(145deg, rgba(250,204,21,0.08), rgba(251,146,60,0.06))" },
+  { icon: Gem, label: "Hidden Gems", mood: "hidden-gems", emoji: "\u{1F48E}", gradient: "linear-gradient(145deg, rgba(52,211,153,0.08), rgba(96,165,250,0.06))" },
+  { icon: Trophy, label: "Award Winners", mood: "award-winners", emoji: "\u{1F3C6}", gradient: "linear-gradient(145deg, rgba(212,168,67,0.10), rgba(161,98,7,0.06))" },
+  { icon: Star, label: "Underrated", mood: "underrated", emoji: "\u{1F576}\uFE0F", gradient: "linear-gradient(145deg, rgba(168,85,247,0.08), rgba(236,72,153,0.06))" },
+  { icon: Sofa, label: "Comfort Rewatch", mood: "comfort-rewatch", emoji: "\u{1F37F}", gradient: "linear-gradient(145deg, rgba(251,146,60,0.08), rgba(245,158,11,0.06))" },
+  { icon: Landmark, label: "Based on True Events", mood: "true-events", emoji: "\u{1F4F0}", gradient: "linear-gradient(145deg, rgba(148,163,184,0.08), rgba(100,116,139,0.06))" },
 ] as const;
 
 const NL_PLACEHOLDERS = [
-  "something like Interstellar but more emotional...",
-  "a fun heist movie I haven't heard of...",
-  "Korean thriller that will keep me up at night...",
-  "cozy rainy day movie with great dialogue...",
-  "visually stunning sci-fi from the last decade...",
+  "something like Interstellar but make me ugly cry...",
+  "a heist movie where I root for the criminals...",
+  "Korean thriller that ruins my sleep schedule...",
+  "cozy rainy-day movie with impossibly good dialogue...",
+  "visually stunning sci-fi, bonus points for a twist...",
+  "90s nostalgia but actually holds up...",
+  "something my film-snob friend would respect...",
+  "horror where I can't predict the ending...",
+];
+
+const SEED_MESSAGES: Record<number, string> = {
+  0: "Name a movie you\u2019d rewatch at 2\u202FAM",
+  1: "Good taste. One more and we\u2019re cooking.",
+  2: "Now we\u2019re getting somewhere...",
+  3: "A cinephile after our own heart.",
+  4: "Our algorithm is getting excited.",
+};
+const SEED_MESSAGE_DEFAULT = "Okay Scorsese, we get it \u2014 you know movies.";
+
+const LOADING_MESSAGES = [
+  "Consulting the film gods...",
+  "Raiding the archives...",
+  "Arguing with the critics...",
+  "Curating your lineup...",
 ];
 
 interface SeedMovie {
@@ -58,6 +77,26 @@ export default function HeroRecommender() {
   const [placeholderIdx] = useState(() =>
     Math.floor(Math.random() * NL_PLACEHOLDERS.length)
   );
+  const [loadingMsgIdx, setLoadingMsgIdx] = useState(0);
+  const loadingInterval = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Cycle loading messages every 2.5s
+  useEffect(() => {
+    if (isLoading) {
+      setLoadingMsgIdx(0);
+      loadingInterval.current = setInterval(() => {
+        setLoadingMsgIdx((prev) => (prev + 1) % LOADING_MESSAGES.length);
+      }, 2500);
+    } else {
+      if (loadingInterval.current) {
+        clearInterval(loadingInterval.current);
+        loadingInterval.current = null;
+      }
+    }
+    return () => {
+      if (loadingInterval.current) clearInterval(loadingInterval.current);
+    };
+  }, [isLoading]);
 
   const searchMovies = useCallback(
     async (query: string): Promise<SearchResult[]> => {
@@ -144,11 +183,16 @@ export default function HeroRecommender() {
     (mode === "natural" && nlQuery.trim().length > 5) ||
     (mode === "moods" && selectedMood !== null);
 
+  const seedMessage =
+    seeds.length in SEED_MESSAGES
+      ? SEED_MESSAGES[seeds.length]
+      : SEED_MESSAGE_DEFAULT;
+
   return (
     <div className="space-y-6">
       {/* Mode Tabs */}
       <div className="flex justify-center">
-        <div className="inline-flex bg-bg-tertiary rounded-full p-1 gap-1">
+        <div className="inline-flex bg-bg-tertiary border border-border rounded-[12px] p-1 gap-1">
           {([
             { key: "seeds", label: "Pick Favorites" },
             { key: "natural", label: "Describe It" },
@@ -158,11 +202,11 @@ export default function HeroRecommender() {
               key={tab.key}
               onClick={() => setMode(tab.key)}
               className={`
-                px-4 sm:px-6 py-2 rounded-full text-sm font-medium transition-all duration-200
+                px-4 sm:px-6 py-2 rounded-[8px] text-sm font-medium transition-all duration-200
                 ${
                   mode === tab.key
-                    ? "bg-bg-secondary text-text-primary shadow-[var(--shadow-sm)]"
-                    : "text-text-secondary hover:text-text-primary"
+                    ? "bg-bg-elevated text-text-primary shadow"
+                    : "text-text-tertiary hover:text-text-primary"
                 }
               `}
             >
@@ -189,15 +233,15 @@ export default function HeroRecommender() {
                 {seeds.map((seed) => (
                   <span
                     key={seed.id}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary-light text-primary rounded-full text-sm font-medium"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gold-subtle text-gold border border-border-accent rounded-full text-sm font-medium"
                   >
                     {seed.title}
                     {seed.year && (
-                      <span className="text-primary/60">({seed.year})</span>
+                      <span className="text-gold/60">({seed.year})</span>
                     )}
                     <button
                       onClick={() => removeSeed(seed.id)}
-                      className="ml-0.5 p-0.5 rounded-full hover:bg-primary/20 transition-colors"
+                      className="ml-0.5 p-0.5 rounded-full hover:bg-gold/20 transition-colors"
                       aria-label={`Remove ${seed.title}`}
                     >
                       <X size={14} />
@@ -208,11 +252,7 @@ export default function HeroRecommender() {
             )}
 
             <p className="text-center text-sm text-text-tertiary">
-              {seeds.length === 0
-                ? "Add at least 1 movie to get started"
-                : seeds.length < 3
-                  ? `${seeds.length} selected — add more for better results`
-                  : `${seeds.length} selected — looking good!`}
+              {seedMessage}
             </p>
           </div>
         )}
@@ -234,7 +274,7 @@ export default function HeroRecommender() {
                   w-full pl-10 pr-4 py-3 rounded-[var(--radius-md)]
                   bg-bg-secondary border border-border
                   text-text-primary text-sm placeholder:text-text-tertiary
-                  focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary
+                  focus:outline-none focus:ring-2 focus:ring-gold/40 focus:border-gold
                   transition-colors resize-none
                 "
               />
@@ -256,6 +296,8 @@ export default function HeroRecommender() {
                   icon={opt.icon}
                   label={opt.label}
                   mood={opt.mood}
+                  emoji={opt.emoji}
+                  gradient={opt.gradient}
                   selected={selectedMood === opt.mood}
                   onClick={(mood) =>
                     setSelectedMood(mood === selectedMood ? null : mood)
@@ -273,19 +315,18 @@ export default function HeroRecommender() {
           onClick={handleSubmit}
           disabled={!canSubmit || isLoading}
           className={`
-            inline-flex items-center gap-2 px-8 py-3 rounded-full
-            text-base font-semibold transition-all duration-200
+            inline-flex items-center gap-2 text-base font-semibold transition-all duration-200
             ${
               canSubmit && !isLoading
-                ? "bg-primary text-white hover:bg-primary-hover shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] active:scale-[0.98]"
-                : "bg-bg-tertiary text-text-tertiary cursor-not-allowed"
+                ? "bg-gold text-bg-primary rounded-[10px] px-10 py-3.5 shadow-[0_4px_16px_rgba(212,168,67,0.25)] hover:bg-gold-light hover:shadow-[0_4px_24px_rgba(212,168,67,0.4)] hover:-translate-y-0.5 active:scale-[0.98]"
+                : "bg-bg-tertiary text-text-tertiary cursor-not-allowed rounded-[10px] px-10 py-3.5"
             }
           `}
         >
           {isLoading ? (
             <>
               <Loader2 size={18} className="animate-spin" />
-              Finding movies...
+              {LOADING_MESSAGES[loadingMsgIdx]}
             </>
           ) : (
             <>

@@ -177,7 +177,7 @@ export default function SearchInput({
             w-full pl-10 pr-10 py-2.5 rounded-[var(--radius-md)]
             bg-bg-secondary border border-border
             text-text-primary text-sm placeholder:text-text-tertiary
-            focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary
+            focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-border-accent
             transition-colors
           "
         />
@@ -221,14 +221,17 @@ export default function SearchInput({
               onClick={() => selectResult(result)}
               className={`
                 flex items-center gap-3 px-4 py-2.5 cursor-pointer transition-colors
-                ${idx === activeIndex ? "bg-bg-tertiary" : "hover:bg-bg-tertiary"}
+                ${idx === activeIndex
+                  ? "bg-bg-hover border-l-2 border-l-gold"
+                  : "hover:bg-bg-hover border-l-2 border-l-transparent"
+                }
               `}
             >
               {result.imageUrl && (
                 <img
                   src={result.imageUrl}
                   alt=""
-                  className="w-8 h-12 object-cover rounded-sm shrink-0 bg-bg-tertiary"
+                  className="w-8 h-12 object-cover rounded-[6px] shrink-0 bg-bg-tertiary"
                 />
               )}
               <div className="min-w-0">

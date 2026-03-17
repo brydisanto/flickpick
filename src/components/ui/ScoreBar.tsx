@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
 import type { Movie, ScoreLevel } from "@/types";
 import { computeAggregateScore, getScoreLevel, getScoreLabel } from "@/types";
 
@@ -12,17 +10,17 @@ interface ScoreBarProps {
 }
 
 const scoreColorMap: Record<ScoreLevel, string> = {
-  high: "var(--score-high)",
-  good: "var(--score-good)",
-  mixed: "var(--score-mixed)",
-  low: "var(--score-low)",
+  high: "#34D399",
+  good: "#60A5FA",
+  mixed: "#FBBF24",
+  low: "#6B7280",
 };
 
 const scoreTailwindMap: Record<ScoreLevel, string> = {
-  high: "text-score-high",
-  good: "text-score-good",
-  mixed: "text-score-mixed",
-  low: "text-score-low",
+  high: "text-[#34D399]",
+  good: "text-[#60A5FA]",
+  mixed: "text-[#FBBF24]",
+  low: "text-[#6B7280]",
 };
 
 function CircularGauge({
@@ -54,15 +52,16 @@ function CircularGauge({
         width={size}
         height={size}
         viewBox={`0 0 ${size} ${size}`}
-        className="-rotate-90"
+        className="-rotate-90 score-ring-animate"
       >
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="var(--border-color)"
+          stroke="var(--border)"
           strokeWidth={strokeWidth}
+          opacity={0.3}
         />
         <circle
           cx={size / 2}
@@ -78,7 +77,7 @@ function CircularGauge({
         />
       </svg>
       <span
-        className="absolute font-bold"
+        className="absolute font-bold score-count-animate"
         style={{
           fontSize: size >= 64 ? "1.125rem" : "0.75rem",
           color,
@@ -113,7 +112,6 @@ function IndividualScore({
 }
 
 export default function ScoreBar({ movie, compact = false, className = "" }: ScoreBarProps) {
-  const [expanded, setExpanded] = useState(false);
   const aggregate = computeAggregateScore(movie);
 
   if (aggregate == null) {
@@ -155,19 +153,9 @@ export default function ScoreBar({ movie, compact = false, className = "" }: Sco
             Aggregate score from critic &amp; audience ratings
           </p>
         </div>
-        {hasBreakdown && (
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="p-1.5 rounded-md hover:bg-bg-tertiary transition-colors text-text-secondary"
-            aria-expanded={expanded}
-            aria-label={expanded ? "Collapse score breakdown" : "Expand score breakdown"}
-          >
-            {expanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-          </button>
-        )}
       </div>
 
-      {expanded && hasBreakdown && (
+      {hasBreakdown && (
         <div className="mt-3 pt-3 border-t border-border-subtle divide-y divide-border-subtle">
           <IndividualScore
             label="Rotten Tomatoes"

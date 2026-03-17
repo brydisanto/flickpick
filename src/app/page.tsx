@@ -8,6 +8,12 @@ import HeroRecommender from "./HeroRecommender";
 // Don't pre-render at build time — needs TMDB API at runtime
 export const dynamic = "force-dynamic";
 
+function getScoreColor(score: number): string {
+  if (score >= 75) return "bg-score-high/90";
+  if (score >= 60) return "bg-score-good/90";
+  if (score >= 40) return "bg-score-mixed/90";
+  return "bg-score-low/90";
+}
 
 async function TrendingSection() {
   const trending = await getPopularMovies();
@@ -16,21 +22,21 @@ async function TrendingSection() {
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div className="flex items-baseline justify-between mb-8">
         <div>
-          <h2 className="text-2xl font-bold text-text-primary">
+          <h2 className="section-heading text-2xl font-bold text-text-primary">
             Trending This Week
           </h2>
-          <p className="text-sm text-text-secondary mt-1">
+          <p className="text-sm text-text-secondary mt-1 pl-4">
             Popular movies everyone is watching right now
           </p>
         </div>
         <Link
           href="/search?q=popular"
-          className="text-sm font-medium text-primary hover:text-primary-hover transition-colors hidden sm:inline"
+          className="text-sm font-medium text-gold hover:text-gold-light transition-colors hidden sm:inline"
         >
           See all
         </Link>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
+      <div className="stagger-children grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
         {trending.results.slice(0, 12).map((m) => {
           const year = m.release_date
             ? new Date(m.release_date).getFullYear()
@@ -47,27 +53,31 @@ async function TrendingSection() {
               className="group block"
               aria-label={`${m.title}${year ? ` (${year})` : ""}`}
             >
-              <div className="relative aspect-[2/3] rounded-[var(--radius-md)] overflow-hidden bg-bg-tertiary shadow-[var(--shadow-card)] group-hover:shadow-[var(--shadow-md)] transition-shadow duration-200">
+              <div className="poster-card relative aspect-[2/3] rounded-[var(--radius-md)] overflow-hidden bg-bg-tertiary">
                 <Image
                   src={getTmdbImageUrl(m.poster_path, "w500")}
                   alt={`${m.title} poster`}
                   fill
                   sizes="(max-width: 640px) 45vw, (max-width: 1024px) 22vw, 185px"
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="object-cover"
                 />
                 {scoreDisplay != null && (
-                  <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                  <div
+                    className={`absolute top-2 right-2 z-10 w-8 h-8 flex items-center justify-center rounded-[6px] text-white text-xs font-bold ${getScoreColor(scoreDisplay)}`}
+                  >
                     {scoreDisplay}
                   </div>
                 )}
-              </div>
-              <div className="mt-2.5 px-0.5">
-                <p className="text-sm font-medium text-text-primary truncate group-hover:text-primary transition-colors">
-                  {m.title}
-                </p>
-                {year && (
-                  <p className="text-xs text-text-tertiary mt-0.5">{year}</p>
-                )}
+                <div className="poster-title-overlay">
+                  <p className="text-sm font-semibold text-white leading-snug">
+                    {m.title}
+                  </p>
+                  {year && (
+                    <p className="text-xs text-text-secondary mt-0.5">
+                      {year}
+                    </p>
+                  )}
+                </div>
               </div>
             </Link>
           );
@@ -88,10 +98,6 @@ function TrendingSkeleton() {
         {Array.from({ length: 12 }, (_, i) => (
           <div key={i}>
             <div className="aspect-[2/3] rounded-[var(--radius-md)] bg-bg-tertiary animate-pulse" />
-            <div className="mt-2.5 px-0.5">
-              <div className="h-4 w-3/4 bg-bg-tertiary rounded animate-pulse" />
-              <div className="h-3 w-1/3 bg-bg-tertiary rounded animate-pulse mt-1.5" />
-            </div>
           </div>
         ))}
       </div>
@@ -104,19 +110,24 @@ export default function HomePage() {
     <div className="bg-bg-primary">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        {/* Gradient background accent */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
+        {/* Dual radial gradient glows — gold + curtain-red */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 50% at 30% 20%, rgba(212,168,67,0.06) 0%, transparent 70%), radial-gradient(ellipse 50% 60% at 75% 30%, rgba(185,28,28,0.04) 0%, transparent 70%)",
+          }}
+        />
 
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-12">
+        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-28 pb-14">
           <div className="text-center mb-10">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-text-primary tracking-tight leading-[1.1]">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-text-primary tracking-[-0.03em] leading-[1.05]">
               What are you in the
               <br />
-              <span className="text-primary">mood for?</span>
+              <span className="text-gold-gradient">mood for?</span>
             </h1>
-            <p className="mt-4 text-lg text-text-secondary max-w-xl mx-auto leading-relaxed">
-              Get personalized movie recommendations powered by AI. Pick
-              favorites, describe what you want, or choose a vibe.
+            <p className="mt-5 text-text-secondary max-w-xl mx-auto leading-relaxed" style={{ fontSize: "17px" }}>
+              Tell us what you love. We&rsquo;ll find your next obsession.
             </p>
           </div>
 

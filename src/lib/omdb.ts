@@ -1,5 +1,5 @@
-const OMDB_API_KEY = process.env.OMDB_API_KEY!;
-const OMDB_BASE = "https://www.omdbapi.com";
+const OMDB_API_KEY = process.env.OMDB_API_KEY || "";
+const OMDB_BASE = "http://www.omdbapi.com";
 
 interface OMDBRating {
   Source: string;

@@ -4,6 +4,19 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { Bookmark, BookmarkCheck, Star, Share2, Check, LogIn } from "lucide-react";
 import StarRating from "@/components/ui/StarRating";
 
+const RATING_REACTIONS: Record<number, string> = {
+  0.5: "Ouch. Noted.",
+  1: "Ouch. Noted.",
+  1.5: "Fair enough.",
+  2: "Not every movie can be The Godfather.",
+  2.5: "Right down the middle.",
+  3: "Right down the middle.",
+  3.5: "Solid pick.",
+  4: "Solid pick. We see you.",
+  4.5: "A near-masterpiece.",
+  5: "A perfect 5. This one really got you.",
+};
+
 interface MovieActionsProps {
   movieId: string;
   movieTitle: string;
@@ -21,7 +34,10 @@ export default function MovieActions({
   const [quickRating, setQuickRating] = useState(0);
   const [ratingLoading, setRatingLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showReaction, setShowReaction] = useState(false);
+  const [reactionText, setReactionText] = useState("");
   const raterRef = useRef<HTMLDivElement>(null);
+  const reactionTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Close rater on outside click
   useEffect(() => {
@@ -36,6 +52,13 @@ export default function MovieActions({
         document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [showRater]);
+
+  // Cleanup reaction timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (reactionTimeout.current) clearTimeout(reactionTimeout.current);
+    };
+  }, []);
 
   const toggleWatchlist = useCallback(async () => {
     if (!userId) return;
@@ -63,6 +86,17 @@ export default function MovieActions({
       if (!userId) return;
       setQuickRating(value);
       setRatingLoading(true);
+
+      // Show reaction text
+      const reaction = RATING_REACTIONS[value] || "";
+      if (reaction) {
+        setReactionText(reaction);
+        setShowReaction(true);
+        if (reactionTimeout.current) clearTimeout(reactionTimeout.current);
+        reactionTimeout.current = setTimeout(() => {
+          setShowReaction(false);
+        }, 2500);
+      }
 
       try {
         const res = await fetch("/api/ratings", {
@@ -123,7 +157,7 @@ export default function MovieActions({
           disabled={watchlistLoading}
           className={`${buttonBase} ${
             inWatchlist
-              ? "bg-primary text-white hover:bg-primary-hover"
+              ? "bg-gold text-bg-primary hover:bg-gold-light"
               : "bg-bg-tertiary text-text-secondary hover:text-text-primary"
           } disabled:opacity-50`}
           aria-label={
@@ -160,14 +194,14 @@ export default function MovieActions({
             onClick={() => setShowRater(!showRater)}
             className={`${buttonBase} ${
               quickRating > 0
-                ? "bg-accent/15 text-accent"
+                ? "bg-gold/15 text-gold"
                 : "bg-bg-tertiary text-text-secondary hover:text-text-primary"
             }`}
             aria-label="Rate this movie"
           >
             <Star
               size={16}
-              className={quickRating > 0 ? "fill-accent" : ""}
+              className={quickRating > 0 ? "fill-gold" : ""}
             />
             {quickRating > 0 ? `${quickRating}` : "Rate"}
           </button>
@@ -191,6 +225,11 @@ export default function MovieActions({
             />
             {ratingLoading && (
               <p className="text-xs text-text-tertiary mt-1">Saving...</p>
+            )}
+            {showReaction && reactionText && (
+              <p className="text-xs text-gold mt-2 animate-fade-in-up">
+                {reactionText}
+              </p>
             )}
           </div>
         )}

@@ -44,8 +44,9 @@ export default function MovieCard({
   return (
     <article
       className={`
-        group relative bg-bg-elevated rounded-[var(--radius-md)] overflow-hidden
-        shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-md)]
+        group relative bg-bg-elevated border border-border rounded-[var(--radius-md)] overflow-hidden
+        shadow-[0_2px_12px_rgba(0,0,0,0.2)]
+        hover:shadow-[0_4px_24px_rgba(0,0,0,0.3),0_0_0_1px_rgba(212,168,67,0.12)]
         transition-shadow duration-200
         flex flex-col sm:flex-row
         ${onClick ? "cursor-pointer" : ""}
@@ -75,6 +76,8 @@ export default function MovieCard({
         ) : (
           <PosterFallback />
         )}
+        {/* Poster vignette overlay */}
+        <div className="absolute inset-0 shadow-[inset_0_0_30px_rgba(0,0,0,0.3)] pointer-events-none rounded-[inherit]" />
       </div>
 
       {/* Content */}
@@ -82,7 +85,7 @@ export default function MovieCard({
         {/* Header row */}
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <h3 className="font-semibold text-text-primary truncate text-base leading-tight">
+            <h3 className="font-semibold text-text-primary truncate text-base leading-tight group-hover:text-gold transition-colors">
               {movie.title}
             </h3>
             <div className="flex items-center gap-2 mt-1 text-sm text-text-secondary">
@@ -105,7 +108,7 @@ export default function MovieCard({
               className={`
                 shrink-0 p-1.5 rounded-md transition-colors
                 ${isBookmarked
-                  ? "text-primary hover:text-primary-hover"
+                  ? "text-gold hover:text-gold-light"
                   : "text-text-tertiary hover:text-text-secondary hover:bg-bg-tertiary"
                 }
               `}

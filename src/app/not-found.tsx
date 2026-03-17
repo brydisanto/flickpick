@@ -1,0 +1,58 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+
+const LOST_QUOTES = [
+  { quote: "Toto, I\u2019ve a feeling we\u2019re not in Kansas anymore.", film: "The Wizard of Oz" },
+  { quote: "Houston, we have a problem.", film: "Apollo 13" },
+  { quote: "Here\u2019s looking at you, kid. But not at this page.", film: "Casablanca" },
+  { quote: "You shall not pass! ...because this page doesn\u2019t exist.", film: "Lord of the Rings" },
+  { quote: "I see dead pages.", film: "The Sixth Sense" },
+];
+
+export default function NotFound() {
+  const [quoteIdx, setQuoteIdx] = useState(0);
+
+  useEffect(() => {
+    setQuoteIdx(Math.floor(Math.random() * LOST_QUOTES.length));
+  }, []);
+
+  const { quote, film } = LOST_QUOTES[quoteIdx];
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 text-center bg-bg-primary">
+      {/* Logo mark */}
+      <div className="mb-8">
+        <span className="text-gold-gradient text-2xl font-bold tracking-tight">
+          flickpick
+        </span>
+      </div>
+
+      {/* 404 */}
+      <h1 className="text-[8rem] sm:text-[10rem] font-black leading-none text-text-tertiary/30 select-none">
+        404
+      </h1>
+
+      {/* Quote */}
+      <div className="max-w-md mt-4 animate-fade-in-up">
+        <p className="text-xl sm:text-2xl font-medium text-text-primary leading-relaxed">
+          &ldquo;{quote}&rdquo;
+        </p>
+        <p className="mt-3 text-sm text-text-secondary italic">
+          &mdash; {film}
+        </p>
+      </div>
+
+      {/* CTA */}
+      <Link
+        href="/"
+        className="mt-10 inline-flex items-center gap-2 px-8 py-3.5 bg-gold text-bg-primary rounded-[10px] font-semibold shadow-[0_4px_16px_rgba(212,168,67,0.25)] hover:bg-gold-light hover:shadow-[0_4px_24px_rgba(212,168,67,0.4)] hover:-translate-y-0.5 transition-all duration-200"
+      >
+        <ArrowLeft size={18} />
+        Back to Home
+      </Link>
+    </div>
+  );
+}

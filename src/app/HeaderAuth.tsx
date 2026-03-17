@@ -39,7 +39,7 @@ export function HeaderAuth() {
     return (
       <Link
         href="/auth/login"
-        className="h-9 px-4 rounded-full bg-primary hover:bg-primary-hover text-white text-sm font-medium transition-colors flex items-center gap-2"
+        className="h-9 px-4 rounded-[10px] bg-gold hover:bg-gold-light text-bg-primary text-sm font-medium transition-colors flex items-center gap-2"
       >
         Sign in
       </Link>
@@ -68,8 +68,8 @@ export function HeaderAuth() {
             className="rounded-full object-cover"
           />
         ) : (
-          <div className="w-7 h-7 rounded-full bg-primary-light flex items-center justify-center">
-            <User size={14} className="text-primary" />
+          <div className="w-7 h-7 rounded-full bg-gold-subtle flex items-center justify-center">
+            <User size={14} className="text-gold" />
           </div>
         )}
         <span className="hidden sm:block text-sm font-medium text-text-primary max-w-[120px] truncate">
@@ -82,7 +82,7 @@ export function HeaderAuth() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-56 bg-bg-elevated border border-border-subtle rounded-xl shadow-[var(--shadow-lg)] py-1 z-50">
+        <div className="absolute right-0 top-full mt-2 w-56 bg-bg-elevated border border-border rounded-xl shadow-[var(--shadow-lg)] py-1 z-50">
           <div className="px-4 py-3 border-b border-border-subtle">
             <p className="text-sm font-medium text-text-primary truncate">
               {displayName}
