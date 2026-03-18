@@ -2,7 +2,9 @@ import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getPopularMovies } from "@/lib/tmdb";
-import { getTmdbImageUrl } from "@/types";
+import { getTmdbImageUrl, computeAggregateScore, getScoreLevel } from "@/types";
+import type { Movie } from "@/types";
+import { createServerClient } from "@/lib/supabase";
 import HeroRecommender from "./HeroRecommender";
 
 // Don't pre-render at build time — needs TMDB API at runtime
@@ -17,6 +19,24 @@ function getScoreColor(score: number): string {
 
 async function TrendingSection() {
   const trending = await getPopularMovies();
+  const tmdbIds = trending.results.slice(0, 12).map((m) => m.id);
+
+  // Fetch FlickPick aggregate scores from DB
+  let dbScores: Record<number, Movie> = {};
+  try {
+    const supabase = createServerClient();
+    const { data } = await supabase
+      .from("movies")
+      .select("tmdb_id, rotten_tomatoes_score, imdb_rating, metacritic_score")
+      .in("tmdb_id", tmdbIds);
+    if (data) {
+      for (const row of data) {
+        dbScores[row.tmdb_id] = row as unknown as Movie;
+      }
+    }
+  } catch {
+    // Fall back to TMDB scores if DB unavailable
+  }
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -41,10 +61,11 @@ async function TrendingSection() {
           const year = m.release_date
             ? new Date(m.release_date).getFullYear()
             : null;
-          const scoreDisplay =
-            m.vote_average > 0
-              ? Math.round(m.vote_average * 10)
-              : null;
+
+          // Use FlickPick aggregate if available, fall back to TMDB score
+          const dbMovie = dbScores[m.id];
+          const aggregate = dbMovie ? computeAggregateScore(dbMovie) : null;
+          const scoreDisplay = aggregate ?? (m.vote_average > 0 ? Math.round(m.vote_average * 10) : null);
 
           return (
             <Link
