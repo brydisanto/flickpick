@@ -297,7 +297,7 @@ export default function OnboardingPage() {
           ))}
         </div>
       )}
-      <div className={`grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 mb-8 ${!postersLoaded ? "hidden" : ""}`}
+      <div className={`grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 mb-8 ${!postersLoaded ? "hidden" : ""}`}>
         {movies.map((movie) => {
           const rating = ratings[movie.tmdb_id] ?? null;
           return (

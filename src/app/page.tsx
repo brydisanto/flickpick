@@ -5,7 +5,7 @@ import { getPopularMovies } from "@/lib/tmdb";
 import { getTmdbImageUrl, computeAggregateScore } from "@/types";
 import type { Movie } from "@/types";
 import { createClient } from "@supabase/supabase-js";
-import { fetchRatingsByTitle, type ParsedRatings } from "@/lib/omdb";
+import { fetchRatingsByTitle } from "@/lib/omdb";
 import HeroRecommender from "./HeroRecommender";
 
 // Don't pre-render at build time — needs TMDB API at runtime
