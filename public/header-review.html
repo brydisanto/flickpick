@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FLICKPICK Header Concepts Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ========================================
+       RESET + BASE
+       ======================================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Sora', sans-serif;
+      background: #1A1A1A;
+      color: #FAF6F1;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ========================================
+       STICKY TABLE OF CONTENTS
+       ======================================== */
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+      background: #111;
+      border-bottom: 1px solid #333;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      font-family: 'Sora', sans-serif;
+    }
+    .toc-label {
+      font-weight: 600;
+      color: #E05A22;
+      margin-right: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .toc a {
+      color: #999;
+      text-decoration: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      transition: all 0.2s;
+      white-space: nowrap;
+      border: 1px solid transparent;
+    }
+    .toc a:hover {
+      color: #FAF6F1;
+      background: #222;
+      border-color: #333;
+    }
+
+    /* ========================================
+       SECTION LAYOUT
+       ======================================== */
+    .concept-section {
+      scroll-margin-top: 44px;
+    }
+    .concept-label {
+      padding: 48px 40px 20px;
+      max-width: 900px;
+    }
+    .concept-label h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: #FAF6F1;
+      margin-bottom: 6px;
+    }
+    .concept-label .concept-number {
+      font-family: 'Sora', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #E05A22;
+      margin-bottom: 4px;
+    }
+    .concept-label p {
+      font-size: 14px;
+      color: #888;
+      line-height: 1.6;
+      max-width: 700px;
+    }
+
+    .body-content {
+      height: 200px;
+      background: #EFECD5;
+      display: flex;
+      align-items: flex-start;
+      padding: 32px 40px;
+    }
+    .body-content p {
+      color: #5a5648;
+      font-size: 14px;
+      line-height: 1.7;
+      max-width: 600px;
+    }
+    .body-content .fake-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .body-content .fake-poster {
+      width: 60px;
+      height: 88px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #c9b896, #a89070);
+      flex-shrink: 0;
+    }
+    .body-content .fake-text span {
+      display: block;
+    }
+    .body-content .fake-text .ft-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 18px;
+      color: #1A1A1A;
+    }
+    .body-content .fake-text .ft-sub {
+      font-size: 12px;
+      color: #888;
+      margin-top: 4px;
+    }
+    .body-content .fake-text .ft-score {
+      font-size: 12px;
+      font-weight: 600;
+      color: #E05A22;
+      margin-top: 8px;
+    }
+
+    /* ========================================
+       SHARED HEADER STYLES
+       ======================================== */
+    .header {
+      height: 56px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      position: relative;
+      overflow: hidden;
+      background: #1A1A1A;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+      gap: 32px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .logo svg {
+      width: 28px;
+      height: 28px;
+    }
+    .logo-text {
+      font-family: 'Instrument Serif', serif;
+      font-size: 20px;
+      letter-spacing: 0.06em;
+      color: #FAF6F1;
+      text-transform: uppercase;
+    }
+
+    .nav {
+      display: flex;
+      gap: 24px;
+      flex-shrink: 0;
+    }
+    .nav a {
+      font-family: 'Sora', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #b5b0a8;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+    .nav a:hover {
+      color: #FAF6F1;
+    }
+
+    .search-wrapper {
+      margin-left: auto;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .search-input {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 6px 12px 6px 32px;
+      font-size: 13px;
+      font-family: 'Sora', sans-serif;
+      color: #FAF6F1;
+      width: 200px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .search-input::placeholder { color: #666; }
+    .search-input:focus {
+      border-color: rgba(224, 90, 34, 0.3);
+      background: rgba(255,255,255,0.08);
+    }
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      color: #666;
+    }
+
+    /* Ticket stub SVG logo */
+    .ticket-svg {
+      fill: none;
+      stroke: #E05A22;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Divider between sections */
+    .section-divider {
+      height: 1px;
+      background: #2a2a2a;
+      margin: 0;
+    }
+
+    /* ========================================
+       CONCEPT 1: FILM GRAIN OVERLAY
+       ======================================== */
+    .header-grain {
+      background: #1A1A1A;
+    }
+    .header-grain::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      z-index: 1;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      animation: grain 8s steps(10) infinite;
+      pointer-events: none;
+    }
+    @keyframes grain {
+      0%, 100% { transform: translate(0, 0); }
+      10% { transform: translate(-5%, -10%); }
+      20% { transform: translate(-15%, 5%); }
+      30% { transform: translate(7%, -15%); }
+      40% { transform: translate(-5%, 15%); }
+      50% { transform: translate(-15%, 10%); }
+      60% { transform: translate(15%, 0%); }
+      70% { transform: translate(0%, 10%); }
+      80% { transform: translate(3%, -20%); }
+      90% { transform: translate(-10%, 10%); }
+    }
+
+    /* ========================================
+       CONCEPT 2: SUBTLE GRADIENT SHIFT
+       ======================================== */
+    .header-gradient {
+      background: linear-gradient(135deg, #1A1A1A, #1E1915, #151A1E, #1A1A1A);
+      background-size: 400% 400%;
+      animation: gradientShift 45s ease infinite;
+    }
+    .header-gradient::before {
+      content: '';
+      position: absolute;
+      left: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 180px;
+      height: 40px;
+      background: radial-gradient(ellipse, rgba(224, 90, 34, 0.06) 0%, transparent 70%);
+      z-index: 1;
+      pointer-events: none;
+      animation: amberPulse 6s ease-in-out infinite;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      25% { background-position: 100% 50%; }
+      50% { background-position: 100% 100%; }
+      75% { background-position: 0% 100%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes amberPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* ========================================
+       CONCEPT 3: STARFIELD / PARTICLES
+       ======================================== */
+    .header-stars {
+      background: #1A1A1A;
+    }
+    .header-stars::before,
+    .header-stars::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .header-stars::before {
+      background:
+        radial-gradient(1px 1px at 10% 30%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 25% 70%, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 40% 20%, rgba(255,255,255,0.25), transparent),
+        radial-gradient(1px 1px at 55% 60%, rgba(255,255,255,0.15), transparent),
+        radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 85% 80%, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 15% 85%, rgba(255,255,255,0.15), transparent),
+        radial-gradient(1px 1px at 60% 10%, rgba(255,255,255,0.25), transparent),
+        radial-gradient(1px 1px at 90% 25%, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 35% 50%, rgba(255,255,255,0.15), transparent),
+        radial-gradient(1px 1px at 5% 55%, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 78% 65%, rgba(255,255,255,0.25), transparent),
+        radial-gradient(1px 1px at 48% 90%, rgba(255,255,255,0.15), transparent),
+        radial-gradient(1px 1px at 95% 50%, rgba(255,255,255,0.2), transparent);
+      animation: starDrift1 60s linear infinite;
+      opacity: 0.7;
+    }
+    .header-stars::after {
+      background:
+        radial-gradient(1px 1px at 8% 45%, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 22% 15%, rgba(255,255,255,0.15), transparent),
+        radial-gradient(1px 1px at 42% 75%, rgba(255,255,255,0.25), transparent),
+        radial-gradient(1px 1px at 58% 35%, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 75% 55%, rgba(255,255,255,0.15), transparent),
+        radial-gradient(1px 1px at 88% 10%, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 33% 88%, rgba(255,255,255,0.15), transparent),
+        radial-gradient(1px 1px at 65% 48%, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 12% 68%, rgba(255,255,255,0.15), transparent),
+        radial-gradient(1px 1px at 52% 22%, rgba(255,255,255,0.2), transparent);
+      animation: starDrift2 90s linear infinite;
+      opacity: 0.5;
+    }
+    @keyframes starDrift1 {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-30px); }
+    }
+    @keyframes starDrift2 {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(20px); }
+    }
+
+    /* ========================================
+       CONCEPT 4: FILM STRIP BORDER
+       ======================================== */
+    .header-filmstrip {
+      background: #1A1A1A;
+    }
+    .header-filmstrip::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 200%;
+      height: 8px;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent 0px,
+          transparent 4px,
+          rgba(224, 90, 34, 0.35) 4px,
+          rgba(224, 90, 34, 0.35) 8px,
+          transparent 8px,
+          transparent 20px
+        );
+      animation: filmScroll 12s linear infinite;
+    }
+    .header-filmstrip::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(224, 90, 34, 0.15);
+      z-index: 2;
+      pointer-events: none;
+    }
+    @keyframes filmScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ========================================
+       CONCEPT 5: SPOTLIGHT SWEEP
+       ======================================== */
+    .header-spotlight {
+      background: #1A1A1A;
+    }
+    .header-spotlight::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      width: 300px;
+      height: 200%;
+      z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(ellipse 150px 80px at center, rgba(255, 230, 200, 0.06), transparent 70%);
+      animation: spotlightSweep 20s ease-in-out infinite;
+    }
+    @keyframes spotlightSweep {
+      0% { left: -300px; }
+      50% { left: calc(100% + 50px); }
+      100% { left: -300px; }
+    }
+
+    /* ========================================
+       CONCEPT 6: CURTAIN TEXTURE
+       ======================================== */
+    .header-curtain {
+      background:
+        repeating-linear-gradient(
+          90deg,
+          #1A1A1A 0px,
+          #1c1c1c 1px,
+          #1A1A1A 2px,
+          #191919 3px,
+          #1A1A1A 6px
+        );
+    }
+    .header-curtain::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.02) 30%, transparent 60%);
+      background-size: 300% 100%;
+      animation: curtainShimmer 12s ease-in-out infinite;
+    }
+    @keyframes curtainShimmer {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+    }
+
+    /* ========================================
+       CONCEPT 7: CINEMATIC LETTERBOX BARS
+       ======================================== */
+    .header-letterbox {
+      background: #1A1A1A;
+    }
+    .header-letterbox::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(224, 90, 34, 0.08) 20%,
+        rgba(224, 90, 34, 0.15) 50%,
+        rgba(224, 90, 34, 0.08) 80%,
+        transparent 100%
+      );
+      animation: letterboxGlow 5s ease-in-out infinite alternate;
+    }
+    .header-letterbox::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(224, 90, 34, 0.08) 20%,
+        rgba(224, 90, 34, 0.15) 50%,
+        rgba(224, 90, 34, 0.08) 80%,
+        transparent 100%
+      );
+      animation: letterboxGlow 5s ease-in-out infinite alternate;
+      animation-delay: 2.5s;
+    }
+    @keyframes letterboxGlow {
+      0% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    /* ========================================
+       CONCEPT 8: AMBIENT GLOW
+       ======================================== */
+    .header-glow {
+      background: #1A1A1A;
+    }
+    .header-glow::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 280px;
+      height: 100px;
+      z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(ellipse 140px 50px at 100px 50%, rgba(224, 90, 34, 0.08), transparent 70%);
+      animation: ambientGlow 5s ease-in-out infinite;
+    }
+    @keyframes ambientGlow {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- STICKY TABLE OF CONTENTS -->
+  <nav class="toc">
+    <span class="toc-label">Header Concepts</span>
+    <a href="#c1">1. Film Grain</a>
+    <a href="#c2">2. Gradient Shift</a>
+    <a href="#c3">3. Starfield</a>
+    <a href="#c4">4. Film Strip</a>
+    <a href="#c5">5. Spotlight</a>
+    <a href="#c6">6. Curtain</a>
+    <a href="#c7">7. Letterbox</a>
+    <a href="#c8">8. Ambient Glow</a>
+  </nav>
+
+
+  <!-- ============================================
+       CONCEPT 1: FILM GRAIN OVERLAY
+       ============================================ -->
+  <section class="concept-section" id="c1">
+    <div class="concept-label">
+      <div class="concept-number">Concept 1</div>
+      <h2>Film Grain Overlay</h2>
+      <p>Animated SVG noise texture shifts position in steps, creating a subtle analog film grain effect. Very low opacity (0.045) keeps it from competing with content. The stepping animation mimics real celluloid grain flicker.</p>
+    </div>
+    <header class="header header-grain">
+      <div class="header-inner">
+        <div class="logo">
+          <svg class="ticket-svg" viewBox="0 0 28 28" width="28" height="28">
+            <rect x="2" y="6" width="24" height="16" rx="2" />
+            <line x1="10" y1="6" x2="10" y2="22" stroke-dasharray="2 2" />
+            <circle cx="6" cy="14" r="1.5" fill="#E05A22" stroke="none" />
+          </svg>
+          <span class="logo-text">FLICKPICK</span>
+        </div>
+        <nav class="nav">
+          <a href="#">Discover</a>
+          <a href="#">Top Rated</a>
+          <a href="#">For You</a>
+        </nav>
+        <div class="search-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" type="text" placeholder="Search films...">
+        </div>
+      </div>
+    </header>
+    <div class="body-content">
+      <div class="fake-card">
+        <div class="fake-poster"></div>
+        <div class="fake-text">
+          <span class="ft-title">The Brutalist</span>
+          <span class="ft-sub">2024 &middot; Brady Corbet &middot; 3h 35m</span>
+          <span class="ft-score">RT 91% &middot; IMDb 7.4 &middot; MC 82</span>
+        </div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+  </section>
+
+
+  <!-- ============================================
+       CONCEPT 2: SUBTLE GRADIENT SHIFT
+       ============================================ -->
+  <section class="concept-section" id="c2">
+    <div class="concept-label">
+      <div class="concept-number">Concept 2</div>
+      <h2>Subtle Gradient Shift</h2>
+      <p>A 400% oversized gradient cycles between warm and cool dark tones over 45 seconds. Nearly imperceptible in real-time, it gives the header a living, breathing quality. A soft amber glow sits behind the logo area.</p>
+    </div>
+    <header class="header header-gradient">
+      <div class="header-inner">
+        <div class="logo">
+          <svg class="ticket-svg" viewBox="0 0 28 28" width="28" height="28">
+            <rect x="2" y="6" width="24" height="16" rx="2" />
+            <line x1="10" y1="6" x2="10" y2="22" stroke-dasharray="2 2" />
+            <circle cx="6" cy="14" r="1.5" fill="#E05A22" stroke="none" />
+          </svg>
+          <span class="logo-text">FLICKPICK</span>
+        </div>
+        <nav class="nav">
+          <a href="#">Discover</a>
+          <a href="#">Top Rated</a>
+          <a href="#">For You</a>
+        </nav>
+        <div class="search-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" type="text" placeholder="Search films...">
+        </div>
+      </div>
+    </header>
+    <div class="body-content">
+      <div class="fake-card">
+        <div class="fake-poster"></div>
+        <div class="fake-text">
+          <span class="ft-title">Anora</span>
+          <span class="ft-sub">2024 &middot; Sean Baker &middot; 2h 19m</span>
+          <span class="ft-score">RT 95% &middot; IMDb 7.6 &middot; MC 90</span>
+        </div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+  </section>
+
+
+  <!-- ============================================
+       CONCEPT 3: STARFIELD / PARTICLES
+       ============================================ -->
+  <section class="concept-section" id="c3">
+    <div class="concept-label">
+      <div class="concept-number">Concept 3</div>
+      <h2>Starfield / Particles</h2>
+      <p>Two layers of pinpoint radial-gradient dots drift at different speeds (60s and 90s), creating a gentle parallax depth effect. Evokes the feeling of sitting in a dark theater before the lights go down, looking up at a starry ceiling.</p>
+    </div>
+    <header class="header header-stars">
+      <div class="header-inner">
+        <div class="logo">
+          <svg class="ticket-svg" viewBox="0 0 28 28" width="28" height="28">
+            <rect x="2" y="6" width="24" height="16" rx="2" />
+            <line x1="10" y1="6" x2="10" y2="22" stroke-dasharray="2 2" />
+            <circle cx="6" cy="14" r="1.5" fill="#E05A22" stroke="none" />
+          </svg>
+          <span class="logo-text">FLICKPICK</span>
+        </div>
+        <nav class="nav">
+          <a href="#">Discover</a>
+          <a href="#">Top Rated</a>
+          <a href="#">For You</a>
+        </nav>
+        <div class="search-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" type="text" placeholder="Search films...">
+        </div>
+      </div>
+    </header>
+    <div class="body-content">
+      <div class="fake-card">
+        <div class="fake-poster"></div>
+        <div class="fake-text">
+          <span class="ft-title">The Substance</span>
+          <span class="ft-sub">2024 &middot; Coralie Fargeat &middot; 2h 20m</span>
+          <span class="ft-score">RT 89% &middot; IMDb 7.1 &middot; MC 74</span>
+        </div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+  </section>
+
+
+  <!-- ============================================
+       CONCEPT 4: FILM STRIP BORDER
+       ============================================ -->
+  <section class="concept-section" id="c4">
+    <div class="concept-label">
+      <div class="concept-number">Concept 4</div>
+      <h2>Film Strip Border</h2>
+      <p>A repeating-linear-gradient creates sprocket-hole perforations along the bottom edge, scrolling horizontally over 12 seconds. Amber-tinted to match the brand. Reinforces the ticket-stub logo motif and cinematic identity without touching the header body.</p>
+    </div>
+    <header class="header header-filmstrip">
+      <div class="header-inner">
+        <div class="logo">
+          <svg class="ticket-svg" viewBox="0 0 28 28" width="28" height="28">
+            <rect x="2" y="6" width="24" height="16" rx="2" />
+            <line x1="10" y1="6" x2="10" y2="22" stroke-dasharray="2 2" />
+            <circle cx="6" cy="14" r="1.5" fill="#E05A22" stroke="none" />
+          </svg>
+          <span class="logo-text">FLICKPICK</span>
+        </div>
+        <nav class="nav">
+          <a href="#">Discover</a>
+          <a href="#">Top Rated</a>
+          <a href="#">For You</a>
+        </nav>
+        <div class="search-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" type="text" placeholder="Search films...">
+        </div>
+      </div>
+    </header>
+    <div class="body-content">
+      <div class="fake-card">
+        <div class="fake-poster"></div>
+        <div class="fake-text">
+          <span class="ft-title">Nosferatu</span>
+          <span class="ft-sub">2024 &middot; Robert Eggers &middot; 2h 12m</span>
+          <span class="ft-score">RT 85% &middot; IMDb 7.1 &middot; MC 75</span>
+        </div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+  </section>
+
+
+  <!-- ============================================
+       CONCEPT 5: SPOTLIGHT SWEEP
+       ============================================ -->
+  <section class="concept-section" id="c5">
+    <div class="concept-label">
+      <div class="concept-number">Concept 5</div>
+      <h2>Spotlight Sweep</h2>
+      <p>A warm-tinted radial gradient sweeps left-to-right across the header over 20 seconds, simulating a projector beam across a theater curtain. At 6% opacity, it is a whisper of light that adds cinematic atmosphere without distraction.</p>
+    </div>
+    <header class="header header-spotlight">
+      <div class="header-inner">
+        <div class="logo">
+          <svg class="ticket-svg" viewBox="0 0 28 28" width="28" height="28">
+            <rect x="2" y="6" width="24" height="16" rx="2" />
+            <line x1="10" y1="6" x2="10" y2="22" stroke-dasharray="2 2" />
+            <circle cx="6" cy="14" r="1.5" fill="#E05A22" stroke="none" />
+          </svg>
+          <span class="logo-text">FLICKPICK</span>
+        </div>
+        <nav class="nav">
+          <a href="#">Discover</a>
+          <a href="#">Top Rated</a>
+          <a href="#">For You</a>
+        </nav>
+        <div class="search-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" type="text" placeholder="Search films...">
+        </div>
+      </div>
+    </header>
+    <div class="body-content">
+      <div class="fake-card">
+        <div class="fake-poster"></div>
+        <div class="fake-text">
+          <span class="ft-title">A Real Pain</span>
+          <span class="ft-sub">2024 &middot; Jesse Eisenberg &middot; 1h 30m</span>
+          <span class="ft-score">RT 91% &middot; IMDb 7.3 &middot; MC 81</span>
+        </div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+  </section>
+
+
+  <!-- ============================================
+       CONCEPT 6: CURTAIN TEXTURE
+       ============================================ -->
+  <section class="concept-section" id="c6">
+    <div class="concept-label">
+      <div class="concept-number">Concept 6</div>
+      <h2>Curtain Texture</h2>
+      <p>Tight vertical stripes via repeating-linear-gradient mimic theater curtain fabric. A barely visible shimmer highlight sweeps across slowly over 12 seconds, as if light is catching the folds of velvet. Rich and theatrical without being heavy.</p>
+    </div>
+    <header class="header header-curtain">
+      <div class="header-inner">
+        <div class="logo">
+          <svg class="ticket-svg" viewBox="0 0 28 28" width="28" height="28">
+            <rect x="2" y="6" width="24" height="16" rx="2" />
+            <line x1="10" y1="6" x2="10" y2="22" stroke-dasharray="2 2" />
+            <circle cx="6" cy="14" r="1.5" fill="#E05A22" stroke="none" />
+          </svg>
+          <span class="logo-text">FLICKPICK</span>
+        </div>
+        <nav class="nav">
+          <a href="#">Discover</a>
+          <a href="#">Top Rated</a>
+          <a href="#">For You</a>
+        </nav>
+        <div class="search-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" type="text" placeholder="Search films...">
+        </div>
+      </div>
+    </header>
+    <div class="body-content">
+      <div class="fake-card">
+        <div class="fake-poster"></div>
+        <div class="fake-text">
+          <span class="ft-title">Conclave</span>
+          <span class="ft-sub">2024 &middot; Edward Berger &middot; 2h</span>
+          <span class="ft-score">RT 92% &middot; IMDb 7.3 &middot; MC 79</span>
+        </div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+  </section>
+
+
+  <!-- ============================================
+       CONCEPT 7: CINEMATIC LETTERBOX BARS
+       ============================================ -->
+  <section class="concept-section" id="c7">
+    <div class="concept-label">
+      <div class="concept-number">Concept 7</div>
+      <h2>Cinematic Letterbox Bars</h2>
+      <p>3px bars at the top and bottom edges pulse with a soft amber gradient, offset by 2.5 seconds to create a gentle alternating rhythm. The gradient fades to transparent at the edges for a refined finish. Frames the header like a widescreen aspect ratio.</p>
+    </div>
+    <header class="header header-letterbox">
+      <div class="header-inner">
+        <div class="logo">
+          <svg class="ticket-svg" viewBox="0 0 28 28" width="28" height="28">
+            <rect x="2" y="6" width="24" height="16" rx="2" />
+            <line x1="10" y1="6" x2="10" y2="22" stroke-dasharray="2 2" />
+            <circle cx="6" cy="14" r="1.5" fill="#E05A22" stroke="none" />
+          </svg>
+          <span class="logo-text">FLICKPICK</span>
+        </div>
+        <nav class="nav">
+          <a href="#">Discover</a>
+          <a href="#">Top Rated</a>
+          <a href="#">For You</a>
+        </nav>
+        <div class="search-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" type="text" placeholder="Search films...">
+        </div>
+      </div>
+    </header>
+    <div class="body-content">
+      <div class="fake-card">
+        <div class="fake-poster"></div>
+        <div class="fake-text">
+          <span class="ft-title">Dune: Part Two</span>
+          <span class="ft-sub">2024 &middot; Denis Villeneuve &middot; 2h 46m</span>
+          <span class="ft-score">RT 92% &middot; IMDb 8.5 &middot; MC 79</span>
+        </div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+  </section>
+
+
+  <!-- ============================================
+       CONCEPT 8: AMBIENT GLOW
+       ============================================ -->
+  <section class="concept-section" id="c8">
+    <div class="concept-label">
+      <div class="concept-number">Concept 8</div>
+      <h2>Ambient Glow</h2>
+      <p>A soft radial gradient in brand amber sits behind the logo area, pulsing between 40% and 100% opacity over 5 seconds. At its peak, the glow is still only 8% opacity -- barely there, but it makes the logo area feel warm and alive. The rest of the header stays clean.</p>
+    </div>
+    <header class="header header-glow">
+      <div class="header-inner">
+        <div class="logo">
+          <svg class="ticket-svg" viewBox="0 0 28 28" width="28" height="28">
+            <rect x="2" y="6" width="24" height="16" rx="2" />
+            <line x1="10" y1="6" x2="10" y2="22" stroke-dasharray="2 2" />
+            <circle cx="6" cy="14" r="1.5" fill="#E05A22" stroke="none" />
+          </svg>
+          <span class="logo-text">FLICKPICK</span>
+        </div>
+        <nav class="nav">
+          <a href="#">Discover</a>
+          <a href="#">Top Rated</a>
+          <a href="#">For You</a>
+        </nav>
+        <div class="search-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" type="text" placeholder="Search films...">
+        </div>
+      </div>
+    </header>
+    <div class="body-content">
+      <div class="fake-card">
+        <div class="fake-poster"></div>
+        <div class="fake-text">
+          <span class="ft-title">Challengers</span>
+          <span class="ft-sub">2024 &middot; Luca Guadagnino &middot; 2h 11m</span>
+          <span class="ft-score">RT 88% &middot; IMDb 7.5 &middot; MC 76</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer spacer -->
+  <div style="height: 120px; display: flex; align-items: center; justify-content: center;">
+    <p style="color: #444; font-size: 13px; font-family: 'Sora', sans-serif;">End of header concepts review</p>
+  </div>
+
+</body>
+</html>
