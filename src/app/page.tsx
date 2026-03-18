@@ -52,9 +52,11 @@ async function TrendingSection() {
 
   if (missingTmdbIds.length > 0) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (supabaseUrl && supabaseKey) {
-      const supabase = createClient(supabaseUrl, supabaseKey);
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const upsertKey = serviceKey || anonKey;
+    if (supabaseUrl && upsertKey) {
+      const supabase = createClient(supabaseUrl, upsertKey);
       await Promise.all(
         missingTmdbIds.map(async (tmdbId) => {
           try {
@@ -115,10 +117,12 @@ async function TrendingSection() {
             ? new Date(m.release_date).getFullYear()
             : null;
 
-          // Use FlickPick aggregate if available, fall back to TMDB score
           const dbMovie = dbScores[m.id];
           const aggregate = dbMovie ? computeAggregateScore(dbMovie) : null;
-          const scoreDisplay = aggregate ?? (m.vote_average > 0 ? Math.round(m.vote_average * 10) : null);
+          const rt = dbMovie?.rotten_tomatoes_score ?? null;
+          const imdb = dbMovie?.imdb_rating ?? null;
+          const mc = dbMovie?.metacritic_score ?? null;
+          const hasScores = rt != null || imdb != null || mc != null;
 
           return (
             <Link
@@ -135,11 +139,11 @@ async function TrendingSection() {
                   sizes="(max-width: 640px) 45vw, (max-width: 1024px) 22vw, 185px"
                   className="object-cover"
                 />
-                {scoreDisplay != null && (
+                {aggregate != null && (
                   <div
-                    className={`absolute top-2 right-2 z-10 w-8 h-8 flex items-center justify-center rounded-[var(--radius-sm)] text-white text-xs font-bold ${getScoreColor(scoreDisplay)}`}
+                    className={`absolute top-2 right-2 z-10 w-8 h-8 flex items-center justify-center rounded-[var(--radius-sm)] text-white text-xs font-bold ${getScoreColor(aggregate)}`}
                   >
-                    {scoreDisplay}
+                    {aggregate}
                   </div>
                 )}
                 <div className="poster-title-overlay">
@@ -153,6 +157,28 @@ async function TrendingSection() {
                   )}
                 </div>
               </div>
+              {/* Score breakdown row */}
+              {hasScores ? (
+                <div className="flex justify-between mt-1.5 gap-1">
+                  {rt != null && (
+                    <span className="flex-1 text-center text-[10px] font-semibold py-0.5 rounded-[var(--radius-sm)]" style={{ backgroundColor: 'color-mix(in srgb, var(--brand-rt) 12%, transparent)', color: 'var(--brand-rt)' }}>
+                      RT {rt}%
+                    </span>
+                  )}
+                  {imdb != null && (
+                    <span className="flex-1 text-center text-[10px] font-semibold py-0.5 rounded-[var(--radius-sm)]" style={{ backgroundColor: 'color-mix(in srgb, var(--brand-imdb) 15%, transparent)', color: '#9a7b00' }}>
+                      IMDb {imdb}
+                    </span>
+                  )}
+                  {mc != null && (
+                    <span className="flex-1 text-center text-[10px] font-semibold py-0.5 rounded-[var(--radius-sm)]" style={{ backgroundColor: 'color-mix(in srgb, var(--brand-mc) 12%, transparent)', color: 'var(--brand-mc)' }}>
+                      MC {mc}
+                    </span>
+                  )}
+                </div>
+              ) : (
+                <div className="mt-1.5 h-5" />
+              )}
             </Link>
           );
         })}
