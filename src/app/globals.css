@@ -373,6 +373,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Meta label */
 .t-meta {
+  font-family: var(--font-body), -apple-system, sans-serif;
   font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.05em;

@@ -98,7 +98,7 @@ export default function RootLayout({
                   href="/top-rated"
                   className="t-meta text-bg-primary/60 hover:text-gold transition-colors"
                 >
-                  Top Rated
+                  Top 150
                 </Link>
               </nav>
             </div>
@@ -134,7 +134,7 @@ export default function RootLayout({
                 Home
               </Link>
               <Link href="/top-rated" className="t-meta text-text-tertiary hover:text-text-secondary transition-colors">
-                Top Rated
+                Top 150
               </Link>
             </div>
           </div>

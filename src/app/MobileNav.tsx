@@ -47,7 +47,7 @@ export default function MobileNav() {
                 onClick={() => setOpen(false)}
                 className="t-meta text-text-secondary hover:text-gold transition-colors py-1"
               >
-                Top Rated
+                Top 150
               </Link>
             </nav>
           </div>
