@@ -17,6 +17,7 @@ interface AuthContextValue {
   profile: Profile | null;
   session: Session | null;
   isLoading: boolean;
+  getAccessToken: () => Promise<string | null>;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signUp: (
     email: string,
@@ -278,19 +279,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [user]
   );
 
+  // Get a fresh access token — always works even before session state is set
+  const getAccessToken = useCallback(async (): Promise<string | null> => {
+    // Try state first (fast path)
+    if (session?.access_token) return session.access_token;
+    // Fall back to Supabase's internal storage
+    const supabase = getSupabase();
+    const { data } = await supabase.auth.getSession();
+    return data.session?.access_token ?? null;
+  }, [session]);
+
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
       profile,
       session,
       isLoading,
+      getAccessToken,
       signIn,
       signUp,
       signInWithGoogle,
       signOut,
       updateProfile,
     }),
-    [user, profile, session, isLoading, signIn, signUp, signInWithGoogle, signOut, updateProfile]
+    [user, profile, session, isLoading, getAccessToken, signIn, signUp, signInWithGoogle, signOut, updateProfile]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -27,7 +27,7 @@ export default function MovieActions({
   movieId,
   movieTitle,
 }: MovieActionsProps) {
-  const { user, session } = useAuth();
+  const { user, getAccessToken } = useAuth();
   const userId = user?.id;
   const [inWatchlist, setInWatchlist] = useState(false);
   const [watchlistLoading, setWatchlistLoading] = useState(false);
@@ -42,27 +42,31 @@ export default function MovieActions({
 
   // Fetch initial watchlist and rating state
   useEffect(() => {
-    if (!userId || !session?.access_token) return;
-    const headers = { Authorization: `Bearer ${session.access_token}` };
-    // Check watchlist (lightweight single-movie check)
-    fetch(`/api/watchlist?movie_id=${encodeURIComponent(movieId)}`, { headers })
-      .then((r) => r.ok ? r.json() : null)
-      .then((data) => {
-        if (data?.in_watchlist) {
-          setInWatchlist(true);
-        }
-      })
-      .catch(() => {});
-    // Check existing rating
-    fetch(`/api/ratings?movie_id=${encodeURIComponent(movieId)}`, { headers })
-      .then((r) => r.ok ? r.json() : null)
-      .then((data) => {
-        if (data?.rating?.rating) {
-          setQuickRating(data.rating.rating);
-        }
-      })
-      .catch(() => {});
-  }, [userId, movieId, session?.access_token]);
+    if (!userId) return;
+    (async () => {
+      const token = await getAccessToken();
+      if (!token) return;
+      const headers = { Authorization: `Bearer ${token}` };
+      // Check watchlist (lightweight single-movie check)
+      fetch(`/api/watchlist?movie_id=${encodeURIComponent(movieId)}`, { headers })
+        .then((r) => r.ok ? r.json() : null)
+        .then((data) => {
+          if (data?.in_watchlist) {
+            setInWatchlist(true);
+          }
+        })
+        .catch(() => {});
+      // Check existing rating
+      fetch(`/api/ratings?movie_id=${encodeURIComponent(movieId)}`, { headers })
+        .then((r) => r.ok ? r.json() : null)
+        .then((data) => {
+          if (data?.rating?.rating) {
+            setQuickRating(data.rating.rating);
+          }
+        })
+        .catch(() => {});
+    })();
+  }, [userId, movieId, getAccessToken]);
 
   // Close rater on outside click
   useEffect(() => {
@@ -91,11 +95,12 @@ export default function MovieActions({
 
     const method = inWatchlist ? "DELETE" : "POST";
     try {
+      const token = await getAccessToken();
       const res = await fetch("/api/watchlist", {
         method,
         headers: {
           "Content-Type": "application/json",
-          ...(session?.access_token && { Authorization: `Bearer ${session.access_token}` }),
+          ...(token && { Authorization: `Bearer ${token}` }),
         },
         body: JSON.stringify({ movie_id: movieId }),
       });
@@ -127,11 +132,12 @@ export default function MovieActions({
       }
 
       try {
+        const token = await getAccessToken();
         const res = await fetch("/api/ratings", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            ...(session?.access_token && { Authorization: `Bearer ${session.access_token}` }),
+            ...(token && { Authorization: `Bearer ${token}` }),
           },
           body: JSON.stringify({ movie_id: movieId, rating: value }),
         });

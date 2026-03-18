@@ -17,7 +17,7 @@ export default function WriteReview({
   movieTitle,
   onReviewSubmitted,
 }: WriteReviewProps) {
-  const { user, session } = useAuth();
+  const { user, session, getAccessToken } = useAuth();
   const userId = user?.id;
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
@@ -102,11 +102,12 @@ export default function WriteReview({
     setError(null);
 
     try {
+      const token = await getAccessToken();
       const res = await fetch("/api/reviews", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          ...(session?.access_token && { Authorization: `Bearer ${session.access_token}` }),
+          ...(token && { Authorization: `Bearer ${token}` }),
         },
         body: JSON.stringify({
           movie_id: movieId,

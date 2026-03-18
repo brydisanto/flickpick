@@ -178,7 +178,7 @@ export default function ReviewSection({
   movieId,
   movieTitle,
 }: ReviewSectionProps) {
-  const { user, session } = useAuth();
+  const { user, getAccessToken } = useAuth();
   const userId = user?.id;
   const [reviews, setReviews] = useState<Review[]>([]);
   const [total, setTotal] = useState(0);
@@ -243,11 +243,12 @@ export default function ReviewSection({
     );
 
     try {
+      const token = await getAccessToken();
       const res = await fetch(`/api/reviews/like`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          ...(session?.access_token && { Authorization: `Bearer ${session.access_token}` }),
+          ...(token && { Authorization: `Bearer ${token}` }),
         },
         body: JSON.stringify({ review_id: reviewId }),
       });
@@ -276,11 +277,12 @@ export default function ReviewSection({
     setTotal((prev) => prev - 1);
 
     try {
+      const token = await getAccessToken();
       const res = await fetch("/api/reviews", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          ...(session?.access_token && { Authorization: `Bearer ${session.access_token}` }),
+          ...(token && { Authorization: `Bearer ${token}` }),
         },
         body: JSON.stringify({ review_id: reviewId }),
       });

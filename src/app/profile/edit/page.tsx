@@ -7,7 +7,7 @@ import { Camera, User, Save, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 
 export default function EditProfilePage() {
-  const { user, profile, session, isLoading, updateProfile } = useAuth();
+  const { user, profile, isLoading, updateProfile, getAccessToken } = useAuth();
   const router = useRouter();
 
   const [displayName, setDisplayName] = useState(profile?.display_name || "");
@@ -61,14 +61,15 @@ export default function EditProfilePage() {
 
     try {
       // Upload avatar if changed
-      if (avatarFile && session?.access_token) {
+      if (avatarFile) {
+        const token = await getAccessToken();
         const formData = new FormData();
         formData.append("avatar", avatarFile);
 
         const res = await fetch("/api/profile/avatar", {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${session.access_token}`,
+            ...(token && { Authorization: `Bearer ${token}` }),
           },
           body: formData,
         });

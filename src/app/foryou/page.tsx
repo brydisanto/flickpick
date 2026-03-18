@@ -215,7 +215,7 @@ function UnauthenticatedState() {
 // ===========================
 
 export default function ForYouPage() {
-  const { user, session, isLoading: authLoading } = useAuth();
+  const { user, isLoading: authLoading, getAccessToken } = useAuth();
   const [results, setResults] = useState<PersonalRecResult[]>([]);
   const [profileStrength, setProfileStrength] = useState<ProfileStrength>("none");
   const [moviesRated, setMoviesRated] = useState(0);
@@ -226,7 +226,8 @@ export default function ForYouPage() {
 
   const fetchRecommendations = useCallback(
     async (showRefreshing = false) => {
-      if (!session?.access_token) return;
+      const token = await getAccessToken();
+      if (!token) return;
 
       if (showRefreshing) {
         setIsRefreshing(true);
@@ -238,7 +239,7 @@ export default function ForYouPage() {
       try {
         const res = await fetch("/api/recommend/personal", {
           headers: {
-            Authorization: `Bearer ${session.access_token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -263,11 +264,12 @@ export default function ForYouPage() {
         setIsRefreshing(false);
       }
     },
-    [session?.access_token]
+    [getAccessToken]
   );
 
   const handleRefreshTaste = async () => {
-    if (!session?.access_token) return;
+    const token = await getAccessToken();
+    if (!token) return;
     setIsRefreshing(true);
 
     try {
@@ -275,7 +277,7 @@ export default function ForYouPage() {
       const updateRes = await fetch("/api/taste/update", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${session.access_token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
@@ -297,12 +299,12 @@ export default function ForYouPage() {
   };
 
   useEffect(() => {
-    if (!authLoading && session?.access_token) {
+    if (!authLoading && user) {
       fetchRecommendations();
     } else if (!authLoading && !user) {
       setIsLoading(false);
     }
-  }, [authLoading, session?.access_token, user, fetchRecommendations]);
+  }, [authLoading, user, fetchRecommendations]);
 
   // ===========================
   // Render States
