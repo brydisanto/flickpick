@@ -244,12 +244,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signOut = useCallback(async () => {
-    const supabase = getSupabase();
-    await supabase.auth.signOut();
+    // Clear UI and cache immediately — don't wait for network
     setUser(null);
     setProfile(null);
     setSession(null);
     clearCache(CACHE_USER, CACHE_PROFILE);
+    // Revoke server-side in background
+    const supabase = getSupabase();
+    supabase.auth.signOut().catch(() => {});
   }, []);
 
   const updateProfile = useCallback(

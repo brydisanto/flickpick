@@ -104,9 +104,9 @@ export function HeaderAuth() {
           </Link>
 
           <button
-            onClick={async () => {
+            onClick={() => {
               setOpen(false);
-              await signOut();
+              signOut();
             }}
             className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-colors"
           >
