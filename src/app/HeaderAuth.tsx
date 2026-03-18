@@ -54,7 +54,7 @@ export function HeaderAuth() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 h-9 pl-1 pr-2 rounded-full hover:bg-bg-tertiary transition-colors"
+        className="flex items-center gap-2 h-9 pl-1 pr-2 rounded-full hover:bg-white/10 transition-colors"
         aria-expanded={open}
         aria-haspopup="true"
         aria-label="User menu"
@@ -72,12 +72,12 @@ export function HeaderAuth() {
             <User size={14} className="text-gold" />
           </div>
         )}
-        <span className="hidden sm:block text-sm font-medium text-text-primary max-w-[120px] truncate">
+        <span className="hidden sm:block text-sm font-medium text-bg-primary max-w-[120px] truncate">
           {displayName}
         </span>
         <ChevronDown
           size={14}
-          className={`text-text-tertiary transition-transform ${open ? "rotate-180" : ""}`}
+          className={`text-bg-primary/50 transition-transform ${open ? "rotate-180" : ""}`}
         />
       </button>
 

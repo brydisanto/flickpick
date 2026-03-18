@@ -109,7 +109,7 @@ export default function StarRating({
             }`}
             style={
               isHovered
-                ? { filter: "drop-shadow(0 0 4px rgba(212,168,67,0.4))" }
+                ? { filter: "drop-shadow(0 0 4px rgba(224,90,34,0.4))" }
                 : undefined
             }
             tabIndex={interactive && i === 0 ? 0 : -1}

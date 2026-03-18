@@ -10,16 +10,16 @@ interface ScoreBarProps {
 }
 
 const scoreColorMap: Record<ScoreLevel, string> = {
-  high: "#34D399",
-  good: "#60A5FA",
-  mixed: "#FBBF24",
+  high: "#059669",
+  good: "#2563EB",
+  mixed: "#D97706",
   low: "#6B7280",
 };
 
 const scoreTailwindMap: Record<ScoreLevel, string> = {
-  high: "text-[#34D399]",
-  good: "text-[#60A5FA]",
-  mixed: "text-[#FBBF24]",
+  high: "text-[#059669]",
+  good: "text-[#2563EB]",
+  mixed: "text-[#D97706]",
   low: "text-[#6B7280]",
 };
 

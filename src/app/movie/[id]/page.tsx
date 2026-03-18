@@ -278,7 +278,7 @@ export default async function MoviePage({ params }: PageProps) {
 
           {/* Title + Meta */}
           <div className="flex-1 min-w-0 pt-2">
-            <h1 className="text-3xl sm:text-4xl font-bold text-text-primary leading-tight">
+            <h1 className="text-3xl sm:text-4xl font-normal text-text-primary leading-tight">
               {movie.title}
             </h1>
 
@@ -418,7 +418,7 @@ export default async function MoviePage({ params }: PageProps) {
         {/* -- Overview -- */}
         {movie.overview && (
           <section className="mt-16">
-            <h2 className="section-heading text-xl font-semibold text-text-primary mb-3">
+            <h2 className="section-heading text-xl font-normal text-text-primary mb-3">
               Overview
             </h2>
             <p className="text-text-secondary leading-relaxed max-w-3xl">
@@ -430,7 +430,7 @@ export default async function MoviePage({ params }: PageProps) {
         {/* -- Cast -- */}
         {cast.length > 0 && (
           <section className="mt-16">
-            <h2 className="section-heading text-xl font-semibold text-text-primary mb-4">
+            <h2 className="section-heading text-xl font-normal text-text-primary mb-4">
               Cast
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
@@ -481,7 +481,7 @@ export default async function MoviePage({ params }: PageProps) {
         {/* -- Similar Movies -- */}
         {similar && similar.results.length > 0 && (
           <section className="mt-16 pb-16">
-            <h2 className="section-heading text-xl font-semibold text-text-primary mb-4">
+            <h2 className="section-heading text-xl font-normal text-text-primary mb-4">
               Similar Movies
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">

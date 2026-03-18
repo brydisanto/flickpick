@@ -72,7 +72,7 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="section-heading text-3xl sm:text-4xl font-bold text-text-primary">
+        <h1 className="section-heading text-3xl sm:text-4xl font-normal text-text-primary">
           Top 150 Films
         </h1>
         <p className="text-text-secondary mt-3 ml-4 max-w-2xl">

@@ -25,14 +25,14 @@ export default function NotFound() {
     <div className="min-h-[calc(100vh-3.5rem)] flex flex-col items-center justify-center px-4 text-center bg-bg-primary">
       {/* Logo mark */}
       <div className="mb-8">
-        <span className="text-[28px] tracking-[2px] font-[family-name:var(--font-display)]">
+        <span className="text-[28px] tracking-[2px] font-[family-name:var(--font-display)] uppercase">
           FLICKPICK
         </span>
         <span className="text-gold text-lg">.</span>
       </div>
 
       {/* 404 */}
-      <h1 className="text-[8rem] sm:text-[10rem] font-extrabold leading-none text-text-tertiary/30 select-none">
+      <h1 className="text-[8rem] sm:text-[10rem] font-[family-name:var(--font-body)] font-extrabold leading-none text-text-tertiary/30 select-none">
         404
       </h1>
 

@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flickpick — Design Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EFECD5;
+    --bg-secondary: #E8E5CE;
+    --bg-tertiary: #DDD9C2;
+    --bg-elevated: #F8F6E9;
+    --text-primary: #1C1612;
+    --text-secondary: #4A3F35;
+    --text-tertiary: #7A7060;
+    --gold: #E05A22;
+    --gold-hover: #F06A32;
+    --gold-subtle: rgba(224, 90, 34, 0.06);
+    --border-subtle: rgba(28, 22, 18, 0.15);
+    --border-color: #1C1612;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-lg: 0 4px 16px rgba(0,0,0,0.10);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1a1a1a; color: #fff; font-family: 'Inter', sans-serif; }
+
+  .review-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: #111; border-bottom: 1px solid #333;
+    padding: 12px 24px;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .review-nav h1 { font-size: 14px; font-weight: 700; color: #E05A22; text-transform: uppercase; letter-spacing: 2px; white-space: nowrap; }
+  .review-nav a {
+    font-size: 12px; color: #999; text-decoration: none; padding: 6px 12px;
+    border: 1px solid #333; border-radius: 6px; transition: all 0.2s;
+  }
+  .review-nav a:hover { color: #fff; border-color: #E05A22; }
+
+  .section-divider {
+    max-width: 1400px; margin: 80px auto 0; padding: 0 32px;
+  }
+  .section-divider h2 {
+    font-size: 11px; font-weight: 700; color: #E05A22; text-transform: uppercase;
+    letter-spacing: 4px; margin-bottom: 8px;
+  }
+  .section-divider p { font-size: 14px; color: #666; max-width: 600px; line-height: 1.6; }
+  .section-divider hr { border: none; border-top: 1px solid #333; margin-top: 16px; }
+
+  .option-grid {
+    max-width: 1400px; margin: 40px auto; padding: 0 32px;
+    display: grid; grid-template-columns: 1fr; gap: 48px;
+  }
+
+  .option-label {
+    font-size: 11px; font-weight: 700; color: #E05A22; text-transform: uppercase;
+    letter-spacing: 3px; margin-bottom: 12px;
+  }
+  .option-desc {
+    font-size: 13px; color: #888; margin-bottom: 20px; max-width: 500px; line-height: 1.5;
+  }
+
+  /* Mock browser frame */
+  .browser-frame {
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid #333; background: #222;
+  }
+  .browser-bar {
+    height: 36px; background: #2a2a2a; border-bottom: 1px solid #333;
+    display: flex; align-items: center; padding: 0 12px; gap: 8px;
+  }
+  .browser-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .browser-dot.r { background: #ff5f57; }
+  .browser-dot.y { background: #febc2e; }
+  .browser-dot.g { background: #28c840; }
+  .browser-url {
+    flex: 1; margin-left: 12px; height: 22px; background: #1a1a1a; border-radius: 4px;
+    display: flex; align-items: center; padding: 0 10px;
+    font-size: 11px; color: #666;
+  }
+
+  .mock-content { background: var(--bg); }
+
+  /* Header mocks */
+  .mock-header {
+    height: 56px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; border-bottom: 1.5px solid var(--border-color);
+  }
+  .mock-header .logo { display: flex; align-items: center; gap: 6px; }
+  .mock-header .nav { display: flex; align-items: center; gap: 24px; }
+  .mock-header .nav-link {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--text-secondary); text-decoration: none;
+  }
+  .mock-header .nav-link:hover { color: var(--gold); }
+  .mock-header .search-box {
+    height: 34px; width: 220px; background: var(--bg-elevated); border: 1px solid var(--border-subtle);
+    border-radius: 6px; padding: 0 12px 0 32px; font-size: 11px; color: var(--text-tertiary);
+    display: flex; align-items: center; position: relative;
+  }
+  .mock-header .search-icon { position: absolute; left: 10px; color: var(--text-tertiary); font-size: 12px; }
+  .mock-header .auth-btn {
+    font-size: 11px; font-weight: 600; padding: 6px 16px; border-radius: 6px;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .mock-header .right { display: flex; align-items: center; gap: 12px; }
+
+  /* Hero mocks */
+  .mock-hero { padding: 80px 32px; text-align: center; }
+  .mock-hero .subtitle { color: var(--text-secondary); margin-top: 16px; max-width: 480px; margin-inline: auto; }
+  .mock-hero .tabs {
+    display: inline-flex; background: var(--bg-tertiary); border: 1px solid var(--border-subtle);
+    border-radius: 8px; padding: 4px; gap: 4px; margin-top: 40px;
+  }
+  .mock-hero .tab {
+    padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 500; color: var(--text-tertiary);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .mock-hero .tab.active { background: var(--bg-elevated); color: var(--text-primary); box-shadow: var(--shadow-sm); }
+  .mock-hero .search-field {
+    max-width: 480px; margin: 24px auto 0; height: 44px; background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle); border-radius: 6px; display: flex; align-items: center;
+    padding: 0 16px; font-size: 13px; color: var(--text-tertiary);
+  }
+  .mock-hero .cta {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 32px;
+    padding: 14px 40px; background: var(--gold); color: var(--bg); border-radius: 6px;
+    font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.2s;
+  }
+  .mock-hero .cta:hover { background: var(--gold-hover); }
+  .mock-hero .seed-pills {
+    display: flex; justify-content: center; gap: 8px; margin-top: 16px; flex-wrap: wrap;
+  }
+  .mock-hero .pill {
+    padding: 6px 14px; background: var(--gold-subtle); border: 1px solid rgba(224, 90, 34, 0.3);
+    border-radius: 999px; font-size: 12px; font-weight: 500; color: var(--gold);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .mock-hero .pill .x { cursor: pointer; opacity: 0.6; }
+
+  /* Trending section mock */
+  .mock-trending {
+    padding: 48px 32px; border-top: 1px solid var(--border-subtle);
+  }
+  .mock-trending .section-head {
+    display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px;
+  }
+  .mock-trending .section-head a { font-size: 13px; color: var(--gold); text-decoration: none; font-weight: 500; }
+  .mock-trending .poster-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px;
+  }
+  .mock-trending .poster {
+    aspect-ratio: 2/3; background: var(--bg-tertiary); border-radius: 6px;
+    border: 1.5px solid var(--border-subtle); position: relative; overflow: hidden;
+  }
+  .mock-trending .poster .score {
+    position: absolute; top: 8px; right: 8px; width: 28px; height: 28px;
+    background: rgba(5, 150, 105, 0.9); color: #fff; border-radius: 4px;
+    font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Font comparison section */
+  .font-grid {
+    max-width: 1400px; margin: 40px auto; padding: 0 32px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 32px;
+  }
+  .font-card {
+    background: #222; border: 1px solid #333; border-radius: 12px; padding: 32px;
+  }
+  .font-card .font-name {
+    font-size: 11px; color: #E05A22; text-transform: uppercase; letter-spacing: 3px;
+    font-weight: 700; margin-bottom: 4px; font-family: 'Inter', sans-serif;
+  }
+  .font-card .font-role {
+    font-size: 11px; color: #666; margin-bottom: 20px; font-family: 'Inter', sans-serif;
+  }
+  .font-card .sample-container {
+    background: var(--bg); border-radius: 8px; padding: 24px; margin-bottom: 16px;
+  }
+  .font-card .heading-sample { color: var(--text-primary); margin-bottom: 8px; line-height: 1.1; }
+  .font-card .body-sample { color: var(--text-secondary); line-height: 1.6; }
+  .font-card .meta { font-size: 11px; color: #666; line-height: 1.6; font-family: 'Inter', sans-serif; }
+
+  /* Pairing cards */
+  .pairing-card {
+    background: #222; border: 1px solid #333; border-radius: 12px; overflow: hidden;
+  }
+  .pairing-card .pairing-header {
+    padding: 20px 24px; border-bottom: 1px solid #333;
+  }
+  .pairing-card .pairing-name {
+    font-size: 11px; color: #E05A22; text-transform: uppercase; letter-spacing: 3px;
+    font-weight: 700; font-family: 'Inter', sans-serif; margin-bottom: 4px;
+  }
+  .pairing-card .pairing-desc {
+    font-size: 12px; color: #888; font-family: 'Inter', sans-serif; line-height: 1.5;
+  }
+  .pairing-card .pairing-mock { background: var(--bg); padding: 0; }
+
+  /* Specific header variants */
+  .header-v2 { background: var(--bg); border-bottom: none; position: relative; }
+  .header-v2::after {
+    content: ''; position: absolute; bottom: 0; left: 32px; right: 32px;
+    height: 1px; background: var(--border-subtle);
+  }
+  .header-v3 {
+    background: var(--text-primary); border-bottom: none;
+  }
+  .header-v3 .logo span { color: var(--bg) !important; }
+  .header-v3 .logo .dot { color: var(--gold) !important; }
+  .header-v3 .nav-link { color: rgba(239,236,213,0.6) !important; }
+  .header-v3 .nav-link:hover { color: var(--gold) !important; }
+  .header-v3 .search-box {
+    background: rgba(255,255,255,0.08) !important; border-color: rgba(255,255,255,0.1) !important;
+    color: rgba(255,255,255,0.5) !important;
+  }
+  .header-v3 .search-icon { color: rgba(255,255,255,0.3) !important; }
+  .header-v3 .auth-btn { color: var(--bg) !important; }
+
+  @media (max-width: 768px) {
+    .mock-trending .poster-grid { grid-template-columns: repeat(3, 1fr); }
+    .font-grid { grid-template-columns: 1fr; }
+    .option-grid { padding: 0 16px; }
+    .section-divider { padding: 0 16px; }
+    .font-grid { padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sticky Review Nav -->
+<nav class="review-nav">
+  <h1>Design Review</h1>
+  <a href="#headers">Headers</a>
+  <a href="#heroes">Heroes</a>
+  <a href="#full-pages">Full Pages</a>
+  <a href="#fonts-display">Display Fonts</a>
+  <a href="#fonts-body">Body Fonts</a>
+  <a href="#pairings">Pairings</a>
+</nav>
+
+<!-- ============================================ -->
+<!-- HEADER OPTIONS -->
+<!-- ============================================ -->
+
+<div class="section-divider" id="headers">
+  <h2>01 — Header Options</h2>
+  <p>Three header treatments. Current uses a cream background with ink border. Consider whether the header needs more presence or should recede.</p>
+  <hr>
+</div>
+
+<div class="option-grid">
+
+  <!-- Header A: Current (refined) -->
+  <div>
+    <div class="option-label">A — Current (Refined)</div>
+    <div class="option-desc">Cream background, full-width ink border, uppercase meta nav. Clean and editorial. Keeps focus on content below.</div>
+    <div class="browser-frame">
+      <div class="browser-bar">
+        <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+        <div class="browser-url">flickpick-vert.vercel.app</div>
+      </div>
+      <div class="mock-content">
+        <div class="mock-header">
+          <div class="logo" style="display:flex;align-items:center;gap:24px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-family:'Bebas Neue';font-size:28px;letter-spacing:2px;color:var(--text-primary);">FLICKPICK</span>
+              <span class="dot" style="color:var(--gold);font-size:18px;">&#8226;</span>
+            </div>
+            <div class="nav" style="display:flex;gap:20px;">
+              <a class="nav-link" href="#">Discover</a>
+              <a class="nav-link" href="#">Top Rated</a>
+            </div>
+          </div>
+          <div class="right">
+            <div class="search-box"><span class="search-icon">&#x1F50D;</span>Search films...</div>
+            <a class="auth-btn" href="#" style="background:var(--gold);color:var(--bg);">Sign In</a>
+          </div>
+        </div>
+        <div style="height:120px;background:var(--bg);"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header B: Soft border -->
+  <div>
+    <div class="option-label">B — Soft Border</div>
+    <div class="option-desc">Same cream base but the full-width ink border is replaced with a subtle inset divider. Feels more modern and airy. Logo gains a slight warm tint.</div>
+    <div class="browser-frame">
+      <div class="browser-bar">
+        <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+        <div class="browser-url">flickpick-vert.vercel.app</div>
+      </div>
+      <div class="mock-content">
+        <div class="mock-header header-v2">
+          <div class="logo" style="display:flex;align-items:center;gap:24px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-family:'Bebas Neue';font-size:28px;letter-spacing:2px;color:var(--text-primary);">FLICK</span><span style="font-family:'Bebas Neue';font-size:28px;letter-spacing:2px;color:var(--gold);">PICK</span>
+              <span class="dot" style="color:var(--gold);font-size:18px;">&#8226;</span>
+            </div>
+            <div class="nav" style="display:flex;gap:20px;">
+              <a class="nav-link" href="#" style="color:var(--gold);">Discover</a>
+              <a class="nav-link" href="#">Top Rated</a>
+            </div>
+          </div>
+          <div class="right">
+            <div class="search-box" style="border-radius:999px;"><span class="search-icon">&#x1F50D;</span>Search films...</div>
+            <a class="auth-btn" href="#" style="background:transparent;color:var(--gold);border:1.5px solid var(--gold);border-radius:999px;">Sign In</a>
+          </div>
+        </div>
+        <div style="height:120px;background:var(--bg);"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header C: Dark header -->
+  <div>
+    <div class="option-label">C — Dark Marquee</div>
+    <div class="option-desc">Ink-dark header creates a theatrical "marquee" feel. Strong contrast separates navigation from the cream content. The gold accents pop harder. Cinematic.</div>
+    <div class="browser-frame">
+      <div class="browser-bar">
+        <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+        <div class="browser-url">flickpick-vert.vercel.app</div>
+      </div>
+      <div class="mock-content">
+        <div class="mock-header header-v3">
+          <div class="logo" style="display:flex;align-items:center;gap:24px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-family:'Bebas Neue';font-size:28px;letter-spacing:2px;">FLICKPICK</span>
+              <span class="dot" style="font-size:18px;">&#8226;</span>
+            </div>
+            <div class="nav" style="display:flex;gap:20px;">
+              <a class="nav-link" href="#">Discover</a>
+              <a class="nav-link" href="#">Top Rated</a>
+            </div>
+          </div>
+          <div class="right">
+            <div class="search-box"><span class="search-icon">&#x1F50D;</span>Search films...</div>
+            <a class="auth-btn" href="#" style="background:var(--gold);border-radius:6px;padding:6px 16px;">Sign In</a>
+          </div>
+        </div>
+        <div style="height:120px;background:var(--bg);"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- HERO OPTIONS -->
+<!-- ============================================ -->
+
+<div class="section-divider" id="heroes">
+  <h2>02 — Hero Section Options</h2>
+  <p>Three approaches to the hero. The headline and recommender interaction stays the same — these explore visual weight, typography scale, and spacing.</p>
+  <hr>
+</div>
+
+<div class="option-grid">
+
+  <!-- Hero A: Current (tight) -->
+  <div>
+    <div class="option-label">A — Editorial Focus</div>
+    <div class="option-desc">Current approach refined. Large headline, centered layout, generous whitespace. The recommender tabs sit beneath the headline with breathing room. Confident and simple.</div>
+    <div class="browser-frame">
+      <div class="browser-bar">
+        <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+        <div class="browser-url">flickpick-vert.vercel.app</div>
+      </div>
+      <div class="mock-content">
+        <div class="mock-header">
+          <div class="logo" style="display:flex;align-items:center;gap:24px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-family:'Bebas Neue';font-size:28px;letter-spacing:2px;color:var(--text-primary);">FLICKPICK</span>
+              <span style="color:var(--gold);font-size:18px;">&#8226;</span>
+            </div>
+            <div class="nav"><a class="nav-link" href="#">Discover</a><a class="nav-link" href="#" style="margin-left:20px">Top Rated</a></div>
+          </div>
+          <div class="right">
+            <div class="search-box"><span class="search-icon">&#x1F50D;</span>Search films...</div>
+            <a class="auth-btn" href="#" style="background:var(--gold);color:var(--bg);">Sign In</a>
+          </div>
+        </div>
+        <div class="mock-hero">
+          <h1 style="font-family:'Bebas Neue';font-size:72px;color:var(--text-primary);letter-spacing:-0.5px;line-height:1.05;text-transform:uppercase;">
+            What are you in the<br>
+            <span style="background:linear-gradient(135deg,#E05A22,#FF8C00,#E05A22);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">mood for?</span>
+          </h1>
+          <p class="subtitle" style="font-size:15px;line-height:1.6;">Tell us what you love. We'll find your next obsession.</p>
+          <div class="tabs">
+            <div class="tab active">Pick Favorites</div>
+            <div class="tab">Describe It</div>
+            <div class="tab">Choose a Vibe</div>
+          </div>
+          <div class="search-field">Search for a movie to add...</div>
+          <div class="seed-pills">
+            <div class="pill">The Dark Knight <span class="x">&times;</span></div>
+            <div class="pill">Parasite <span class="x">&times;</span></div>
+          </div>
+          <a class="cta" href="#">Get Recommendations &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero B: Compact power -->
+  <div>
+    <div class="option-label">B — Compact Power</div>
+    <div class="option-desc">Headline is smaller and bolder with a left-aligned feel that breaks the centered monotony. Tabs and search are tighter, getting users to action faster. More app-like.</div>
+    <div class="browser-frame">
+      <div class="browser-bar">
+        <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+        <div class="browser-url">flickpick-vert.vercel.app</div>
+      </div>
+      <div class="mock-content">
+        <div class="mock-header">
+          <div class="logo" style="display:flex;align-items:center;gap:24px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-family:'Bebas Neue';font-size:28px;letter-spacing:2px;color:var(--text-primary);">FLICKPICK</span>
+              <span style="color:var(--gold);font-size:18px;">&#8226;</span>
+            </div>
+            <div class="nav"><a class="nav-link" href="#">Discover</a><a class="nav-link" href="#" style="margin-left:20px">Top Rated</a></div>
+          </div>
+          <div class="right">
+            <div class="search-box"><span class="search-icon">&#x1F50D;</span>Search films...</div>
+            <a class="auth-btn" href="#" style="background:var(--gold);color:var(--bg);">Sign In</a>
+          </div>
+        </div>
+        <div class="mock-hero" style="padding:48px 32px 56px; max-width:640px; margin:0 auto; text-align:left;">
+          <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--gold);margin-bottom:12px;">AI-Powered Recommendations</p>
+          <h1 style="font-family:'Bebas Neue';font-size:56px;color:var(--text-primary);letter-spacing:-0.5px;line-height:1.05;text-transform:uppercase;">
+            Find your next<br>favorite film.
+          </h1>
+          <p style="font-size:14px;color:var(--text-secondary);margin-top:12px;line-height:1.6;">Pick movies you love, describe a vibe, or choose a mood. We handle the rest.</p>
+          <div class="tabs" style="margin-top:28px;">
+            <div class="tab active">Pick Favorites</div>
+            <div class="tab">Describe It</div>
+            <div class="tab">Choose a Vibe</div>
+          </div>
+          <div class="search-field" style="margin-top:16px;max-width:100%;">Search for a movie to add...</div>
+          <div class="seed-pills" style="justify-content:flex-start;margin-top:12px;">
+            <div class="pill">The Dark Knight <span class="x">&times;</span></div>
+            <div class="pill">Parasite <span class="x">&times;</span></div>
+          </div>
+          <a class="cta" href="#" style="margin-top:24px;">Get Recommendations &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero C: Cinematic split -->
+  <div>
+    <div class="option-label">C — Cinematic Split</div>
+    <div class="option-desc">Two-column layout: headline and subtitle on the left, recommender interface on the right. Creates visual balance and feels more like a product. The headline can breathe without competing with the interaction area.</div>
+    <div class="browser-frame">
+      <div class="browser-bar">
+        <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+        <div class="browser-url">flickpick-vert.vercel.app</div>
+      </div>
+      <div class="mock-content">
+        <div class="mock-header header-v3">
+          <div class="logo" style="display:flex;align-items:center;gap:24px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-family:'Bebas Neue';font-size:28px;letter-spacing:2px;">FLICKPICK</span>
+              <span class="dot" style="font-size:18px;">&#8226;</span>
+            </div>
+            <div class="nav"><a class="nav-link" href="#">Discover</a><a class="nav-link" href="#" style="margin-left:20px">Top Rated</a></div>
+          </div>
+          <div class="right">
+            <div class="search-box"><span class="search-icon">&#x1F50D;</span>Search films...</div>
+            <a class="auth-btn" href="#" style="background:var(--gold);border-radius:6px;">Sign In</a>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:420px;background:var(--bg);">
+          <!-- Left: headline -->
+          <div style="padding:64px 48px;display:flex;flex-direction:column;justify-content:center;">
+            <h1 style="font-family:'Bebas Neue';font-size:64px;color:var(--text-primary);letter-spacing:-0.5px;line-height:1.05;text-transform:uppercase;">
+              What are<br>you in the<br>
+              <span style="background:linear-gradient(135deg,#E05A22,#FF8C00,#E05A22);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">mood for?</span>
+            </h1>
+            <p style="font-size:14px;color:var(--text-secondary);margin-top:16px;line-height:1.6;max-width:360px;">
+              Tell us what you love — a favorite film, a vibe, or just a feeling. Our AI finds your next obsession.
+            </p>
+            <div style="display:flex;gap:12px;margin-top:24px;">
+              <span style="font-size:11px;color:var(--text-tertiary);font-weight:600;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:6px;">
+                <span style="width:8px;height:8px;background:var(--gold);border-radius:2px;display:inline-block;"></span>
+                RT + IMDb + Metacritic
+              </span>
+              <span style="font-size:11px;color:var(--text-tertiary);font-weight:600;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:6px;">
+                <span style="width:8px;height:8px;background:var(--gold);border-radius:2px;display:inline-block;"></span>
+                AI Recommendations
+              </span>
+            </div>
+          </div>
+          <!-- Right: recommender -->
+          <div style="padding:48px 48px 48px 24px;display:flex;flex-direction:column;justify-content:center;">
+            <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:8px;padding:24px;">
+              <div class="tabs" style="margin:0 0 20px;">
+                <div class="tab active">Pick Favorites</div>
+                <div class="tab">Describe It</div>
+                <div class="tab">Choose a Vibe</div>
+              </div>
+              <div class="search-field" style="max-width:100%;margin:0;">Search for a movie to add...</div>
+              <div class="seed-pills" style="justify-content:flex-start;margin-top:12px;">
+                <div class="pill">The Dark Knight <span class="x">&times;</span></div>
+                <div class="pill">Parasite <span class="x">&times;</span></div>
+              </div>
+              <a class="cta" href="#" style="margin-top:20px;width:100%;justify-content:center;">Get Recommendations &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- FULL PAGE COMBOS -->
+<!-- ============================================ -->
+
+<div class="section-divider" id="full-pages">
+  <h2>03 — Full Page Combinations</h2>
+  <p>Header + hero + trending section together. See how the pieces work as a system.</p>
+  <hr>
+</div>
+
+<div class="option-grid">
+
+  <!-- Combo 1: A+A -->
+  <div>
+    <div class="option-label">Combo 1 — Clean Editorial</div>
+    <div class="option-desc">Current header (A) + Editorial hero (A). Consistent, proven, familiar. The entire page reads as one calm surface.</div>
+    <div class="browser-frame">
+      <div class="browser-bar">
+        <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+        <div class="browser-url">flickpick-vert.vercel.app</div>
+      </div>
+      <div class="mock-content">
+        <div class="mock-header">
+          <div class="logo" style="display:flex;align-items:center;gap:24px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-family:'Bebas Neue';font-size:24px;letter-spacing:2px;color:var(--text-primary);">FLICKPICK</span>
+              <span style="color:var(--gold);font-size:14px;">&#8226;</span>
+            </div>
+            <div class="nav"><a class="nav-link" href="#">Discover</a><a class="nav-link" href="#" style="margin-left:16px">Top Rated</a></div>
+          </div>
+          <div class="right">
+            <div class="search-box" style="width:180px;height:30px;font-size:10px;"><span class="search-icon" style="font-size:10px;">&#x1F50D;</span>Search films...</div>
+            <a class="auth-btn" href="#" style="background:var(--gold);color:var(--bg);font-size:10px;padding:5px 12px;">Sign In</a>
+          </div>
+        </div>
+        <div style="padding:48px 24px 40px;text-align:center;background:var(--bg);">
+          <h1 style="font-family:'Bebas Neue';font-size:48px;color:var(--text-primary);line-height:1.05;text-transform:uppercase;">
+            What are you in the<br><span style="background:linear-gradient(135deg,#E05A22,#FF8C00,#E05A22);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">mood for?</span>
+          </h1>
+          <p style="font-size:12px;color:var(--text-secondary);margin-top:10px;">Tell us what you love. We'll find your next obsession.</p>
+          <div style="display:inline-flex;background:var(--bg-tertiary);border:1px solid var(--border-subtle);border-radius:8px;padding:3px;gap:3px;margin-top:24px;">
+            <div style="padding:6px 14px;border-radius:5px;font-size:11px;font-weight:500;background:var(--bg-elevated);color:var(--text-primary);box-shadow:var(--shadow-sm);">Pick Favorites</div>
+            <div style="padding:6px 14px;font-size:11px;color:var(--text-tertiary);">Describe It</div>
+            <div style="padding:6px 14px;font-size:11px;color:var(--text-tertiary);">Choose a Vibe</div>
+          </div>
+          <div style="max-width:360px;margin:16px auto 0;height:36px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;display:flex;align-items:center;padding:0 12px;font-size:11px;color:var(--text-tertiary);">Search for a movie...</div>
+          <div style="display:flex;justify-content:center;gap:6px;margin-top:10px;">
+            <span style="padding:4px 10px;background:var(--gold-subtle);border:1px solid rgba(224,90,34,0.3);border-radius:999px;font-size:10px;color:var(--gold);font-weight:500;">The Dark Knight &times;</span>
+            <span style="padding:4px 10px;background:var(--gold-subtle);border:1px solid rgba(224,90,34,0.3);border-radius:999px;font-size:10px;color:var(--gold);font-weight:500;">Parasite &times;</span>
+          </div>
+          <a href="#" style="display:inline-flex;align-items:center;gap:6px;margin-top:20px;padding:10px 28px;background:var(--gold);color:var(--bg);border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;">Get Recommendations &rarr;</a>
+        </div>
+        <div class="mock-trending" style="padding:32px 24px;">
+          <div class="section-head">
+            <div>
+              <h2 style="font-family:'Bebas Neue';font-size:20px;color:var(--text-primary);text-transform:uppercase;letter-spacing:0.5px;position:relative;padding-left:14px;">
+                <span style="position:absolute;left:0;top:2px;bottom:2px;width:3px;background:var(--gold);"></span>
+                Trending This Week
+              </h2>
+            </div>
+            <a href="#">See all</a>
+          </div>
+          <div class="poster-grid">
+            <div class="poster"><div class="score">82</div></div>
+            <div class="poster"><div class="score" style="background:rgba(37,99,235,0.9);">71</div></div>
+            <div class="poster"><div class="score">88</div></div>
+            <div class="poster"><div class="score" style="background:rgba(180,83,9,0.9);">54</div></div>
+            <div class="poster"><div class="score">79</div></div>
+            <div class="poster"><div class="score">91</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Combo 2: C+C (Dark Marquee + Cinematic Split) -->
+  <div>
+    <div class="option-label">Combo 2 — Cinematic</div>
+    <div class="option-desc">Dark header (C) + Split hero (C). Maximum visual impact. The dark header grounds the page, the split layout feels premium. Best for "wow" factor.</div>
+    <div class="browser-frame">
+      <div class="browser-bar">
+        <div class="browser-dot r"></div><div class="browser-dot y"></div><div class="browser-dot g"></div>
+        <div class="browser-url">flickpick-vert.vercel.app</div>
+      </div>
+      <div class="mock-content">
+        <div class="mock-header header-v3" style="height:48px;padding:0 24px;">
+          <div class="logo" style="display:flex;align-items:center;gap:20px;">
+            <div style="display:flex;align-items:center;gap:5px;">
+              <span style="font-family:'Bebas Neue';font-size:22px;letter-spacing:2px;">FLICKPICK</span>
+              <span class="dot" style="font-size:14px;">&#8226;</span>
+            </div>
+            <div class="nav"><a class="nav-link" href="#" style="font-size:10px;">Discover</a><a class="nav-link" href="#" style="margin-left:16px;font-size:10px;">Top Rated</a></div>
+          </div>
+          <div class="right">
+            <div class="search-box" style="width:160px;height:28px;font-size:10px;"><span class="search-icon" style="font-size:10px;">&#x1F50D;</span>Search...</div>
+            <a class="auth-btn" href="#" style="background:var(--gold);border-radius:5px;font-size:10px;padding:4px 12px;">Sign In</a>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;background:var(--bg);">
+          <div style="padding:40px 32px;">
+            <h1 style="font-family:'Bebas Neue';font-size:44px;color:var(--text-primary);line-height:1.05;text-transform:uppercase;">
+              What are<br>you in the<br><span style="background:linear-gradient(135deg,#E05A22,#FF8C00,#E05A22);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">mood for?</span>
+            </h1>
+            <p style="font-size:12px;color:var(--text-secondary);margin-top:12px;line-height:1.5;max-width:280px;">Tell us what you love — a favorite film, a vibe, or just a feeling.</p>
+          </div>
+          <div style="padding:32px 32px 32px 16px;display:flex;align-items:center;">
+            <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:8px;padding:20px;width:100%;">
+              <div style="display:inline-flex;background:var(--bg-tertiary);border:1px solid var(--border-subtle);border-radius:6px;padding:3px;gap:3px;">
+                <div style="padding:5px 12px;border-radius:4px;font-size:10px;background:var(--bg-elevated);color:var(--text-primary);box-shadow:var(--shadow-sm);">Pick Favorites</div>
+                <div style="padding:5px 12px;font-size:10px;color:var(--text-tertiary);">Describe It</div>
+                <div style="padding:5px 12px;font-size:10px;color:var(--text-tertiary);">Choose a Vibe</div>
+              </div>
+              <div style="margin-top:12px;height:32px;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:6px;display:flex;align-items:center;padding:0 10px;font-size:10px;color:var(--text-tertiary);">Search for a movie...</div>
+              <div style="display:flex;gap:6px;margin-top:8px;">
+                <span style="padding:3px 8px;background:var(--gold-subtle);border:1px solid rgba(224,90,34,0.3);border-radius:999px;font-size:9px;color:var(--gold);font-weight:500;">The Dark Knight &times;</span>
+                <span style="padding:3px 8px;background:var(--gold-subtle);border:1px solid rgba(224,90,34,0.3);border-radius:999px;font-size:9px;color:var(--gold);font-weight:500;">Parasite &times;</span>
+              </div>
+              <a href="#" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;padding:8px;background:var(--gold);color:var(--bg);border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;">Get Recommendations &rarr;</a>
+            </div>
+          </div>
+        </div>
+        <div class="mock-trending" style="padding:24px;">
+          <div class="section-head">
+            <h2 style="font-family:'Bebas Neue';font-size:18px;color:var(--text-primary);text-transform:uppercase;padding-left:12px;position:relative;">
+              <span style="position:absolute;left:0;top:2px;bottom:2px;width:3px;background:var(--gold);"></span>Trending
+            </h2>
+            <a href="#" style="font-size:11px;color:var(--gold);text-decoration:none;">See all</a>
+          </div>
+          <div class="poster-grid">
+            <div class="poster"><div class="score">82</div></div>
+            <div class="poster"><div class="score" style="background:rgba(37,99,235,0.9);">71</div></div>
+            <div class="poster"><div class="score">88</div></div>
+            <div class="poster"><div class="score" style="background:rgba(180,83,9,0.9);">54</div></div>
+            <div class="poster"><div class="score">79</div></div>
+            <div class="poster"><div class="score">91</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- DISPLAY FONT OPTIONS -->
+<!-- ============================================ -->
+
+<div class="section-divider" id="fonts-display">
+  <h2>04 — Display Font Options</h2>
+  <p>Currently using Bebas Neue. Here are alternatives that maintain the editorial/cinematic character while offering different personalities.</p>
+  <hr>
+</div>
+
+<div class="font-grid">
+
+  <div class="font-card">
+    <div class="font-name">Bebas Neue (Current)</div>
+    <div class="font-role">Display / Headings</div>
+    <div class="sample-container">
+      <div class="heading-sample" style="font-family:'Bebas Neue';font-size:48px;text-transform:uppercase;letter-spacing:1px;">What are you in the mood for?</div>
+      <div class="heading-sample" style="font-family:'Bebas Neue';font-size:28px;text-transform:uppercase;letter-spacing:1px;margin-top:8px;">Trending This Week</div>
+      <div class="heading-sample" style="font-family:'Bebas Neue';font-size:20px;text-transform:uppercase;letter-spacing:1px;margin-top:8px;">Top 150 Films</div>
+    </div>
+    <div class="meta">Condensed, uppercase-only feel. Strong editorial presence. One weight limits hierarchy options. Very recognizable — possibly too common in poster/film contexts.</div>
+  </div>
+
+  <div class="font-card">
+    <div class="font-name">Archivo Black + Archivo</div>
+    <div class="font-role">Display / Headings</div>
+    <div class="sample-container">
+      <div class="heading-sample" style="font-family:'Archivo';font-size:48px;font-weight:900;text-transform:uppercase;letter-spacing:-0.5px;">What are you in the mood for?</div>
+      <div class="heading-sample" style="font-family:'Archivo';font-size:28px;font-weight:800;text-transform:uppercase;letter-spacing:-0.3px;margin-top:8px;">Trending This Week</div>
+      <div class="heading-sample" style="font-family:'Archivo';font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:0px;margin-top:8px;">Top 150 Films</div>
+    </div>
+    <div class="meta">Wide, grotesque, industrial. Multiple weights give much better hierarchy control. Feels modern and confident. Less "poster" than Bebas, more "magazine cover."</div>
+  </div>
+
+  <div class="font-card">
+    <div class="font-name">Space Grotesk</div>
+    <div class="font-role">Display / Headings</div>
+    <div class="sample-container">
+      <div class="heading-sample" style="font-family:'Space Grotesk';font-size:44px;font-weight:700;letter-spacing:-1px;">What are you in the mood for?</div>
+      <div class="heading-sample" style="font-family:'Space Grotesk';font-size:26px;font-weight:700;letter-spacing:-0.5px;margin-top:8px;">Trending This Week</div>
+      <div class="heading-sample" style="font-family:'Space Grotesk';font-size:18px;font-weight:600;letter-spacing:0px;margin-top:8px;">Top 150 Films</div>
+    </div>
+    <div class="meta">Geometric, techy, slightly quirky. Works great mixed case (no forced uppercase). Could make the brand feel more "modern app" vs "film archive." Great variable font support.</div>
+  </div>
+
+  <div class="font-card">
+    <div class="font-name">Outfit</div>
+    <div class="font-role">Display / Headings</div>
+    <div class="sample-container">
+      <div class="heading-sample" style="font-family:'Outfit';font-size:44px;font-weight:800;letter-spacing:-0.5px;">What are you in the mood for?</div>
+      <div class="heading-sample" style="font-family:'Outfit';font-size:26px;font-weight:700;letter-spacing:-0.3px;margin-top:8px;">Trending This Week</div>
+      <div class="heading-sample" style="font-family:'Outfit';font-size:18px;font-weight:600;margin-top:8px;">Top 150 Films</div>
+    </div>
+    <div class="meta">Soft geometric, friendly but polished. Excellent weight range. Works beautifully at all sizes. More accessible feeling than Bebas. Could be the "Stripe of movie sites."</div>
+  </div>
+
+  <div class="font-card">
+    <div class="font-name">Instrument Serif</div>
+    <div class="font-role">Display / Headings</div>
+    <div class="sample-container">
+      <div class="heading-sample" style="font-family:'Instrument Serif';font-size:48px;font-weight:400;letter-spacing:-0.5px;">What are you in the mood for?</div>
+      <div class="heading-sample" style="font-family:'Instrument Serif';font-size:28px;font-weight:400;letter-spacing:-0.3px;margin-top:8px;">Trending This Week</div>
+      <div class="heading-sample" style="font-family:'Instrument Serif';font-size:20px;font-weight:400;margin-top:8px;font-style:italic;">Top 150 Films</div>
+    </div>
+    <div class="meta">Elegant, editorial serif. Feels like a film magazine or New Yorker review. Dramatic contrast between this and a clean sans body. Premium and opinionated. Italic is gorgeous.</div>
+  </div>
+
+  <div class="font-card">
+    <div class="font-name">DM Serif Display</div>
+    <div class="font-role">Display / Headings</div>
+    <div class="sample-container">
+      <div class="heading-sample" style="font-family:'DM Serif Display';font-size:48px;font-weight:400;letter-spacing:-0.5px;">What are you in the mood for?</div>
+      <div class="heading-sample" style="font-family:'DM Serif Display';font-size:28px;font-weight:400;margin-top:8px;">Trending This Week</div>
+      <div class="heading-sample" style="font-family:'DM Serif Display';font-size:20px;font-weight:400;margin-top:8px;">Top 150 Films</div>
+    </div>
+    <div class="meta">Classic, confident serif. Similar editorial energy to Instrument Serif but rounder and warmer. Pairs beautifully with DM Sans. Feels like a premium streaming service.</div>
+  </div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- BODY FONT OPTIONS -->
+<!-- ============================================ -->
+
+<div class="section-divider" id="fonts-body">
+  <h2>05 — Body Font Options</h2>
+  <p>Currently using Inter. Here are alternatives with different personality and readability characteristics.</p>
+  <hr>
+</div>
+
+<div class="font-grid">
+
+  <div class="font-card">
+    <div class="font-name">Inter (Current)</div>
+    <div class="font-role">Body / UI</div>
+    <div class="sample-container">
+      <div class="body-sample" style="font-family:'Inter';font-size:14px;">Tell us what you love. We'll find your next obsession. Flickpick aggregates ratings from Rotten Tomatoes, IMDb, and Metacritic, then uses AI to recommend films tailored to your taste.</div>
+      <div style="margin-top:12px;font-family:'Inter';font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-tertiary);">DISCOVER &nbsp; TOP RATED &nbsp; SIGN IN</div>
+    </div>
+    <div class="meta">Industry standard. Extremely legible. Clean and neutral — some say too neutral. Wide character set and excellent OpenType features.</div>
+  </div>
+
+  <div class="font-card">
+    <div class="font-name">DM Sans</div>
+    <div class="font-role">Body / UI</div>
+    <div class="sample-container">
+      <div class="body-sample" style="font-family:'DM Sans';font-size:14px;">Tell us what you love. We'll find your next obsession. Flickpick aggregates ratings from Rotten Tomatoes, IMDb, and Metacritic, then uses AI to recommend films tailored to your taste.</div>
+      <div style="margin-top:12px;font-family:'DM Sans';font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-tertiary);">DISCOVER &nbsp; TOP RATED &nbsp; SIGN IN</div>
+    </div>
+    <div class="meta">Geometric, slightly softer than Inter. Excellent for UI. Slightly more personality. Perfect companion for DM Serif Display — they were designed as a family.</div>
+  </div>
+
+  <div class="font-card">
+    <div class="font-name">Plus Jakarta Sans</div>
+    <div class="font-role">Body / UI</div>
+    <div class="sample-container">
+      <div class="body-sample" style="font-family:'Plus Jakarta Sans';font-size:14px;">Tell us what you love. We'll find your next obsession. Flickpick aggregates ratings from Rotten Tomatoes, IMDb, and Metacritic, then uses AI to recommend films tailored to your taste.</div>
+      <div style="margin-top:12px;font-family:'Plus Jakarta Sans';font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-tertiary);">DISCOVER &nbsp; TOP RATED &nbsp; SIGN IN</div>
+    </div>
+    <div class="meta">Modern, friendly, slightly rounded. More warmth than Inter. Very trendy right now (Vercel, Linear vibes). Excellent weight range and italic support.</div>
+  </div>
+
+  <div class="font-card">
+    <div class="font-name">Sora</div>
+    <div class="font-role">Body / UI</div>
+    <div class="sample-container">
+      <div class="body-sample" style="font-family:'Sora';font-size:14px;">Tell us what you love. We'll find your next obsession. Flickpick aggregates ratings from Rotten Tomatoes, IMDb, and Metacritic, then uses AI to recommend films tailored to your taste.</div>
+      <div style="margin-top:12px;font-family:'Sora';font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-tertiary);">DISCOVER &nbsp; TOP RATED &nbsp; SIGN IN</div>
+    </div>
+    <div class="meta">Geometric, clean, slightly futuristic. Similar to Inter but with more character. The uppercase tracking is beautiful. Pairs exceptionally well with serif display fonts.</div>
+  </div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- RECOMMENDED PAIRINGS -->
+<!-- ============================================ -->
+
+<div class="section-divider" id="pairings">
+  <h2>06 — Recommended Pairings</h2>
+  <p>Complete display + body combinations shown in context. These are the combinations I'd recommend for Flickpick's editorial/cinematic brand.</p>
+  <hr>
+</div>
+
+<div class="option-grid">
+
+  <!-- Pairing 1: Keep current -->
+  <div class="pairing-card">
+    <div class="pairing-header">
+      <div class="pairing-name">Pairing 1 — Bebas Neue + Inter (Current)</div>
+      <div class="pairing-desc">The safe bet. Everyone knows these fonts. Strong contrast between display and body. Risk: looks like a template. The forced uppercase everywhere can feel monotone.</div>
+    </div>
+    <div class="pairing-mock" style="background:var(--bg);padding:40px;">
+      <h1 style="font-family:'Bebas Neue';font-size:56px;color:var(--text-primary);text-transform:uppercase;letter-spacing:1px;line-height:1.05;">What are you in the mood for?</h1>
+      <p style="font-family:'Inter';font-size:15px;color:var(--text-secondary);margin-top:12px;line-height:1.6;">Tell us what you love. We'll find your next obsession.</p>
+      <div style="margin-top:20px;display:flex;gap:16px;">
+        <span style="font-family:'Inter';font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);">Discover</span>
+        <span style="font-family:'Inter';font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--gold);">Top Rated</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pairing 2: DM Serif + DM Sans -->
+  <div class="pairing-card">
+    <div class="pairing-header">
+      <div class="pairing-name">Pairing 2 — DM Serif Display + DM Sans</div>
+      <div class="pairing-desc">Editorial elegance. The serif display font feels like a film magazine masthead. DM Sans is its natural partner — they share design DNA. Mixed case headings feel more sophisticated than all-caps.</div>
+    </div>
+    <div class="pairing-mock" style="background:var(--bg);padding:40px;">
+      <h1 style="font-family:'DM Serif Display';font-size:56px;color:var(--text-primary);letter-spacing:-0.5px;line-height:1.1;">What are you in the mood for?</h1>
+      <p style="font-family:'DM Sans';font-size:15px;color:var(--text-secondary);margin-top:12px;line-height:1.6;">Tell us what you love. We'll find your next obsession.</p>
+      <div style="margin-top:20px;display:flex;gap:16px;">
+        <span style="font-family:'DM Sans';font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);">Discover</span>
+        <span style="font-family:'DM Sans';font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--gold);">Top Rated</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pairing 3: Instrument Serif + Sora -->
+  <div class="pairing-card">
+    <div class="pairing-header">
+      <div class="pairing-name">Pairing 3 — Instrument Serif + Sora</div>
+      <div class="pairing-desc">Maximum contrast. The refined serif against the geometric sans creates dramatic tension. Feels like a luxury streaming service. The italic is a secret weapon for taglines and pull quotes.</div>
+    </div>
+    <div class="pairing-mock" style="background:var(--bg);padding:40px;">
+      <h1 style="font-family:'Instrument Serif';font-size:56px;color:var(--text-primary);letter-spacing:-0.5px;line-height:1.1;">What are you in the <em style="font-style:italic;">mood</em> for?</h1>
+      <p style="font-family:'Sora';font-size:15px;color:var(--text-secondary);margin-top:12px;line-height:1.6;">Tell us what you love. We'll find your next obsession.</p>
+      <div style="margin-top:20px;display:flex;gap:16px;">
+        <span style="font-family:'Sora';font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);">Discover</span>
+        <span style="font-family:'Sora';font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--gold);">Top Rated</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pairing 4: Archivo + Plus Jakarta -->
+  <div class="pairing-card">
+    <div class="pairing-header">
+      <div class="pairing-name">Pairing 4 — Archivo + Plus Jakarta Sans</div>
+      <div class="pairing-desc">Modern muscle. Archivo brings the bold, industrial energy of Bebas but with proper weight hierarchy. Jakarta adds warmth. Both are excellent variable fonts. Best of both worlds: editorial punch + modern polish.</div>
+    </div>
+    <div class="pairing-mock" style="background:var(--bg);padding:40px;">
+      <h1 style="font-family:'Archivo';font-size:52px;font-weight:900;color:var(--text-primary);letter-spacing:-1px;line-height:1.05;text-transform:uppercase;">What are you in the mood for?</h1>
+      <p style="font-family:'Plus Jakarta Sans';font-size:15px;color:var(--text-secondary);margin-top:12px;line-height:1.6;">Tell us what you love. We'll find your next obsession.</p>
+      <div style="margin-top:20px;display:flex;gap:16px;">
+        <span style="font-family:'Plus Jakarta Sans';font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);">Discover</span>
+        <span style="font-family:'Plus Jakarta Sans';font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--gold);">Top Rated</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pairing 5: Outfit (single font) -->
+  <div class="pairing-card">
+    <div class="pairing-header">
+      <div class="pairing-name">Pairing 5 — Outfit (Single Font System)</div>
+      <div class="pairing-desc">One font, all weights. Outfit has enough range (100-900) to handle both display and body. Simplifies the system, reduces font load. Clean, modern, slightly playful. Think Spotify meets Letterboxd.</div>
+    </div>
+    <div class="pairing-mock" style="background:var(--bg);padding:40px;">
+      <h1 style="font-family:'Outfit';font-size:52px;font-weight:800;color:var(--text-primary);letter-spacing:-0.5px;line-height:1.05;">What are you in the mood for?</h1>
+      <p style="font-family:'Outfit';font-size:15px;font-weight:400;color:var(--text-secondary);margin-top:12px;line-height:1.6;">Tell us what you love. We'll find your next obsession.</p>
+      <div style="margin-top:20px;display:flex;gap:16px;">
+        <span style="font-family:'Outfit';font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);">Discover</span>
+        <span style="font-family:'Outfit';font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--gold);">Top Rated</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="height:120px;"></div>
+
+</body>
+</html>

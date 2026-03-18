@@ -11,7 +11,7 @@ export default function MobileNav() {
     <div className="sm:hidden">
       <button
         onClick={() => setOpen(!open)}
-        className="p-2 text-text-secondary hover:text-text-primary transition-colors"
+        className="p-2 text-bg-primary/70 hover:text-bg-primary transition-colors"
         aria-label={open ? "Close menu" : "Open menu"}
       >
         {open ? <X size={20} /> : <Menu size={20} />}

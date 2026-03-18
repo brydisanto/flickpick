@@ -121,16 +121,15 @@
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
-  font-family: var(--font-body), 'Inter', -apple-system, sans-serif;
+  font-family: var(--font-body), 'Sora', -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display), 'Bebas Neue', sans-serif;
-  letter-spacing: 0.01em;
-  line-height: 1.05;
-  text-transform: uppercase;
+  font-family: var(--font-display), 'Instrument Serif', Georgia, serif;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
 ::selection {
@@ -311,9 +310,9 @@ h1, h2, h3, h4, h5, h6 {
    HEADER
    =================================================== */
 
-.glass {
-  background: var(--bg-primary);
-  border-bottom: 1.5px solid var(--border-color);
+.header-dark {
+  background: var(--text-primary);
+  border-bottom: none;
 }
 
 /* ===================================================

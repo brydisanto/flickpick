@@ -22,7 +22,7 @@ async function TrendingSection() {
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div className="flex items-baseline justify-between mb-8">
         <div>
-          <h2 className="section-heading text-2xl font-bold text-text-primary">
+          <h2 className="section-heading text-2xl font-normal text-text-primary">
             Trending This Week
           </h2>
           <p className="text-sm text-text-secondary mt-1 pl-4">
@@ -112,10 +112,9 @@ export default function HomePage() {
       <section className="relative overflow-hidden">
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-28 pb-14">
           <div className="text-center mb-10">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-text-primary tracking-[-0.03em] leading-[1.05]">
-              What are you in the
-              <br />
-              <span className="text-gold-gradient">mood for?</span>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal text-text-primary tracking-[-0.03em] leading-[1.1]">
+              What are you in the<br />
+              <em className="text-gold-gradient italic">mood for?</em>
             </h1>
             <p className="mt-5 text-text-secondary max-w-xl mx-auto text-base leading-relaxed">
               Tell us what you love. We&rsquo;ll find your next obsession.

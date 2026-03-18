@@ -47,6 +47,7 @@ CSS variables defined in `src/app/globals.css`. Key tokens:
 - Score source brands: `--brand-rt` (#FA320A), `--brand-imdb` (#F5C518), `--brand-mc` (#60A5FA)
 - Score levels: high (#059669), good (#2563EB), mixed (#B45309), low (#6B7280)
 - Radii: sm (4px), md (6px), lg (8px), pill (9999px)
-- Fonts: Bebas Neue (display, headings), Inter (body)
+- Fonts: Instrument Serif (display/headings, weight 400 only), Sora (body/UI, weights 400-800)
+- Header: Dark marquee style (ink-dark bg, cream text, gold accents) via `.header-dark` class
 - Tailwind tokens mapped via `@theme inline` block
 - No dark mode (single light theme)
