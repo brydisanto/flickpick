@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createServerClient } from "@supabase/ssr";
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
@@ -17,7 +17,20 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${origin}/auth/login?error=config`);
   }
 
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  const response = NextResponse.redirect(`${origin}/`);
+
+  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll();
+      },
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value, options }) => {
+          response.cookies.set(name, value, options);
+        });
+      },
+    },
+  });
 
   const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
@@ -35,8 +48,7 @@ export async function GET(request: NextRequest) {
     .single();
 
   if (existingProfile) {
-    // Returning user — go to home
-    return NextResponse.redirect(`${origin}/`);
+    return response; // Returning user — go to home
   }
 
   // New user — create profile and send to onboarding
@@ -53,5 +65,8 @@ export async function GET(request: NextRequest) {
     avatar_url: user.user_metadata?.avatar_url || null,
   });
 
-  return NextResponse.redirect(`${origin}/onboarding`);
+  // New user — redirect to onboarding (update the response URL)
+  return NextResponse.redirect(`${origin}/onboarding`, {
+    headers: response.headers,
+  });
 }
