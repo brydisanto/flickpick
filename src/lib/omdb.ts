@@ -57,7 +57,7 @@ function parseRatings(data: OMDBResponse): ParsedRatings {
 export async function fetchRatings(imdbId: string): Promise<ParsedRatings | null> {
   try {
     const url = `${OMDB_BASE}/?i=${encodeURIComponent(imdbId)}&apikey=${OMDB_API_KEY}`;
-    const res = await fetch(url);
+    const res = await fetch(url, { next: { revalidate: 86400 } });
     if (!res.ok) return null;
 
     const data: OMDBResponse = await res.json();
@@ -73,7 +73,7 @@ export async function fetchRatingsByTitle(title: string, year?: string): Promise
   try {
     let url = `${OMDB_BASE}/?t=${encodeURIComponent(title)}&apikey=${OMDB_API_KEY}`;
     if (year) url += `&y=${year}`;
-    const res = await fetch(url);
+    const res = await fetch(url, { next: { revalidate: 86400 } });
     if (!res.ok) return null;
 
     const data: OMDBResponse = await res.json();

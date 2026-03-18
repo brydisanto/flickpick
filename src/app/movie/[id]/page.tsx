@@ -178,7 +178,7 @@ function SourceScore({
     <div className="flex flex-col items-center gap-1.5 px-4 sm:px-6">
       <span
         className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-[var(--radius-sm)]"
-        style={{ backgroundColor: `${color}20`, color }}
+        style={{ backgroundColor: `color-mix(in srgb, ${color} 12%, transparent)`, color }}
       >
         {label}
       </span>
