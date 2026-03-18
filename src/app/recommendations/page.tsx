@@ -220,16 +220,43 @@ export default function RecommendationsPage() {
                     )}
                   </div>
 
-                  {/* Individual Scores */}
-                  <div className="flex gap-4 text-xs text-text-secondary">
+                  {/* Source Score Breakdown */}
+                  <div className="flex flex-wrap gap-2">
                     {rec.movie.rotten_tomatoes_score != null && (
-                      <span>RT: {rec.movie.rotten_tomatoes_score}%</span>
+                      <span
+                        className="inline-flex items-center gap-1.5 px-2 py-1 rounded-[var(--radius-sm)] text-xs font-semibold"
+                        style={{
+                          backgroundColor: `color-mix(in srgb, var(--brand-rt) 12%, transparent)`,
+                          color: `var(--brand-rt)`,
+                        }}
+                      >
+                        RT
+                        <span className="font-bold">{rec.movie.rotten_tomatoes_score}%</span>
+                      </span>
                     )}
                     {rec.movie.imdb_rating != null && (
-                      <span>IMDb: {rec.movie.imdb_rating}</span>
+                      <span
+                        className="inline-flex items-center gap-1.5 px-2 py-1 rounded-[var(--radius-sm)] text-xs font-semibold"
+                        style={{
+                          backgroundColor: `color-mix(in srgb, var(--brand-imdb) 12%, transparent)`,
+                          color: `var(--brand-imdb-text)`,
+                        }}
+                      >
+                        IMDb
+                        <span className="font-bold">{rec.movie.imdb_rating}</span>
+                      </span>
                     )}
                     {rec.movie.metacritic_score != null && (
-                      <span>MC: {rec.movie.metacritic_score}</span>
+                      <span
+                        className="inline-flex items-center gap-1.5 px-2 py-1 rounded-[var(--radius-sm)] text-xs font-semibold"
+                        style={{
+                          backgroundColor: `color-mix(in srgb, var(--brand-mc) 12%, transparent)`,
+                          color: `var(--brand-mc)`,
+                        }}
+                      >
+                        MC
+                        <span className="font-bold">{rec.movie.metacritic_score}</span>
+                      </span>
                     )}
                   </div>
 
