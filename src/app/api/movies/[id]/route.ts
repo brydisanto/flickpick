@@ -37,6 +37,28 @@ export async function GET(
       .single();
 
     if (cachedMovie) {
+      // Backfill external ratings if missing
+      const needsRatings =
+        cachedMovie.imdb_rating == null &&
+        cachedMovie.rotten_tomatoes_score == null &&
+        cachedMovie.metacritic_score == null;
+
+      if (needsRatings && cachedMovie.imdb_id) {
+        const backfillRatings = await fetchRatings(cachedMovie.imdb_id);
+        if (backfillRatings) {
+          const updates: Record<string, unknown> = {};
+          if (backfillRatings.imdb_rating != null) updates.imdb_rating = backfillRatings.imdb_rating;
+          if (backfillRatings.imdb_votes != null) updates.imdb_votes = backfillRatings.imdb_votes;
+          if (backfillRatings.rotten_tomatoes_score != null) updates.rotten_tomatoes_score = backfillRatings.rotten_tomatoes_score;
+          if (backfillRatings.metacritic_score != null) updates.metacritic_score = backfillRatings.metacritic_score;
+          if (Object.keys(updates).length > 0) {
+            updates.external_ratings_updated_at = new Date().toISOString();
+            await supabase.from("movies").update(updates).eq("id", cachedMovie.id);
+            Object.assign(cachedMovie, updates);
+          }
+        }
+      }
+
       const movie = formatCachedMovie(cachedMovie);
       return NextResponse.json({ movie });
     }
