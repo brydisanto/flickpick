@@ -12,6 +12,10 @@ import {
   Sofa,
   Landmark,
   MessageSquareText,
+  Award,
+  Droplets,
+  Palette,
+  Globe,
   Loader2,
   X,
   ArrowRight,
@@ -31,6 +35,10 @@ const MOOD_OPTIONS = [
   { icon: Star, label: "Underrated", mood: "underrated" },
   { icon: Sofa, label: "Comfort Rewatch", mood: "comfort-rewatch" },
   { icon: Landmark, label: "Based on True Events", mood: "true-events" },
+  { icon: Award, label: "Oscar Nominees", mood: "oscar-nominees" },
+  { icon: Droplets, label: "Make Me Cry", mood: "make-me-cry" },
+  { icon: Palette, label: "Animated", mood: "animated" },
+  { icon: Globe, label: "Foreign Films", mood: "foreign-films" },
 ] as const;
 
 const NL_PLACEHOLDERS = [
@@ -196,7 +204,7 @@ export default function HeroRecommender() {
           {([
             { key: "seeds", label: "Pick Favorites" },
             { key: "natural", label: "Describe It" },
-            { key: "moods", label: "Choose a Vibe" },
+            { key: "moods", label: "Choose Your Mood" },
           ] as const).map((tab) => (
             <button
               key={tab.key}
