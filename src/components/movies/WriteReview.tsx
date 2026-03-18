@@ -119,7 +119,7 @@ export default function WriteReview({
   // Not signed in
   if (!userId) {
     return (
-      <section className="mt-8">
+      <section className="mt-16">
         <div className="p-6 bg-bg-elevated rounded-[var(--radius-lg)] border border-border-subtle text-center">
           <LogIn size={28} className="mx-auto text-text-tertiary mb-3" />
           <p className="text-text-primary font-medium">
@@ -135,7 +135,7 @@ export default function WriteReview({
 
   if (loadingExisting) {
     return (
-      <section className="mt-8">
+      <section className="mt-16">
         <div className="p-6 bg-bg-elevated rounded-[var(--radius-lg)] border border-border-subtle animate-pulse">
           <div className="h-5 w-40 bg-bg-tertiary rounded mb-3" />
           <div className="h-8 w-48 bg-bg-tertiary rounded" />
@@ -147,7 +147,7 @@ export default function WriteReview({
   // Show existing review (not editing)
   if (existingReview && !isEditing) {
     return (
-      <section className="mt-8">
+      <section className="mt-16">
         <div className="p-5 bg-bg-elevated rounded-[var(--radius-lg)] border border-border-subtle">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-semibold text-text-primary">
@@ -179,7 +179,7 @@ export default function WriteReview({
 
   // Write / Edit form
   return (
-    <section className="mt-8">
+    <section className="mt-16">
       <div className="p-5 bg-bg-elevated rounded-[var(--radius-lg)] border border-border-subtle">
         <h3 className="text-sm font-semibold text-text-primary mb-3">
           {existingReview ? "Edit your review" : "Rate this movie"}
@@ -200,7 +200,7 @@ export default function WriteReview({
           placeholder="Write your review (optional)"
           rows={4}
           maxLength={5000}
-          className="w-full px-3 py-2.5 text-sm bg-bg-primary text-text-primary placeholder:text-text-tertiary border border-border rounded-[var(--radius-md)] resize-y focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors"
+          className="w-full px-3 py-2.5 text-sm bg-bg-primary text-text-primary placeholder:text-text-tertiary border border-border-subtle rounded-[var(--radius-md)] resize-y focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-colors"
         />
 
         <div className="flex items-center justify-between mt-3 flex-wrap gap-3">
@@ -209,7 +209,7 @@ export default function WriteReview({
               type="checkbox"
               checked={containsSpoilers}
               onChange={(e) => setContainsSpoilers(e.target.checked)}
-              className="w-3.5 h-3.5 rounded accent-primary"
+              className="w-3.5 h-3.5 rounded accent-gold"
             />
             <AlertTriangle size={12} />
             Contains spoilers

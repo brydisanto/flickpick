@@ -105,7 +105,7 @@ export default function RecommendationsPage() {
         </p>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-gold text-bg-primary rounded-[10px] font-medium hover:bg-gold-light transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-gold text-bg-primary rounded-[var(--radius-lg)] font-medium hover:bg-gold-hover transition-colors"
         >
           <ArrowLeft size={18} />
           Back to Discover
@@ -287,7 +287,7 @@ export default function RecommendationsPage() {
           Create a free account to save your picks, rate movies, and get
           recommendations that improve over time.
         </p>
-        <button className="inline-flex items-center gap-2 px-6 py-2.5 bg-gold text-bg-primary rounded-[10px] font-medium hover:bg-gold-light transition-colors">
+        <button className="inline-flex items-center gap-2 px-6 py-2.5 bg-gold text-bg-primary rounded-[var(--radius-lg)] font-medium hover:bg-gold-hover transition-colors">
           Create Free Account
         </button>
       </div>

@@ -34,6 +34,7 @@
   --brand-rt: #FA320A;
   --brand-imdb: #F5C518;
   --brand-mc: #60A5FA;
+  --brand-imdb-text: #8A6D00;
   --brand-tmdb: #01D277;
 
   /* Score level colors */
@@ -41,6 +42,10 @@
   --score-good: #2563EB;
   --score-mixed: #B45309;
   --score-low: #6B7280;
+
+  /* Semantic colors */
+  --color-error: #DC2626;
+  --color-success: #059669;
 
   /* Consensus colors */
   --consensus-agree: #059669;
@@ -98,12 +103,15 @@
   --color-gold-glow: var(--gold-glow);
   --color-brand-rt: var(--brand-rt);
   --color-brand-imdb: var(--brand-imdb);
+  --color-brand-imdb-text: var(--brand-imdb-text);
   --color-brand-mc: var(--brand-mc);
   --color-brand-tmdb: var(--brand-tmdb);
   --color-score-high: var(--score-high);
   --color-score-good: var(--score-good);
   --color-score-mixed: var(--score-mixed);
   --color-score-low: var(--score-low);
+  --color-error: var(--color-error);
+  --color-success: var(--color-success);
 }
 
 /* ===================================================

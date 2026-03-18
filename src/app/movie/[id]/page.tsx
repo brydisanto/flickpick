@@ -63,13 +63,6 @@ function ScoreGauge({ score, size = 72 }: { score: number; size?: number }) {
         width={size}
         height={size}
         viewBox={`0 0 ${size} ${size}`}
-        className="score-ring-animate"
-        style={
-          {
-            "--circumference": circumference,
-            "--target-offset": offset,
-          } as React.CSSProperties
-        }
       >
         {/* Track */}
         <circle
@@ -371,7 +364,7 @@ export default async function MoviePage({ params }: PageProps) {
                     {ratings.imdb_rating != null && (
                       <SourceScore
                         label="IMDb"
-                        color="var(--brand-imdb)"
+                        color="var(--brand-imdb-text)"
                         value={`${ratings.imdb_rating}`}
                         scale="/10"
                       />

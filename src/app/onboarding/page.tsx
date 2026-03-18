@@ -76,7 +76,7 @@ function RatingIcon({ state }: { state: RatingState }) {
     case "loved":
       return <Heart size={20} className="fill-red-500 text-red-500" />;
     case "liked":
-      return <ThumbsUp size={20} className="fill-primary text-primary" />;
+      return <ThumbsUp size={20} className="fill-gold text-gold" />;
     case "meh":
       return <Meh size={20} className="text-accent" />;
     case "disliked":
@@ -106,7 +106,7 @@ function ratingBorderClass(state: RatingState): string {
     case "loved":
       return "ring-2 ring-red-500";
     case "liked":
-      return "ring-2 ring-primary";
+      return "ring-2 ring-gold";
     case "meh":
       return "ring-2 ring-accent";
     case "disliked":
@@ -248,7 +248,7 @@ export default function OnboardingPage() {
         </div>
         <div className="h-2 bg-bg-tertiary rounded-full overflow-hidden">
           <div
-            className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
+            className="h-full bg-gold rounded-full transition-all duration-300 ease-out"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
@@ -262,7 +262,7 @@ export default function OnboardingPage() {
             <button
               key={movie.tmdb_id}
               onClick={() => cycleRating(movie.tmdb_id)}
-              className={`group relative rounded-xl overflow-hidden bg-bg-tertiary aspect-[2/3] transition-all duration-200 hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-primary/50 ${ratingBorderClass(rating)}`}
+              className={`group relative rounded-[var(--radius-lg)] overflow-hidden bg-bg-tertiary aspect-[2/3] transition-all duration-200 hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-gold/50 ${ratingBorderClass(rating)}`}
               aria-label={`${movie.title} - ${ratingLabel(rating)}`}
             >
               <Image
@@ -311,7 +311,7 @@ export default function OnboardingPage() {
         <button
           onClick={handleSave}
           disabled={!canContinue || isSaving}
-          className="flex items-center gap-2 px-6 h-10 rounded-full bg-primary hover:bg-primary-hover text-white text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-6 h-10 rounded-full bg-gold hover:bg-gold-hover text-bg-primary text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {isSaving ? (
             <>

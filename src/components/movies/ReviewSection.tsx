@@ -232,9 +232,9 @@ export default function ReviewSection({
   ];
 
   return (
-    <section className="mt-10">
+    <section className="mt-16">
       <div className="flex items-center justify-between gap-4 mb-5">
-        <h2 className="text-xl font-semibold text-text-primary">
+        <h2 className="section-heading text-xl font-semibold text-text-primary">
           Reviews
           {total > 0 && (
             <span className="ml-2 text-sm font-normal text-text-tertiary">

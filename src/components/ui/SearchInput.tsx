@@ -175,7 +175,7 @@ export default function SearchInput({
           onKeyDown={handleKeyDown}
           className="
             w-full pl-10 pr-10 py-2.5 rounded-[var(--radius-md)]
-            bg-bg-secondary border border-border
+            bg-bg-secondary border border-border-subtle
             text-text-primary text-sm placeholder:text-text-tertiary
             focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-border-accent
             transition-colors
@@ -207,7 +207,7 @@ export default function SearchInput({
           className="
             absolute z-50 top-full left-0 right-0 mt-1.5
             max-h-72 overflow-y-auto
-            bg-bg-elevated border border-border rounded-[var(--radius-md)]
+            bg-bg-elevated border border-border-subtle rounded-[var(--radius-md)]
             shadow-[var(--shadow-lg)]
           "
         >
@@ -231,7 +231,7 @@ export default function SearchInput({
                 <img
                   src={result.imageUrl}
                   alt=""
-                  className="w-8 h-12 object-cover rounded-[6px] shrink-0 bg-bg-tertiary"
+                  className="w-8 h-12 object-cover rounded-[var(--radius-md)] shrink-0 bg-bg-tertiary"
                 />
               )}
               <div className="min-w-0">

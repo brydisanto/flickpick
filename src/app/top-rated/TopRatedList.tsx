@@ -279,7 +279,7 @@ export default function TopRatedList({ movies, allGenres }: TopRatedListProps) {
 
               <span className="hidden md:flex justify-center">
                 {imdb != null ? (
-                  <span className="inline-flex items-center justify-center w-11 h-7 rounded-[var(--radius-sm)] text-xs font-bold bg-brand-imdb/12 text-brand-imdb">
+                  <span className="inline-flex items-center justify-center w-11 h-7 rounded-[var(--radius-sm)] text-xs font-bold bg-brand-imdb/12 text-brand-imdb-text">
                     {imdb}
                   </span>
                 ) : (

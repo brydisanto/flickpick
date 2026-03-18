@@ -22,16 +22,17 @@ export default function NotFound() {
   const { quote, film } = LOST_QUOTES[quoteIdx];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 text-center bg-bg-primary">
+    <div className="min-h-[calc(100vh-3.5rem)] flex flex-col items-center justify-center px-4 text-center bg-bg-primary">
       {/* Logo mark */}
       <div className="mb-8">
-        <span className="text-gold-gradient text-2xl font-bold tracking-tight">
-          flickpick
+        <span className="text-[28px] tracking-[2px] font-[family-name:var(--font-display)]">
+          FLICKPICK
         </span>
+        <span className="text-gold text-lg">.</span>
       </div>
 
       {/* 404 */}
-      <h1 className="text-[8rem] sm:text-[10rem] font-black leading-none text-text-tertiary/30 select-none">
+      <h1 className="text-[8rem] sm:text-[10rem] font-extrabold leading-none text-text-tertiary/30 select-none">
         404
       </h1>
 

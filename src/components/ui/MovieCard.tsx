@@ -45,8 +45,8 @@ export default function MovieCard({
     <article
       className={`
         group relative bg-bg-elevated border border-border rounded-[var(--radius-md)] overflow-hidden
-        shadow-[0_2px_12px_rgba(0,0,0,0.2)]
-        hover:shadow-[0_4px_24px_rgba(0,0,0,0.3),0_0_0_1px_rgba(212,168,67,0.12)]
+        shadow-[var(--shadow-card)]
+        hover:shadow-[var(--shadow-lg)]
         transition-shadow duration-200
         flex flex-col sm:flex-row
         ${onClick ? "cursor-pointer" : ""}
@@ -108,7 +108,7 @@ export default function MovieCard({
               className={`
                 shrink-0 p-1.5 rounded-md transition-colors
                 ${isBookmarked
-                  ? "text-gold hover:text-gold-light"
+                  ? "text-gold hover:text-gold-hover"
                   : "text-text-tertiary hover:text-text-secondary hover:bg-bg-tertiary"
                 }
               `}

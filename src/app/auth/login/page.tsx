@@ -49,7 +49,7 @@ export default function LoginPage() {
   if (authLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 size={32} className="animate-spin text-primary" />
+        <Loader2 size={32} className="animate-spin text-gold" />
       </div>
     );
   }
@@ -57,7 +57,7 @@ export default function LoginPage() {
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-8rem)] px-4">
       <div className="w-full max-w-md">
-        <div className="bg-bg-elevated border border-border-subtle rounded-2xl p-8 shadow-[var(--shadow-lg)]">
+        <div className="bg-bg-elevated border border-border-subtle rounded-[var(--radius-lg)] p-8 shadow-[var(--shadow-lg)]">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold text-text-primary mb-2">
               Welcome back
@@ -93,7 +93,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full h-11 pl-10 pr-4 rounded-lg bg-bg-tertiary border border-border-subtle text-text-primary placeholder:text-text-tertiary text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                  className="w-full h-11 pl-10 pr-4 rounded-[var(--radius-md)] bg-bg-tertiary border border-border-subtle text-text-primary placeholder:text-text-tertiary text-sm focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
                   autoComplete="email"
                 />
               </div>
@@ -118,7 +118,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Your password"
-                  className="w-full h-11 pl-10 pr-11 rounded-lg bg-bg-tertiary border border-border-subtle text-text-primary placeholder:text-text-tertiary text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                  className="w-full h-11 pl-10 pr-11 rounded-[var(--radius-md)] bg-bg-tertiary border border-border-subtle text-text-primary placeholder:text-text-tertiary text-sm focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
                   autoComplete="current-password"
                 />
                 <button
@@ -135,7 +135,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full h-11 rounded-lg bg-primary hover:bg-primary-hover text-white font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full h-11 rounded-[var(--radius-md)] bg-gold hover:bg-gold-hover text-bg-primary font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
                 <>
@@ -161,7 +161,7 @@ export default function LoginPage() {
 
           <button
             onClick={handleGoogleSignIn}
-            className="w-full h-11 rounded-lg border border-border-subtle bg-bg-tertiary hover:bg-bg-primary text-text-primary font-medium text-sm transition-colors flex items-center justify-center gap-3"
+            className="w-full h-11 rounded-[var(--radius-md)] border border-border-subtle bg-bg-tertiary hover:bg-bg-primary text-text-primary font-medium text-sm transition-colors flex items-center justify-center gap-3"
           >
             <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
               <path
@@ -188,7 +188,7 @@ export default function LoginPage() {
             Don&apos;t have an account?{" "}
             <Link
               href="/auth/signup"
-              className="text-primary hover:text-primary-hover font-medium transition-colors"
+              className="text-gold hover:text-gold-hover font-medium transition-colors"
             >
               Sign up
             </Link>

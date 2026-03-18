@@ -85,7 +85,7 @@ const STRENGTH_CONFIG: Record<
   },
   cinephile: {
     label: "Cinephile",
-    color: "bg-primary",
+    color: "bg-gold",
     description: "Expert-level taste profile with excellent recommendations",
     percent: 100,
   },
@@ -170,7 +170,7 @@ function EmptyState({ strength }: { strength: ProfileStrength }) {
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
         <Link
           href="/search?q=popular"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary-hover transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-gold text-bg-primary rounded-full font-medium hover:bg-gold-hover transition-colors"
         >
           <Star size={18} />
           Rate Movies
@@ -202,7 +202,7 @@ function UnauthenticatedState() {
       </p>
       <Link
         href="/auth/signin"
-        className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary-hover transition-colors"
+        className="inline-flex items-center gap-2 px-6 py-3 bg-gold text-bg-primary rounded-full font-medium hover:bg-gold-hover transition-colors"
       >
         Sign In
       </Link>
@@ -336,7 +336,7 @@ export default function ForYouPage() {
       <div className="flex items-start justify-between mb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Sparkles size={20} className="text-primary" />
+            <Sparkles size={20} className="text-gold" />
             <h1 className="text-2xl sm:text-3xl font-bold text-text-primary">
               For You
             </h1>
@@ -412,8 +412,8 @@ export default function ForYouPage() {
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       {/* Rank badge */}
-                      <div className="absolute top-2 left-2 w-8 h-8 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center">
-                        <span className="text-white text-sm font-bold">
+                      <div className="absolute top-2 left-2 w-8 h-8 rounded-full bg-gold/90 backdrop-blur-sm flex items-center justify-center">
+                        <span className="text-bg-primary text-sm font-bold">
                           {idx + 1}
                         </span>
                       </div>
@@ -430,7 +430,7 @@ export default function ForYouPage() {
                     <div className="flex-1 p-4 sm:p-5 flex flex-col gap-3">
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <h2 className="text-lg font-semibold text-text-primary group-hover:text-primary transition-colors">
+                          <h2 className="text-lg font-semibold text-text-primary group-hover:text-gold transition-colors">
                             {rec.movie.title}
                           </h2>
                           <div className="flex items-center gap-2 mt-0.5 text-sm text-text-secondary">
@@ -489,7 +489,7 @@ export default function ForYouPage() {
                             e.preventDefault();
                             e.stopPropagation();
                           }}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-bg-tertiary text-text-secondary hover:text-primary hover:bg-primary-light transition-colors"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-bg-tertiary text-text-secondary hover:text-gold hover:bg-gold-hover transition-colors"
                         >
                           <Bookmark size={14} />
                           Save
@@ -508,7 +508,7 @@ export default function ForYouPage() {
             <div className="mt-8 text-center p-6 bg-bg-elevated rounded-[var(--radius-lg)] border border-border-subtle">
               <TrendingUp
                 size={24}
-                className="mx-auto mb-3 text-primary"
+                className="mx-auto mb-3 text-gold"
               />
               <h3 className="text-base font-semibold text-text-primary mb-1">
                 Rate more movies to improve recommendations
@@ -520,7 +520,7 @@ export default function ForYouPage() {
               </p>
               <Link
                 href="/search?q=popular"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-full text-sm font-medium hover:bg-primary-hover transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-gold text-bg-primary rounded-full text-sm font-medium hover:bg-gold-hover transition-colors"
               >
                 <Star size={16} />
                 Rate Movies

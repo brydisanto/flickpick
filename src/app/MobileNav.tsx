@@ -18,6 +18,8 @@ export default function MobileNav() {
       </button>
 
       {open && (
+        <>
+        <div className="fixed inset-0 bg-black/20 z-40" onClick={() => setOpen(false)} />
         <div className="absolute top-full left-0 right-0 bg-bg-primary border-b border-border z-50 animate-fade-in">
           <div className="px-4 py-4 space-y-4">
             <form action="/search" method="GET" className="relative">
@@ -50,6 +52,7 @@ export default function MobileNav() {
             </nav>
           </div>
         </div>
+        </>
       )}
     </div>
   );
