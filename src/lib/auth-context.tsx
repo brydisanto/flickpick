@@ -132,7 +132,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(newSession?.user ?? null);
 
       if (event === "SIGNED_IN" && newSession?.user) {
-        await fetchProfile(newSession.user.id);
+        const p = await fetchProfile(newSession.user.id);
+        // If no profile exists yet (e.g. after signup or first OAuth), create one
+        if (!p) {
+          await ensureProfile(newSession.user);
+        }
       }
 
       if (event === "SIGNED_OUT") {
@@ -143,7 +147,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {
       subscription.unsubscribe();
     };
-  }, [fetchProfile]);
+  }, [fetchProfile, ensureProfile]);
 
   const signIn = useCallback(
     async (email: string, password: string): Promise<{ error: string | null }> => {
