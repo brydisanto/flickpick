@@ -129,6 +129,57 @@ export async function GET(request: NextRequest) {
   }
 }
 
+export async function DELETE(request: NextRequest) {
+  const auth = await getAuthenticatedClient(request);
+  if (!auth) {
+    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  }
+
+  const { supabase, user } = auth;
+
+  try {
+    const body = await request.json();
+    const { review_id } = body;
+
+    if (!review_id || typeof review_id !== "string") {
+      return NextResponse.json(
+        { error: "review_id is required" },
+        { status: 400 }
+      );
+    }
+
+    // Only allow deleting own reviews
+    const { data: review } = await supabase
+      .from("reviews")
+      .select("id, user_id")
+      .eq("id", review_id)
+      .single();
+
+    if (!review) {
+      return NextResponse.json({ error: "Review not found" }, { status: 404 });
+    }
+
+    if (review.user_id !== user.id) {
+      return NextResponse.json({ error: "Not authorized" }, { status: 403 });
+    }
+
+    const { error } = await supabase
+      .from("reviews")
+      .delete()
+      .eq("id", review_id);
+
+    if (error) {
+      console.error("Review delete error:", error);
+      return NextResponse.json({ error: "Failed to delete review" }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Review DELETE error:", error);
+    return NextResponse.json({ error: "Failed to delete review" }, { status: 500 });
+  }
+}
+
 export async function POST(request: NextRequest) {
   const auth = await getAuthenticatedClient(request);
   if (!auth) {

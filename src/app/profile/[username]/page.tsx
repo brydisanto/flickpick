@@ -5,6 +5,7 @@ import { User, Star, Bookmark, Calendar, Film } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 import { getTmdbImageUrl, computeAggregateScore } from "@/types";
 import type { Movie } from "@/types";
+import EditProfileButton from "./EditProfileButton";
 
 export const dynamic = "force-dynamic";
 
@@ -101,7 +102,10 @@ export default async function ProfilePage({
           <h1 className="text-2xl sm:text-3xl font-bold text-text-primary">
             {profile.display_name || profile.username}
           </h1>
-          <p className="text-text-tertiary text-sm mt-0.5">@{profile.username}</p>
+          <div className="flex items-center gap-3 mt-0.5">
+            <p className="text-text-tertiary text-sm">@{profile.username}</p>
+            <EditProfileButton profileUserId={profile.id} />
+          </div>
           {profile.bio && (
             <p className="text-text-secondary text-sm mt-2 max-w-md">{profile.bio}</p>
           )}

@@ -55,6 +55,24 @@ export default function WriteReview({
     fetchExistingReview();
   }, [fetchExistingReview]);
 
+  // Listen for edit-review event from ReviewSection
+  useEffect(() => {
+    function handleEditEvent(e: Event) {
+      const review = (e as CustomEvent).detail as Review;
+      if (review) {
+        setExistingReview(review);
+        setRating(review.rating);
+        setReviewText(review.review_text || "");
+        setContainsSpoilers(review.contains_spoilers);
+        setIsEditing(true);
+        setSuccess(false);
+        setError(null);
+      }
+    }
+    window.addEventListener("flickpick:edit-review", handleEditEvent);
+    return () => window.removeEventListener("flickpick:edit-review", handleEditEvent);
+  }, []);
+
   const startEditing = () => {
     if (existingReview) {
       setRating(existingReview.rating);

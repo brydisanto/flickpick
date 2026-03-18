@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { ThumbsUp, ChevronDown, AlertTriangle, MessageSquare } from "lucide-react";
+import { ThumbsUp, ChevronDown, AlertTriangle, MessageSquare, Pencil, Trash2 } from "lucide-react";
 import StarRating from "@/components/ui/StarRating";
 import { useAuth } from "@/lib/auth-context";
 import type { Review } from "@/types";
@@ -44,14 +44,20 @@ function ReviewCard({
   review,
   userId,
   onLike,
+  onEdit,
+  onDelete,
 }: {
   review: Review;
   userId?: string;
   onLike: (reviewId: string) => void;
+  onEdit?: (review: Review) => void;
+  onDelete?: (reviewId: string) => void;
 }) {
   const [spoilerRevealed, setSpoilerRevealed] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const hasSpoiler = review.contains_spoilers && !spoilerRevealed;
   const profile = review.profile;
+  const isOwn = userId === review.user_id;
 
   return (
     <article className="p-5 bg-bg-elevated rounded-[var(--radius-lg)] border border-border-subtle">
@@ -125,6 +131,41 @@ function ReviewCard({
                 <AlertTriangle size={12} />
                 Contains spoilers
               </span>
+            )}
+            {isOwn && onEdit && (
+              <button
+                onClick={() => onEdit(review)}
+                className="inline-flex items-center gap-1 text-xs text-text-tertiary hover:text-text-primary transition-colors"
+              >
+                <Pencil size={12} />
+                Edit
+              </button>
+            )}
+            {isOwn && onDelete && (
+              confirmDelete ? (
+                <span className="inline-flex items-center gap-2 text-xs">
+                  <button
+                    onClick={() => { onDelete(review.id); setConfirmDelete(false); }}
+                    className="text-red-500 hover:text-red-600 font-medium transition-colors"
+                  >
+                    Confirm delete
+                  </button>
+                  <button
+                    onClick={() => setConfirmDelete(false)}
+                    className="text-text-tertiary hover:text-text-primary transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </span>
+              ) : (
+                <button
+                  onClick={() => setConfirmDelete(true)}
+                  className="inline-flex items-center gap-1 text-xs text-text-tertiary hover:text-red-500 transition-colors"
+                >
+                  <Trash2 size={12} />
+                  Delete
+                </button>
+              )
             )}
           </div>
         </div>
@@ -227,6 +268,40 @@ export default function ReviewSection({
     }
   };
 
+  const handleDelete = async (reviewId: string) => {
+    if (!userId) return;
+
+    const original = reviews;
+    setReviews((prev) => prev.filter((r) => r.id !== reviewId));
+    setTotal((prev) => prev - 1);
+
+    try {
+      const res = await fetch("/api/reviews", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          ...(session?.access_token && { Authorization: `Bearer ${session.access_token}` }),
+        },
+        body: JSON.stringify({ review_id: reviewId }),
+      });
+      if (!res.ok) {
+        setReviews(original);
+        setTotal((prev) => prev + 1);
+      }
+    } catch {
+      setReviews(original);
+      setTotal((prev) => prev + 1);
+    }
+  };
+
+  const handleEdit = (review: Review) => {
+    // Scroll to WriteReview section and trigger edit mode via custom event
+    window.dispatchEvent(
+      new CustomEvent("flickpick:edit-review", { detail: review })
+    );
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const hasMore = reviews.length < total;
 
   const sortOptions: { value: SortOption; label: string }[] = [
@@ -305,6 +380,8 @@ export default function ReviewSection({
               review={review}
               userId={userId}
               onLike={handleLike}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
             />
           ))}
 
