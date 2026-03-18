@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flickpick — Hero Background Design Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ================================================================
+     REVIEW PAGE SHELL
+     ================================================================ */
+  :root {
+    --bg: #EFECD5;
+    --bg-secondary: #E8E5CE;
+    --bg-tertiary: #DDD9C2;
+    --bg-elevated: #F8F6E9;
+    --text-primary: #1C1612;
+    --text-secondary: #4A3F35;
+    --text-tertiary: #7A7060;
+    --gold: #E05A22;
+    --gold-hover: #F06A32;
+    --gold-subtle: rgba(224, 90, 34, 0.06);
+    --border-subtle: rgba(28, 22, 18, 0.15);
+    --ink-dark: #1A1A1A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111; color: #fff; font-family: 'Sora', sans-serif; -webkit-font-smoothing: antialiased; }
+
+  /* Sticky TOC */
+  .review-nav {
+    position: sticky; top: 0; z-index: 1000;
+    background: #0a0a0a; border-bottom: 1px solid #2a2a2a;
+    padding: 10px 24px;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .review-nav h1 {
+    font-size: 11px; font-weight: 700; color: var(--gold);
+    text-transform: uppercase; letter-spacing: 3px; white-space: nowrap;
+    margin-right: 8px;
+  }
+  .review-nav a {
+    font-size: 11px; color: #888; text-decoration: none; padding: 5px 10px;
+    border: 1px solid #333; border-radius: 5px; transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .review-nav a:hover { color: #fff; border-color: var(--gold); background: rgba(224, 90, 34, 0.1); }
+  .review-nav a .num { color: var(--gold); margin-right: 4px; }
+
+  /* Section labels */
+  .concept-section {
+    max-width: 1440px; margin: 64px auto 0; padding: 0 24px;
+  }
+  .concept-header {
+    margin-bottom: 20px;
+  }
+  .concept-header h2 {
+    font-size: 11px; font-weight: 700; color: var(--gold);
+    text-transform: uppercase; letter-spacing: 4px; margin-bottom: 6px;
+  }
+  .concept-header h3 {
+    font-size: 22px; font-weight: 600; color: #fff; margin-bottom: 8px;
+  }
+  .concept-header p {
+    font-size: 13px; color: #777; max-width: 700px; line-height: 1.7;
+  }
+  .concept-header .perf {
+    display: inline-block; margin-top: 8px; font-size: 11px; color: #555;
+    border: 1px solid #333; padding: 3px 10px; border-radius: 4px;
+  }
+
+  /* Browser frame */
+  .browser-frame {
+    border-radius: 10px; overflow: hidden;
+    border: 1px solid #333; background: #1a1a1a;
+  }
+  .browser-bar {
+    height: 34px; background: #222; border-bottom: 1px solid #333;
+    display: flex; align-items: center; padding: 0 12px; gap: 7px;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
+  .browser-url {
+    flex: 1; margin-left: 10px; height: 20px; background: #1a1a1a; border-radius: 4px;
+    display: flex; align-items: center; padding: 0 10px;
+    font-size: 11px; color: #555;
+  }
+
+  /* ================================================================
+     SHARED MOCK COMPONENT STYLES
+     ================================================================ */
+
+  /* Dark header bar */
+  .mock-header {
+    height: 52px; background: var(--ink-dark);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; border-bottom: 1px solid #333;
+  }
+  .mock-header .logo {
+    font-family: 'Instrument Serif', serif; font-size: 20px; color: #EFECD5;
+    letter-spacing: -0.02em;
+  }
+  .mock-header .logo span { color: var(--gold); }
+  .mock-header .nav-links {
+    display: flex; gap: 20px;
+  }
+  .mock-header .nav-link {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #999; text-decoration: none;
+  }
+
+  /* Hero content (shared structure) */
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 680px; margin: 0 auto;
+    padding: 56px 24px 40px;
+    text-align: center;
+  }
+  .hero-content h1 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400; letter-spacing: -0.03em; line-height: 1.1;
+  }
+  .hero-content h1 em {
+    background: linear-gradient(135deg, var(--gold), #F0863A);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-style: italic;
+  }
+  .hero-content .subtitle {
+    margin-top: 14px; font-size: 14px; line-height: 1.6;
+  }
+
+  /* Mode tabs */
+  .mode-tabs {
+    display: inline-flex; border-radius: 8px; padding: 3px; gap: 2px;
+    margin-top: 28px;
+  }
+  .mode-tab {
+    padding: 7px 18px; border-radius: 6px; font-size: 12px; font-weight: 500;
+    border: none; cursor: pointer; transition: all 0.2s;
+    font-family: 'Sora', sans-serif;
+  }
+
+  /* Mood card grid */
+  .mood-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+    max-width: 560px; margin: 22px auto 0;
+  }
+  .mood-card {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 6px; padding: 14px 8px; border-radius: 8px;
+    font-size: 11px; font-weight: 500; transition: all 0.2s; cursor: pointer;
+  }
+  .mood-card .icon {
+    width: 24px; height: 24px; border-radius: 4px; display: flex; align-items: center;
+    justify-content: center; font-size: 14px;
+  }
+
+  /* CTA button */
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 36px; border-radius: 6px; border: none;
+    font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 600;
+    cursor: pointer; margin-top: 22px; transition: all 0.2s;
+  }
+
+  /* Trending section below hero */
+  .mock-trending {
+    padding: 36px 32px 48px;
+  }
+  .mock-trending h2 {
+    font-family: 'Instrument Serif', serif; font-size: 22px; font-weight: 400;
+    margin-bottom: 6px;
+  }
+  .mock-trending .sub { font-size: 12px; margin-bottom: 20px; }
+  .poster-row {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px;
+  }
+  .poster-placeholder {
+    aspect-ratio: 2/3; border-radius: 6px; position: relative; overflow: hidden;
+  }
+  .poster-placeholder .label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 6px 8px; font-size: 9px; font-weight: 600;
+  }
+
+  /* ================================================================
+     LIGHT THEME DEFAULTS (for cream-based concepts)
+     ================================================================ */
+  .theme-light .hero-content h1 { font-size: 52px; color: var(--text-primary); }
+  .theme-light .hero-content .subtitle { color: var(--text-secondary); }
+  .theme-light .mode-tabs { background: var(--bg-tertiary); border: 1px solid var(--border-subtle); }
+  .theme-light .mode-tab { background: transparent; color: var(--text-tertiary); }
+  .theme-light .mode-tab.active { background: var(--bg-elevated); color: var(--text-primary); box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .theme-light .mood-card { background: var(--bg-elevated); border: 1px solid var(--border-subtle); color: var(--text-secondary); }
+  .theme-light .mood-card:hover { border-color: rgba(224, 90, 34, 0.3); color: var(--gold); }
+  .theme-light .mood-card.selected { border-color: var(--gold); background: var(--gold-subtle); color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+  .theme-light .hero-cta { background: var(--gold); color: var(--bg); }
+  .theme-light .hero-cta:hover { background: var(--gold-hover); }
+  .theme-light .mock-trending { background: var(--bg); border-top: 1px solid var(--border-subtle); }
+  .theme-light .mock-trending h2 { color: var(--text-primary); }
+  .theme-light .mock-trending .sub { color: var(--text-secondary); }
+  .theme-light .poster-placeholder { background: var(--bg-tertiary); }
+  .theme-light .poster-placeholder .label { background: rgba(0,0,0,0.5); color: #fff; }
+
+  /* ================================================================
+     DARK THEME (for dark hero concepts)
+     ================================================================ */
+  .theme-dark .hero-content h1 { font-size: 52px; color: #F2EFDA; }
+  .theme-dark .hero-content .subtitle { color: #999; }
+  .theme-dark .mode-tabs { background: #2a2a2a; border: 1px solid #3a3a3a; }
+  .theme-dark .mode-tab { background: transparent; color: #888; }
+  .theme-dark .mode-tab.active { background: #3a3a3a; color: #eee; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+  .theme-dark .mood-card { background: #2a2a2a; border: 1px solid #3a3a3a; color: #aaa; }
+  .theme-dark .mood-card:hover { border-color: rgba(224, 90, 34, 0.4); color: var(--gold); }
+  .theme-dark .mood-card.selected { border-color: var(--gold); background: rgba(224, 90, 34, 0.08); color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+  .theme-dark .hero-cta { background: var(--gold); color: #1A1A1A; }
+  .theme-dark .mock-trending { background: var(--bg); border-top: 1px solid var(--border-subtle); }
+  .theme-dark .mock-trending h2 { color: var(--text-primary); }
+  .theme-dark .mock-trending .sub { color: var(--text-secondary); }
+  .theme-dark .poster-placeholder { background: var(--bg-tertiary); }
+  .theme-dark .poster-placeholder .label { background: rgba(0,0,0,0.5); color: #fff; }
+
+  /* ================================================================
+     CONCEPT 1: CINEMATIC GRADIENT WASH
+     ================================================================ */
+  .hero-1 {
+    position: relative; overflow: hidden;
+    background: linear-gradient(
+      180deg,
+      #E2D6B8 0%,
+      #E8DFC5 15%,
+      #EDEACE 40%,
+      #EFECD5 100%
+    );
+  }
+  .hero-1::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(224, 90, 34, 0.06) 0%,
+      rgba(224, 90, 34, 0.02) 30%,
+      transparent 60%
+    );
+    animation: gradientShift1 35s ease-in-out infinite;
+    z-index: 1;
+  }
+  @keyframes gradientShift1 {
+    0%, 100% { opacity: 1; background-position: 0% 0%; }
+    33% { opacity: 0.6; }
+    50% { opacity: 1; background-position: 100% 100%; }
+    66% { opacity: 0.8; }
+  }
+  .hero-1::after {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 80px;
+    background: linear-gradient(180deg, rgba(26, 26, 26, 0.08) 0%, transparent 100%);
+    z-index: 1;
+  }
+
+  /* ================================================================
+     CONCEPT 2: FLOATING FILM REELS
+     ================================================================ */
+  .hero-2 {
+    position: relative; overflow: hidden;
+    background: var(--bg);
+  }
+  .film-reel {
+    position: absolute; z-index: 1;
+    opacity: 0.04;
+  }
+  .film-reel svg { width: 100%; height: 100%; }
+  .reel-1 {
+    width: 400px; height: 400px;
+    top: -80px; right: -60px;
+    animation: reelFloat1 60s linear infinite;
+  }
+  .reel-2 {
+    width: 300px; height: 300px;
+    bottom: -40px; left: -50px;
+    animation: reelFloat2 75s linear infinite;
+  }
+  .reel-3 {
+    width: 200px; height: 200px;
+    top: 40%; left: 60%;
+    animation: reelFloat3 50s linear infinite;
+    opacity: 0.025;
+  }
+  @keyframes reelFloat1 {
+    0% { transform: rotate(0deg) translate(0, 0); }
+    25% { transform: rotate(90deg) translate(15px, 10px); }
+    50% { transform: rotate(180deg) translate(0, 0); }
+    75% { transform: rotate(270deg) translate(-15px, -10px); }
+    100% { transform: rotate(360deg) translate(0, 0); }
+  }
+  @keyframes reelFloat2 {
+    0% { transform: rotate(0deg) translate(0, 0); }
+    50% { transform: rotate(-180deg) translate(20px, -15px); }
+    100% { transform: rotate(-360deg) translate(0, 0); }
+  }
+  @keyframes reelFloat3 {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* ================================================================
+     CONCEPT 3: SPOTLIGHT / STAGE LIGHTING
+     ================================================================ */
+  .hero-3 {
+    position: relative; overflow: hidden;
+    background: #1E1B16;
+  }
+  .hero-3::before {
+    content: '';
+    position: absolute;
+    width: 700px; height: 700px;
+    top: -200px; left: 50%; transform: translateX(-50%);
+    background: radial-gradient(ellipse, rgba(224, 90, 34, 0.12) 0%, rgba(224, 90, 34, 0.04) 35%, transparent 70%);
+    z-index: 1;
+    animation: spotlightPulse 8s ease-in-out infinite;
+  }
+  .hero-3::after {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    bottom: -100px; right: -100px;
+    background: radial-gradient(ellipse, rgba(240, 180, 90, 0.06) 0%, transparent 60%);
+    z-index: 1;
+    animation: spotlightPulse 12s ease-in-out infinite reverse;
+  }
+  @keyframes spotlightPulse {
+    0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+    50% { opacity: 0.7; transform: translateX(-50%) scale(1.1); }
+  }
+  .hero-3-transition {
+    height: 80px;
+    background: linear-gradient(180deg, #1E1B16 0%, var(--bg) 100%);
+  }
+
+  /* ================================================================
+     CONCEPT 4: POSTER MOSAIC BLUR
+     ================================================================ */
+  .hero-4 {
+    position: relative; overflow: hidden;
+    background: var(--bg);
+  }
+  .mosaic-layer {
+    position: absolute; inset: -40px; z-index: 0;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 8px;
+    opacity: 0.06;
+    filter: blur(3px);
+    animation: mosaicDrift 80s linear infinite;
+  }
+  .mosaic-cell {
+    border-radius: 4px;
+    background-size: cover;
+    background-position: center;
+  }
+  .mosaic-cell:nth-child(odd) { background-color: #C4A87C; }
+  .mosaic-cell:nth-child(even) { background-color: #A0896A; }
+  .mosaic-cell:nth-child(3n) { background-color: #8B7355; }
+  .mosaic-cell:nth-child(5n) { background-color: #B09070; }
+  .mosaic-cell:nth-child(7n) { background-color: #D4B896; }
+  @keyframes mosaicDrift {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(-20px, -10px); }
+    50% { transform: translate(-40px, 0); }
+    75% { transform: translate(-20px, 10px); }
+    100% { transform: translate(0, 0); }
+  }
+  .hero-4 .frost-overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(
+      180deg,
+      rgba(239, 236, 213, 0.85) 0%,
+      rgba(239, 236, 213, 0.92) 50%,
+      rgba(239, 236, 213, 0.97) 100%
+    );
+    backdrop-filter: blur(1px);
+  }
+
+  /* ================================================================
+     CONCEPT 5: GEOMETRIC PATTERN
+     ================================================================ */
+  .hero-5 {
+    position: relative; overflow: hidden;
+    background: var(--bg);
+  }
+  .hero-5::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 1;
+    opacity: 0.04;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 30px,
+        var(--text-primary) 30px,
+        var(--text-primary) 30.5px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 30px,
+        var(--text-primary) 30px,
+        var(--text-primary) 30.5px
+      ),
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 42px,
+        var(--text-primary) 42px,
+        var(--text-primary) 42.5px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 42px,
+        var(--text-primary) 42px,
+        var(--text-primary) 42.5px
+      );
+    animation: patternShimmer 20s ease-in-out infinite;
+  }
+  .hero-5::after {
+    content: '';
+    position: absolute; inset: 0; z-index: 1;
+    background: radial-gradient(
+      ellipse at center,
+      transparent 30%,
+      rgba(239, 236, 213, 0.6) 70%,
+      rgba(239, 236, 213, 0.95) 100%
+    );
+  }
+  @keyframes patternShimmer {
+    0%, 100% { opacity: 0.04; }
+    50% { opacity: 0.065; }
+  }
+
+  /* Art deco corner accents */
+  .deco-corner {
+    position: absolute; z-index: 1; opacity: 0.06;
+    width: 120px; height: 120px;
+  }
+  .deco-corner.tl { top: 20px; left: 20px; }
+  .deco-corner.tr { top: 20px; right: 20px; transform: scaleX(-1); }
+  .deco-corner.bl { bottom: 20px; left: 20px; transform: scaleY(-1); }
+  .deco-corner.br { bottom: 20px; right: 20px; transform: scale(-1, -1); }
+
+  /* ================================================================
+     CONCEPT 6: AMBIENT GRADIENT ORBS
+     ================================================================ */
+  .hero-6 {
+    position: relative; overflow: hidden;
+    background: var(--bg);
+  }
+  .orb {
+    position: absolute; border-radius: 50%; z-index: 1;
+    filter: blur(60px);
+  }
+  .orb-1 {
+    width: 500px; height: 500px;
+    top: -150px; right: -100px;
+    background: radial-gradient(circle, rgba(224, 90, 34, 0.08) 0%, transparent 70%);
+    animation: orbFloat1 25s ease-in-out infinite;
+  }
+  .orb-2 {
+    width: 400px; height: 400px;
+    bottom: -100px; left: -80px;
+    background: radial-gradient(circle, rgba(240, 170, 60, 0.06) 0%, transparent 70%);
+    animation: orbFloat2 30s ease-in-out infinite;
+  }
+  .orb-3 {
+    width: 300px; height: 300px;
+    top: 30%; left: 40%;
+    background: radial-gradient(circle, rgba(224, 90, 34, 0.05) 0%, transparent 70%);
+    animation: orbFloat3 35s ease-in-out infinite;
+  }
+  @keyframes orbFloat1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-30px, 20px) scale(1.05); }
+    66% { transform: translate(20px, -15px) scale(0.95); }
+  }
+  @keyframes orbFloat2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(25px, -20px) scale(1.08); }
+    66% { transform: translate(-15px, 15px) scale(0.92); }
+  }
+  @keyframes orbFloat3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-20px, 10px) scale(1.1); }
+  }
+
+  /* ================================================================
+     CONCEPT 7: PARALLAX LIGHT STREAKS
+     ================================================================ */
+  .hero-7 {
+    position: relative; overflow: hidden;
+    background: var(--bg);
+  }
+  .streak-layer {
+    position: absolute; inset: -100px; z-index: 1;
+  }
+  .streak {
+    position: absolute;
+    background: linear-gradient(90deg, transparent, rgba(224, 90, 34, 0.04), transparent);
+    transform-origin: center;
+  }
+  .streak-1 {
+    width: 200%; height: 2px; top: 25%; left: -50%;
+    transform: rotate(-25deg);
+    animation: streakDrift1 40s linear infinite;
+  }
+  .streak-2 {
+    width: 200%; height: 1.5px; top: 45%; left: -50%;
+    transform: rotate(-20deg);
+    background: linear-gradient(90deg, transparent, rgba(240, 170, 60, 0.035), transparent);
+    animation: streakDrift2 55s linear infinite;
+  }
+  .streak-3 {
+    width: 200%; height: 3px; top: 65%; left: -50%;
+    transform: rotate(-30deg);
+    background: linear-gradient(90deg, transparent 20%, rgba(224, 90, 34, 0.025) 50%, transparent 80%);
+    animation: streakDrift3 45s linear infinite;
+  }
+  .streak-4 {
+    width: 200%; height: 1px; top: 35%; left: -50%;
+    transform: rotate(-15deg);
+    background: linear-gradient(90deg, transparent, rgba(200, 160, 80, 0.04), transparent);
+    animation: streakDrift1 65s linear infinite reverse;
+  }
+  .streak-5 {
+    width: 200%; height: 2px; top: 80%; left: -50%;
+    transform: rotate(-22deg);
+    background: linear-gradient(90deg, transparent 30%, rgba(224, 90, 34, 0.03) 60%, transparent 90%);
+    animation: streakDrift2 50s linear infinite reverse;
+  }
+  /* Wider ambient glow streaks */
+  .streak-wide-1 {
+    width: 200%; height: 40px; top: 20%; left: -50%;
+    transform: rotate(-25deg);
+    background: linear-gradient(90deg, transparent, rgba(224, 90, 34, 0.015), transparent);
+    filter: blur(15px);
+    animation: streakDrift3 70s linear infinite;
+  }
+  .streak-wide-2 {
+    width: 200%; height: 30px; top: 55%; left: -50%;
+    transform: rotate(-18deg);
+    background: linear-gradient(90deg, transparent, rgba(240, 180, 80, 0.012), transparent);
+    filter: blur(12px);
+    animation: streakDrift1 80s linear infinite reverse;
+  }
+  @keyframes streakDrift1 {
+    0% { transform: rotate(-25deg) translateX(0); }
+    100% { transform: rotate(-25deg) translateX(200px); }
+  }
+  @keyframes streakDrift2 {
+    0% { transform: rotate(-20deg) translateX(0); }
+    100% { transform: rotate(-20deg) translateX(-250px); }
+  }
+  @keyframes streakDrift3 {
+    0% { transform: rotate(-30deg) translateX(0); }
+    100% { transform: rotate(-30deg) translateX(180px); }
+  }
+
+  /* Subtle dust particles */
+  .dust-layer {
+    position: absolute; inset: 0; z-index: 1;
+    overflow: hidden;
+  }
+  .dust {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: rgba(224, 90, 34, 0.08);
+    border-radius: 50%;
+  }
+  .dust:nth-child(1) { top: 20%; left: 30%; animation: dustFloat 20s ease-in-out infinite; }
+  .dust:nth-child(2) { top: 50%; left: 60%; animation: dustFloat 25s ease-in-out infinite 5s; width: 1.5px; height: 1.5px; }
+  .dust:nth-child(3) { top: 70%; left: 20%; animation: dustFloat 30s ease-in-out infinite 10s; width: 2.5px; height: 2.5px; opacity: 0.6; }
+  .dust:nth-child(4) { top: 35%; left: 75%; animation: dustFloat 22s ease-in-out infinite 3s; }
+  .dust:nth-child(5) { top: 60%; left: 45%; animation: dustFloat 28s ease-in-out infinite 8s; width: 1px; height: 1px; }
+  @keyframes dustFloat {
+    0%, 100% { transform: translate(0, 0); opacity: 0; }
+    10% { opacity: 1; }
+    50% { transform: translate(15px, -25px); opacity: 0.5; }
+    90% { opacity: 1; }
+  }
+
+  /* ================================================================
+     CONCEPT 8: DARK CINEMA HERO
+     ================================================================ */
+  .hero-8 {
+    position: relative; overflow: hidden;
+    background: #1A1A1A;
+  }
+  .hero-8::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 1;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(224, 90, 34, 0.05) 0%, transparent 50%),
+      radial-gradient(ellipse at 20% 80%, rgba(60, 50, 40, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(60, 50, 40, 0.1) 0%, transparent 50%);
+  }
+  /* Film grain overlay */
+  .hero-8 .grain {
+    position: absolute; inset: 0; z-index: 1;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    animation: grainShift 0.5s steps(4) infinite;
+  }
+  @keyframes grainShift {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(-2px, 2px); }
+    50% { transform: translate(2px, -2px); }
+    75% { transform: translate(-2px, -2px); }
+    100% { transform: translate(0, 0); }
+  }
+  .hero-8-transition {
+    height: 100px;
+    background: linear-gradient(180deg, #1A1A1A 0%, var(--bg) 100%);
+  }
+
+  /* ================================================================
+     SVG helpers
+     ================================================================ */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0, 0, 0, 0); border: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     STICKY TABLE OF CONTENTS
+     ============================================================ -->
+<nav class="review-nav" role="navigation" aria-label="Concept navigation">
+  <h1>Hero BG Review</h1>
+  <a href="#c1"><span class="num">01</span> Gradient Wash</a>
+  <a href="#c2"><span class="num">02</span> Film Reels</a>
+  <a href="#c3"><span class="num">03</span> Spotlight</a>
+  <a href="#c4"><span class="num">04</span> Poster Mosaic</a>
+  <a href="#c5"><span class="num">05</span> Geometric</a>
+  <a href="#c6"><span class="num">06</span> Gradient Orbs</a>
+  <a href="#c7"><span class="num">07</span> Light Streaks</a>
+  <a href="#c8"><span class="num">08</span> Dark Cinema</a>
+</nav>
+
+
+<!-- ============================================================
+     CONCEPT 1: CINEMATIC GRADIENT WASH
+     ============================================================ -->
+<div class="concept-section" id="c1">
+  <div class="concept-header">
+    <h2>Concept 01</h2>
+    <h3>Cinematic Gradient Wash</h3>
+    <p>Subtle warm gradient bleeding down from the dark header. Faint amber tone at top fades into standard cream below. Very slow hue-shift animation over 35 seconds. Clean, editorial, restrained.</p>
+    <span class="perf">Performance: Excellent -- CSS gradients only, no DOM overhead, GPU composited opacity animation</span>
+  </div>
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="browser-url">flickpick.app</div>
+    </div>
+    <div class="theme-light">
+      <div class="mock-header">
+        <div class="logo">FLICK<span>PICK</span></div>
+        <div class="nav-links">
+          <span class="nav-link">Discover</span>
+          <span class="nav-link">Top Rated</span>
+          <span class="nav-link">Watchlist</span>
+          <span class="nav-link">Sign In</span>
+        </div>
+      </div>
+      <div class="hero-1">
+        <div class="hero-content">
+          <h1>What are you in the<br><em>mood to watch?</em></h1>
+          <p class="subtitle">Tell us what you love. We'll find your next obsession.</p>
+          <div class="mode-tabs">
+            <button class="mode-tab active">Pick Favorites</button>
+            <button class="mode-tab">Describe It</button>
+            <button class="mode-tab">Choose Your Mood</button>
+          </div>
+          <div class="mood-grid">
+            <div class="mood-card selected"><div class="icon">&#10084;</div>Date Night</div>
+            <div class="mood-card"><div class="icon">&#129504;</div>Mind-Bending</div>
+            <div class="mood-card"><div class="icon">&#10024;</div>Feel-Good</div>
+            <div class="mood-card"><div class="icon">&#128142;</div>Hidden Gems</div>
+            <div class="mood-card"><div class="icon">&#127942;</div>Award Winners</div>
+            <div class="mood-card"><div class="icon">&#11088;</div>Underrated</div>
+            <div class="mood-card"><div class="icon">&#128715;</div>Comfort Rewatch</div>
+            <div class="mood-card"><div class="icon">&#127963;</div>True Events</div>
+          </div>
+          <button class="hero-cta">Get Recommendations &#8594;</button>
+        </div>
+      </div>
+      <div class="mock-trending">
+        <h2>Trending This Week</h2>
+        <p class="sub">Popular movies everyone is watching right now</p>
+        <div class="poster-row">
+          <div class="poster-placeholder"><div class="label">Sinners</div></div>
+          <div class="poster-placeholder"><div class="label">The Amateur</div></div>
+          <div class="poster-placeholder"><div class="label">Thunderbolts*</div></div>
+          <div class="poster-placeholder"><div class="label">A Minecraft Movie</div></div>
+          <div class="poster-placeholder"><div class="label">Drop</div></div>
+          <div class="poster-placeholder"><div class="label">The Accountant 2</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     CONCEPT 2: FLOATING FILM REELS
+     ============================================================ -->
+<div class="concept-section" id="c2">
+  <div class="concept-header">
+    <h2>Concept 02</h2>
+    <h3>Floating Film Reels</h3>
+    <p>Cream background with oversized, semi-transparent SVG film reel sprocket shapes drifting slowly and rotating. Watermark-level opacity (3-4%). Cinematic without being kitschy. Three reels at different sizes and speeds.</p>
+    <span class="perf">Performance: Good -- 3 animated SVG elements with CSS transforms, GPU composited</span>
+  </div>
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="browser-url">flickpick.app</div>
+    </div>
+    <div class="theme-light">
+      <div class="mock-header">
+        <div class="logo">FLICK<span>PICK</span></div>
+        <div class="nav-links">
+          <span class="nav-link">Discover</span>
+          <span class="nav-link">Top Rated</span>
+          <span class="nav-link">Watchlist</span>
+          <span class="nav-link">Sign In</span>
+        </div>
+      </div>
+      <div class="hero-2">
+        <!-- Film reel SVGs -->
+        <div class="film-reel reel-1">
+          <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="90" stroke="#1C1612" stroke-width="4"/>
+            <circle cx="100" cy="100" r="30" stroke="#1C1612" stroke-width="3"/>
+            <circle cx="100" cy="100" r="12" fill="#1C1612"/>
+            <!-- Sprocket holes -->
+            <circle cx="100" cy="30" r="10" fill="#1C1612"/>
+            <circle cx="160.6" cy="65" r="10" fill="#1C1612"/>
+            <circle cx="160.6" cy="135" r="10" fill="#1C1612"/>
+            <circle cx="100" cy="170" r="10" fill="#1C1612"/>
+            <circle cx="39.4" cy="135" r="10" fill="#1C1612"/>
+            <circle cx="39.4" cy="65" r="10" fill="#1C1612"/>
+            <!-- Spokes -->
+            <line x1="100" y1="42" x2="100" y2="70" stroke="#1C1612" stroke-width="2"/>
+            <line x1="148" y1="72" x2="124" y2="86" stroke="#1C1612" stroke-width="2"/>
+            <line x1="148" y1="128" x2="124" y2="114" stroke="#1C1612" stroke-width="2"/>
+            <line x1="100" y1="158" x2="100" y2="130" stroke="#1C1612" stroke-width="2"/>
+            <line x1="52" y1="128" x2="76" y2="114" stroke="#1C1612" stroke-width="2"/>
+            <line x1="52" y1="72" x2="76" y2="86" stroke="#1C1612" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="film-reel reel-2">
+          <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="90" stroke="#1C1612" stroke-width="4"/>
+            <circle cx="100" cy="100" r="30" stroke="#1C1612" stroke-width="3"/>
+            <circle cx="100" cy="100" r="12" fill="#1C1612"/>
+            <circle cx="100" cy="30" r="10" fill="#1C1612"/>
+            <circle cx="160.6" cy="65" r="10" fill="#1C1612"/>
+            <circle cx="160.6" cy="135" r="10" fill="#1C1612"/>
+            <circle cx="100" cy="170" r="10" fill="#1C1612"/>
+            <circle cx="39.4" cy="135" r="10" fill="#1C1612"/>
+            <circle cx="39.4" cy="65" r="10" fill="#1C1612"/>
+            <line x1="100" y1="42" x2="100" y2="70" stroke="#1C1612" stroke-width="2"/>
+            <line x1="148" y1="72" x2="124" y2="86" stroke="#1C1612" stroke-width="2"/>
+            <line x1="148" y1="128" x2="124" y2="114" stroke="#1C1612" stroke-width="2"/>
+            <line x1="100" y1="158" x2="100" y2="130" stroke="#1C1612" stroke-width="2"/>
+            <line x1="52" y1="128" x2="76" y2="114" stroke="#1C1612" stroke-width="2"/>
+            <line x1="52" y1="72" x2="76" y2="86" stroke="#1C1612" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="film-reel reel-3">
+          <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="90" stroke="#1C1612" stroke-width="4"/>
+            <circle cx="100" cy="100" r="30" stroke="#1C1612" stroke-width="3"/>
+            <circle cx="100" cy="100" r="12" fill="#1C1612"/>
+            <circle cx="100" cy="30" r="8" fill="#1C1612"/>
+            <circle cx="160.6" cy="65" r="8" fill="#1C1612"/>
+            <circle cx="160.6" cy="135" r="8" fill="#1C1612"/>
+            <circle cx="100" cy="170" r="8" fill="#1C1612"/>
+            <circle cx="39.4" cy="135" r="8" fill="#1C1612"/>
+            <circle cx="39.4" cy="65" r="8" fill="#1C1612"/>
+          </svg>
+        </div>
+        <div class="hero-content">
+          <h1>What are you in the<br><em>mood to watch?</em></h1>
+          <p class="subtitle">Tell us what you love. We'll find your next obsession.</p>
+          <div class="mode-tabs">
+            <button class="mode-tab active">Pick Favorites</button>
+            <button class="mode-tab">Describe It</button>
+            <button class="mode-tab">Choose Your Mood</button>
+          </div>
+          <div class="mood-grid">
+            <div class="mood-card"><div class="icon">&#10084;</div>Date Night</div>
+            <div class="mood-card selected"><div class="icon">&#129504;</div>Mind-Bending</div>
+            <div class="mood-card"><div class="icon">&#10024;</div>Feel-Good</div>
+            <div class="mood-card"><div class="icon">&#128142;</div>Hidden Gems</div>
+            <div class="mood-card"><div class="icon">&#127942;</div>Award Winners</div>
+            <div class="mood-card"><div class="icon">&#11088;</div>Underrated</div>
+            <div class="mood-card"><div class="icon">&#128715;</div>Comfort Rewatch</div>
+            <div class="mood-card"><div class="icon">&#127963;</div>True Events</div>
+          </div>
+          <button class="hero-cta">Get Recommendations &#8594;</button>
+        </div>
+      </div>
+      <div class="mock-trending">
+        <h2>Trending This Week</h2>
+        <p class="sub">Popular movies everyone is watching right now</p>
+        <div class="poster-row">
+          <div class="poster-placeholder"><div class="label">Sinners</div></div>
+          <div class="poster-placeholder"><div class="label">The Amateur</div></div>
+          <div class="poster-placeholder"><div class="label">Thunderbolts*</div></div>
+          <div class="poster-placeholder"><div class="label">A Minecraft Movie</div></div>
+          <div class="poster-placeholder"><div class="label">Drop</div></div>
+          <div class="poster-placeholder"><div class="label">The Accountant 2</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     CONCEPT 3: SPOTLIGHT / STAGE LIGHTING
+     ============================================================ -->
+<div class="concept-section" id="c3">
+  <div class="concept-header">
+    <h2>Concept 03</h2>
+    <h3>Spotlight / Stage Lighting</h3>
+    <p>Dark hero background with warm radial spotlight gradients creating a theater stage feel. Text in cream/white pops against the darkness. Warm amber glow from above, like marquee lights. Smooth gradient transition from dark hero to cream body below.</p>
+    <span class="perf">Performance: Excellent -- CSS radial gradients with simple opacity animation, minimal GPU cost</span>
+  </div>
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="browser-url">flickpick.app</div>
+    </div>
+    <div class="theme-dark">
+      <div class="mock-header" style="border-bottom-color: #333;">
+        <div class="logo">FLICK<span>PICK</span></div>
+        <div class="nav-links">
+          <span class="nav-link">Discover</span>
+          <span class="nav-link">Top Rated</span>
+          <span class="nav-link">Watchlist</span>
+          <span class="nav-link">Sign In</span>
+        </div>
+      </div>
+      <div class="hero-3">
+        <div class="hero-content">
+          <h1>What are you in the<br><em>mood to watch?</em></h1>
+          <p class="subtitle">Tell us what you love. We'll find your next obsession.</p>
+          <div class="mode-tabs">
+            <button class="mode-tab active">Pick Favorites</button>
+            <button class="mode-tab">Describe It</button>
+            <button class="mode-tab">Choose Your Mood</button>
+          </div>
+          <div class="mood-grid">
+            <div class="mood-card"><div class="icon">&#10084;</div>Date Night</div>
+            <div class="mood-card"><div class="icon">&#129504;</div>Mind-Bending</div>
+            <div class="mood-card selected"><div class="icon">&#10024;</div>Feel-Good</div>
+            <div class="mood-card"><div class="icon">&#128142;</div>Hidden Gems</div>
+            <div class="mood-card"><div class="icon">&#127942;</div>Award Winners</div>
+            <div class="mood-card"><div class="icon">&#11088;</div>Underrated</div>
+            <div class="mood-card"><div class="icon">&#128715;</div>Comfort Rewatch</div>
+            <div class="mood-card"><div class="icon">&#127963;</div>True Events</div>
+          </div>
+          <button class="hero-cta">Get Recommendations &#8594;</button>
+        </div>
+      </div>
+      <div class="hero-3-transition"></div>
+      <div class="mock-trending">
+        <h2>Trending This Week</h2>
+        <p class="sub">Popular movies everyone is watching right now</p>
+        <div class="poster-row">
+          <div class="poster-placeholder"><div class="label">Sinners</div></div>
+          <div class="poster-placeholder"><div class="label">The Amateur</div></div>
+          <div class="poster-placeholder"><div class="label">Thunderbolts*</div></div>
+          <div class="poster-placeholder"><div class="label">A Minecraft Movie</div></div>
+          <div class="poster-placeholder"><div class="label">Drop</div></div>
+          <div class="poster-placeholder"><div class="label">The Accountant 2</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     CONCEPT 4: POSTER MOSAIC BLUR
+     ============================================================ -->
+<div class="concept-section" id="c4">
+  <div class="concept-header">
+    <h2>Concept 04</h2>
+    <h3>Poster Mosaic Blur</h3>
+    <p>Background made of a grid of blurred, very low-opacity "movie poster" rectangles in warm tones. Creates texture and the subliminal feeling of "movies everywhere." Overlaid with a cream frosted layer so content reads clearly. Entire mosaic drifts slowly.</p>
+    <span class="perf">Performance: Good -- CSS grid with 24 pseudo-elements, blur filter, single transform animation</span>
+  </div>
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="browser-url">flickpick.app</div>
+    </div>
+    <div class="theme-light">
+      <div class="mock-header">
+        <div class="logo">FLICK<span>PICK</span></div>
+        <div class="nav-links">
+          <span class="nav-link">Discover</span>
+          <span class="nav-link">Top Rated</span>
+          <span class="nav-link">Watchlist</span>
+          <span class="nav-link">Sign In</span>
+        </div>
+      </div>
+      <div class="hero-4">
+        <div class="mosaic-layer">
+          <div class="mosaic-cell"></div><div class="mosaic-cell"></div><div class="mosaic-cell"></div>
+          <div class="mosaic-cell"></div><div class="mosaic-cell"></div><div class="mosaic-cell"></div>
+          <div class="mosaic-cell"></div><div class="mosaic-cell"></div><div class="mosaic-cell"></div>
+          <div class="mosaic-cell"></div><div class="mosaic-cell"></div><div class="mosaic-cell"></div>
+          <div class="mosaic-cell"></div><div class="mosaic-cell"></div><div class="mosaic-cell"></div>
+          <div class="mosaic-cell"></div><div class="mosaic-cell"></div><div class="mosaic-cell"></div>
+          <div class="mosaic-cell"></div><div class="mosaic-cell"></div><div class="mosaic-cell"></div>
+          <div class="mosaic-cell"></div><div class="mosaic-cell"></div><div class="mosaic-cell"></div>
+        </div>
+        <div class="frost-overlay"></div>
+        <div class="hero-content">
+          <h1>What are you in the<br><em>mood to watch?</em></h1>
+          <p class="subtitle">Tell us what you love. We'll find your next obsession.</p>
+          <div class="mode-tabs">
+            <button class="mode-tab active">Pick Favorites</button>
+            <button class="mode-tab">Describe It</button>
+            <button class="mode-tab">Choose Your Mood</button>
+          </div>
+          <div class="mood-grid">
+            <div class="mood-card"><div class="icon">&#10084;</div>Date Night</div>
+            <div class="mood-card"><div class="icon">&#129504;</div>Mind-Bending</div>
+            <div class="mood-card"><div class="icon">&#10024;</div>Feel-Good</div>
+            <div class="mood-card selected"><div class="icon">&#128142;</div>Hidden Gems</div>
+            <div class="mood-card"><div class="icon">&#127942;</div>Award Winners</div>
+            <div class="mood-card"><div class="icon">&#11088;</div>Underrated</div>
+            <div class="mood-card"><div class="icon">&#128715;</div>Comfort Rewatch</div>
+            <div class="mood-card"><div class="icon">&#127963;</div>True Events</div>
+          </div>
+          <button class="hero-cta">Get Recommendations &#8594;</button>
+        </div>
+      </div>
+      <div class="mock-trending">
+        <h2>Trending This Week</h2>
+        <p class="sub">Popular movies everyone is watching right now</p>
+        <div class="poster-row">
+          <div class="poster-placeholder"><div class="label">Sinners</div></div>
+          <div class="poster-placeholder"><div class="label">The Amateur</div></div>
+          <div class="poster-placeholder"><div class="label">Thunderbolts*</div></div>
+          <div class="poster-placeholder"><div class="label">A Minecraft Movie</div></div>
+          <div class="poster-placeholder"><div class="label">Drop</div></div>
+          <div class="poster-placeholder"><div class="label">The Accountant 2</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     CONCEPT 5: GEOMETRIC PATTERN
+     ============================================================ -->
+<div class="concept-section" id="c5">
+  <div class="concept-header">
+    <h2>Concept 05</h2>
+    <h3>Geometric Pattern</h3>
+    <p>Cream background with a subtle art deco / theater-carpet-inspired geometric pattern using CSS repeating gradients. Grid lines at 0, 90, 45, and -45 degrees create a diamond lattice. Very low opacity with a slow shimmer animation. Radial vignette fades the pattern at the edges. Premium, architectural feel.</p>
+    <span class="perf">Performance: Excellent -- CSS repeating-linear-gradient only, no extra DOM elements, simple opacity animation</span>
+  </div>
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="browser-url">flickpick.app</div>
+    </div>
+    <div class="theme-light">
+      <div class="mock-header">
+        <div class="logo">FLICK<span>PICK</span></div>
+        <div class="nav-links">
+          <span class="nav-link">Discover</span>
+          <span class="nav-link">Top Rated</span>
+          <span class="nav-link">Watchlist</span>
+          <span class="nav-link">Sign In</span>
+        </div>
+      </div>
+      <div class="hero-5">
+        <!-- Art deco corner SVGs -->
+        <div class="deco-corner tl">
+          <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 10 L10 110 M10 10 L110 10" stroke="#1C1612" stroke-width="1.5"/>
+            <path d="M10 10 L50 50" stroke="#1C1612" stroke-width="1"/>
+            <path d="M25 10 L25 40 M10 25 L40 25" stroke="#1C1612" stroke-width="0.8"/>
+            <circle cx="10" cy="10" r="3" fill="#1C1612"/>
+            <path d="M10 60 L30 60 M60 10 L60 30" stroke="#1C1612" stroke-width="0.5"/>
+          </svg>
+        </div>
+        <div class="deco-corner tr">
+          <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 10 L10 110 M10 10 L110 10" stroke="#1C1612" stroke-width="1.5"/>
+            <path d="M10 10 L50 50" stroke="#1C1612" stroke-width="1"/>
+            <path d="M25 10 L25 40 M10 25 L40 25" stroke="#1C1612" stroke-width="0.8"/>
+            <circle cx="10" cy="10" r="3" fill="#1C1612"/>
+            <path d="M10 60 L30 60 M60 10 L60 30" stroke="#1C1612" stroke-width="0.5"/>
+          </svg>
+        </div>
+        <div class="deco-corner bl">
+          <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 10 L10 110 M10 10 L110 10" stroke="#1C1612" stroke-width="1.5"/>
+            <path d="M10 10 L50 50" stroke="#1C1612" stroke-width="1"/>
+            <path d="M25 10 L25 40 M10 25 L40 25" stroke="#1C1612" stroke-width="0.8"/>
+            <circle cx="10" cy="10" r="3" fill="#1C1612"/>
+          </svg>
+        </div>
+        <div class="deco-corner br">
+          <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 10 L10 110 M10 10 L110 10" stroke="#1C1612" stroke-width="1.5"/>
+            <path d="M10 10 L50 50" stroke="#1C1612" stroke-width="1"/>
+            <path d="M25 10 L25 40 M10 25 L40 25" stroke="#1C1612" stroke-width="0.8"/>
+            <circle cx="10" cy="10" r="3" fill="#1C1612"/>
+          </svg>
+        </div>
+        <div class="hero-content">
+          <h1>What are you in the<br><em>mood to watch?</em></h1>
+          <p class="subtitle">Tell us what you love. We'll find your next obsession.</p>
+          <div class="mode-tabs">
+            <button class="mode-tab active">Pick Favorites</button>
+            <button class="mode-tab">Describe It</button>
+            <button class="mode-tab">Choose Your Mood</button>
+          </div>
+          <div class="mood-grid">
+            <div class="mood-card"><div class="icon">&#10084;</div>Date Night</div>
+            <div class="mood-card"><div class="icon">&#129504;</div>Mind-Bending</div>
+            <div class="mood-card"><div class="icon">&#10024;</div>Feel-Good</div>
+            <div class="mood-card"><div class="icon">&#128142;</div>Hidden Gems</div>
+            <div class="mood-card selected"><div class="icon">&#127942;</div>Award Winners</div>
+            <div class="mood-card"><div class="icon">&#11088;</div>Underrated</div>
+            <div class="mood-card"><div class="icon">&#128715;</div>Comfort Rewatch</div>
+            <div class="mood-card"><div class="icon">&#127963;</div>True Events</div>
+          </div>
+          <button class="hero-cta">Get Recommendations &#8594;</button>
+        </div>
+      </div>
+      <div class="mock-trending">
+        <h2>Trending This Week</h2>
+        <p class="sub">Popular movies everyone is watching right now</p>
+        <div class="poster-row">
+          <div class="poster-placeholder"><div class="label">Sinners</div></div>
+          <div class="poster-placeholder"><div class="label">The Amateur</div></div>
+          <div class="poster-placeholder"><div class="label">Thunderbolts*</div></div>
+          <div class="poster-placeholder"><div class="label">A Minecraft Movie</div></div>
+          <div class="poster-placeholder"><div class="label">Drop</div></div>
+          <div class="poster-placeholder"><div class="label">The Accountant 2</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     CONCEPT 6: AMBIENT GRADIENT ORBS
+     ============================================================ -->
+<div class="concept-section" id="c6">
+  <div class="concept-header">
+    <h2>Concept 06</h2>
+    <h3>Ambient Gradient Orbs</h3>
+    <p>Cream background with 2-3 large, very soft gradient orbs floating behind content. Warm amber and soft gold tones at extremely low opacity. Slow, organic lava-lamp-like movement. Modern, warm, alive -- the background breathes without demanding attention.</p>
+    <span class="perf">Performance: Good -- 3 blurred div elements with CSS transform animations, GPU composited</span>
+  </div>
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="browser-url">flickpick.app</div>
+    </div>
+    <div class="theme-light">
+      <div class="mock-header">
+        <div class="logo">FLICK<span>PICK</span></div>
+        <div class="nav-links">
+          <span class="nav-link">Discover</span>
+          <span class="nav-link">Top Rated</span>
+          <span class="nav-link">Watchlist</span>
+          <span class="nav-link">Sign In</span>
+        </div>
+      </div>
+      <div class="hero-6">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="hero-content">
+          <h1>What are you in the<br><em>mood to watch?</em></h1>
+          <p class="subtitle">Tell us what you love. We'll find your next obsession.</p>
+          <div class="mode-tabs">
+            <button class="mode-tab active">Pick Favorites</button>
+            <button class="mode-tab">Describe It</button>
+            <button class="mode-tab">Choose Your Mood</button>
+          </div>
+          <div class="mood-grid">
+            <div class="mood-card"><div class="icon">&#10084;</div>Date Night</div>
+            <div class="mood-card"><div class="icon">&#129504;</div>Mind-Bending</div>
+            <div class="mood-card"><div class="icon">&#10024;</div>Feel-Good</div>
+            <div class="mood-card"><div class="icon">&#128142;</div>Hidden Gems</div>
+            <div class="mood-card"><div class="icon">&#127942;</div>Award Winners</div>
+            <div class="mood-card selected"><div class="icon">&#11088;</div>Underrated</div>
+            <div class="mood-card"><div class="icon">&#128715;</div>Comfort Rewatch</div>
+            <div class="mood-card"><div class="icon">&#127963;</div>True Events</div>
+          </div>
+          <button class="hero-cta">Get Recommendations &#8594;</button>
+        </div>
+      </div>
+      <div class="mock-trending">
+        <h2>Trending This Week</h2>
+        <p class="sub">Popular movies everyone is watching right now</p>
+        <div class="poster-row">
+          <div class="poster-placeholder"><div class="label">Sinners</div></div>
+          <div class="poster-placeholder"><div class="label">The Amateur</div></div>
+          <div class="poster-placeholder"><div class="label">Thunderbolts*</div></div>
+          <div class="poster-placeholder"><div class="label">A Minecraft Movie</div></div>
+          <div class="poster-placeholder"><div class="label">Drop</div></div>
+          <div class="poster-placeholder"><div class="label">The Accountant 2</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     CONCEPT 7: PARALLAX LIGHT STREAKS
+     ============================================================ -->
+<div class="concept-section" id="c7">
+  <div class="concept-header">
+    <h2>Concept 07</h2>
+    <h3>Parallax Light Streaks</h3>
+    <p>Cream background with very faint diagonal light streaks -- like projector light cutting through a dark theater. Multiple thin gradient lines at different angles with slow drift animation creating subtle parallax depth. Includes ambient glow streaks and tiny floating dust particles. Cinematic, atmospheric, alive.</p>
+    <span class="perf">Performance: Good -- 7 animated pseudo-streaks + 5 dust particles, all CSS transforms, GPU composited</span>
+  </div>
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="browser-url">flickpick.app</div>
+    </div>
+    <div class="theme-light">
+      <div class="mock-header">
+        <div class="logo">FLICK<span>PICK</span></div>
+        <div class="nav-links">
+          <span class="nav-link">Discover</span>
+          <span class="nav-link">Top Rated</span>
+          <span class="nav-link">Watchlist</span>
+          <span class="nav-link">Sign In</span>
+        </div>
+      </div>
+      <div class="hero-7">
+        <div class="streak-layer">
+          <div class="streak streak-1"></div>
+          <div class="streak streak-2"></div>
+          <div class="streak streak-3"></div>
+          <div class="streak streak-4"></div>
+          <div class="streak streak-5"></div>
+          <div class="streak streak-wide-1"></div>
+          <div class="streak streak-wide-2"></div>
+        </div>
+        <div class="dust-layer">
+          <div class="dust"></div>
+          <div class="dust"></div>
+          <div class="dust"></div>
+          <div class="dust"></div>
+          <div class="dust"></div>
+        </div>
+        <div class="hero-content">
+          <h1>What are you in the<br><em>mood to watch?</em></h1>
+          <p class="subtitle">Tell us what you love. We'll find your next obsession.</p>
+          <div class="mode-tabs">
+            <button class="mode-tab active">Pick Favorites</button>
+            <button class="mode-tab">Describe It</button>
+            <button class="mode-tab">Choose Your Mood</button>
+          </div>
+          <div class="mood-grid">
+            <div class="mood-card"><div class="icon">&#10084;</div>Date Night</div>
+            <div class="mood-card"><div class="icon">&#129504;</div>Mind-Bending</div>
+            <div class="mood-card"><div class="icon">&#10024;</div>Feel-Good</div>
+            <div class="mood-card"><div class="icon">&#128142;</div>Hidden Gems</div>
+            <div class="mood-card"><div class="icon">&#127942;</div>Award Winners</div>
+            <div class="mood-card"><div class="icon">&#11088;</div>Underrated</div>
+            <div class="mood-card selected"><div class="icon">&#128715;</div>Comfort Rewatch</div>
+            <div class="mood-card"><div class="icon">&#127963;</div>True Events</div>
+          </div>
+          <button class="hero-cta">Get Recommendations &#8594;</button>
+        </div>
+      </div>
+      <div class="mock-trending">
+        <h2>Trending This Week</h2>
+        <p class="sub">Popular movies everyone is watching right now</p>
+        <div class="poster-row">
+          <div class="poster-placeholder"><div class="label">Sinners</div></div>
+          <div class="poster-placeholder"><div class="label">The Amateur</div></div>
+          <div class="poster-placeholder"><div class="label">Thunderbolts*</div></div>
+          <div class="poster-placeholder"><div class="label">A Minecraft Movie</div></div>
+          <div class="poster-placeholder"><div class="label">Drop</div></div>
+          <div class="poster-placeholder"><div class="label">The Accountant 2</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     CONCEPT 8: DARK CINEMA HERO
+     ============================================================ -->
+<div class="concept-section" id="c8">
+  <div class="concept-header">
+    <h2>Concept 08</h2>
+    <h3>Dark Cinema Hero</h3>
+    <p>The boldest option. Full dark background extending the header's #1A1A1A into the entire hero section. All hero text in cream/white, amber accents pop dramatically. Mood cards styled with dark surfaces. Subtle film grain overlay and ambient spotlight from above. Clean gradient transition to cream body below. Immersive, like sitting in a dark theater before the movie starts.</p>
+    <span class="perf">Performance: Excellent -- CSS gradients + tiny SVG noise texture, grain animation uses step timing for efficiency</span>
+  </div>
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="browser-url">flickpick.app</div>
+    </div>
+    <div class="theme-dark">
+      <div class="mock-header" style="border-bottom-color: #2a2a2a;">
+        <div class="logo">FLICK<span>PICK</span></div>
+        <div class="nav-links">
+          <span class="nav-link">Discover</span>
+          <span class="nav-link">Top Rated</span>
+          <span class="nav-link">Watchlist</span>
+          <span class="nav-link">Sign In</span>
+        </div>
+      </div>
+      <div class="hero-8">
+        <div class="grain"></div>
+        <div class="hero-content">
+          <h1>What are you in the<br><em>mood to watch?</em></h1>
+          <p class="subtitle">Tell us what you love. We'll find your next obsession.</p>
+          <div class="mode-tabs">
+            <button class="mode-tab active">Pick Favorites</button>
+            <button class="mode-tab">Describe It</button>
+            <button class="mode-tab">Choose Your Mood</button>
+          </div>
+          <div class="mood-grid">
+            <div class="mood-card"><div class="icon">&#10084;</div>Date Night</div>
+            <div class="mood-card"><div class="icon">&#129504;</div>Mind-Bending</div>
+            <div class="mood-card"><div class="icon">&#10024;</div>Feel-Good</div>
+            <div class="mood-card"><div class="icon">&#128142;</div>Hidden Gems</div>
+            <div class="mood-card"><div class="icon">&#127942;</div>Award Winners</div>
+            <div class="mood-card"><div class="icon">&#11088;</div>Underrated</div>
+            <div class="mood-card"><div class="icon">&#128715;</div>Comfort Rewatch</div>
+            <div class="mood-card selected"><div class="icon">&#127963;</div>True Events</div>
+          </div>
+          <button class="hero-cta">Get Recommendations &#8594;</button>
+        </div>
+      </div>
+      <div class="hero-8-transition"></div>
+      <div class="mock-trending">
+        <h2>Trending This Week</h2>
+        <p class="sub">Popular movies everyone is watching right now</p>
+        <div class="poster-row">
+          <div class="poster-placeholder"><div class="label">Sinners</div></div>
+          <div class="poster-placeholder"><div class="label">The Amateur</div></div>
+          <div class="poster-placeholder"><div class="label">Thunderbolts*</div></div>
+          <div class="poster-placeholder"><div class="label">A Minecraft Movie</div></div>
+          <div class="poster-placeholder"><div class="label">Drop</div></div>
+          <div class="poster-placeholder"><div class="label">The Accountant 2</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom spacer -->
+<div style="height: 120px;"></div>
+
+</body>
+</html>
