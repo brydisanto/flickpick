@@ -217,7 +217,7 @@ export default function HeroRecommender() {
       </div>
 
       {/* Mode Content */}
-      <div className="min-h-[200px]">
+      <div>
         {/* Seeds Mode */}
         {mode === "seeds" && (
           <div className="space-y-4">
