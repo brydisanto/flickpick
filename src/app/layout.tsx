@@ -78,10 +78,14 @@ export default function RootLayout({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
             <div className="flex items-center gap-8">
               <Link href="/" className="flex items-center gap-2 group">
-                <span className="text-[28px] tracking-[2px] font-[family-name:var(--font-display)] text-bg-primary uppercase">
+                <svg width="22" height="18" viewBox="0 0 28 20" fill="none" aria-hidden="true">
+                  <path d="M2 2C2 0.9 2.9 0 4 0H10V3C10 3.55 10.45 4 11 4C11.55 4 12 3.55 12 3V0H24C25.1 0 26 0.9 26 2V7C24.9 7 24 7.9 24 9V11C24 12.1 24.9 13 26 13V18C26 19.1 25.1 20 24 20H12V17C12 16.45 11.55 16 11 16C10.45 16 10 16.45 10 17V20H4C2.9 20 2 19.1 2 18V2Z" fill="var(--gold)"/>
+                  <line x1="11" y1="7" x2="11" y2="8.5" stroke="white" strokeWidth="1.2" strokeLinecap="round"/>
+                  <line x1="11" y1="11.5" x2="11" y2="13" stroke="white" strokeWidth="1.2" strokeLinecap="round"/>
+                </svg>
+                <span className="text-[22px] tracking-[0.04em] font-[family-name:var(--font-display)] text-bg-primary uppercase">
                   FLICKPICK
                 </span>
-                <span className="text-gold text-lg leading-none">•</span>
               </Link>
               <nav className="hidden sm:flex items-center gap-6">
                 <Link
@@ -113,10 +117,14 @@ export default function RootLayout({
         <footer className="relative z-[2] border-t-[1.5px] border-border bg-bg-primary">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-sm tracking-[1px] font-[family-name:var(--font-display)] uppercase">
+              <svg width="14" height="12" viewBox="0 0 28 20" fill="none" aria-hidden="true">
+                <path d="M2 2C2 0.9 2.9 0 4 0H10V3C10 3.55 10.45 4 11 4C11.55 4 12 3.55 12 3V0H24C25.1 0 26 0.9 26 2V7C24.9 7 24 7.9 24 9V11C24 12.1 24.9 13 26 13V18C26 19.1 25.1 20 24 20H12V17C12 16.45 11.55 16 11 16C10.45 16 10 16.45 10 17V20H4C2.9 20 2 19.1 2 18V2Z" fill="var(--gold)"/>
+                <line x1="11" y1="7" x2="11" y2="8.5" stroke="var(--bg-primary)" strokeWidth="1.2" strokeLinecap="round"/>
+                <line x1="11" y1="11.5" x2="11" y2="13" stroke="var(--bg-primary)" strokeWidth="1.2" strokeLinecap="round"/>
+              </svg>
+              <span className="text-sm tracking-[0.04em] font-[family-name:var(--font-display)] uppercase">
                 FLICKPICK
               </span>
-              <span className="text-gold text-xs">•</span>
               <p className="t-meta text-text-tertiary">
                 Ratings via TMDB, OMDb, RT, Metacritic
               </p>
