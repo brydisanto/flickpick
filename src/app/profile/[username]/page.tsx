@@ -8,6 +8,7 @@ import type { Movie } from "@/types";
 import EditProfileButton from "./EditProfileButton";
 
 export const dynamic = "force-dynamic";
+export const runtime = "edge";
 
 function getScoreColor(score: number): string {
   if (score >= 75) return "bg-score-high/90";
