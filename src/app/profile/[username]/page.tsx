@@ -50,32 +50,34 @@ export default async function ProfilePage({
 
   if (!profile) return notFound();
 
-  // Fetch reviews with movie data
-  const { data: reviews } = await supabase
-    .from("reviews")
-    .select("id, rating, review_text, created_at, movie_id, movies(id, tmdb_id, title, poster_path, rotten_tomatoes_score, imdb_rating, metacritic_score)")
-    .eq("user_id", profile.id)
-    .order("created_at", { ascending: false })
-    .limit(20);
-
-  // Fetch watchlist with movie data
-  const { data: watchlist } = await supabase
-    .from("watchlist")
-    .select("added_at, movies(id, tmdb_id, title, poster_path, rotten_tomatoes_score, imdb_rating, metacritic_score)")
-    .eq("user_id", profile.id)
-    .order("added_at", { ascending: false })
-    .limit(12);
-
-  // Stats
-  const { count: reviewCount } = await supabase
-    .from("reviews")
-    .select("id", { count: "exact", head: true })
-    .eq("user_id", profile.id);
-
-  const { count: watchlistCount } = await supabase
-    .from("watchlist")
-    .select("user_id", { count: "exact", head: true })
-    .eq("user_id", profile.id);
+  // Run all data queries in parallel
+  const [
+    { data: reviews },
+    { data: watchlist },
+    { count: reviewCount },
+    { count: watchlistCount },
+  ] = await Promise.all([
+    supabase
+      .from("reviews")
+      .select("id, rating, review_text, created_at, movie_id, movies(id, tmdb_id, title, poster_path, rotten_tomatoes_score, imdb_rating, metacritic_score)")
+      .eq("user_id", profile.id)
+      .order("created_at", { ascending: false })
+      .limit(20),
+    supabase
+      .from("watchlist")
+      .select("added_at, movies(id, tmdb_id, title, poster_path, rotten_tomatoes_score, imdb_rating, metacritic_score)")
+      .eq("user_id", profile.id)
+      .order("added_at", { ascending: false })
+      .limit(12),
+    supabase
+      .from("reviews")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", profile.id),
+    supabase
+      .from("watchlist")
+      .select("user_id", { count: "exact", head: true })
+      .eq("user_id", profile.id),
+  ]);
 
   const ratingCount = reviewCount ?? 0;
   const memberSince = formatDate(profile.created_at);

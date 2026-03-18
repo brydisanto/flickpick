@@ -44,11 +44,11 @@ export default function MovieActions({
   useEffect(() => {
     if (!userId || !session?.access_token) return;
     const headers = { Authorization: `Bearer ${session.access_token}` };
-    // Check watchlist
-    fetch("/api/watchlist", { headers })
+    // Check watchlist (lightweight single-movie check)
+    fetch(`/api/watchlist?movie_id=${encodeURIComponent(movieId)}`, { headers })
       .then((r) => r.ok ? r.json() : null)
       .then((data) => {
-        if (data?.watchlist?.some((w: { movie_id: string }) => w.movie_id === movieId)) {
+        if (data?.in_watchlist) {
           setInWatchlist(true);
         }
       })

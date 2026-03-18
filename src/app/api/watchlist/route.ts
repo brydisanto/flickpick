@@ -30,8 +30,21 @@ export async function GET(request: NextRequest) {
   }
 
   const { supabase, user } = auth;
+  const movieId = request.nextUrl.searchParams.get("movie_id");
 
   try {
+    // If movie_id is provided, just check if it's in the watchlist (lightweight)
+    if (movieId) {
+      const { data } = await supabase
+        .from("watchlist")
+        .select("movie_id")
+        .eq("user_id", user.id)
+        .eq("movie_id", movieId)
+        .maybeSingle();
+
+      return NextResponse.json({ in_watchlist: !!data });
+    }
+
     const { data, error } = await supabase
       .from("watchlist")
       .select(
