@@ -2,9 +2,10 @@ import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getPopularMovies } from "@/lib/tmdb";
-import { getTmdbImageUrl, computeAggregateScore, getScoreLevel } from "@/types";
+import { getTmdbImageUrl, computeAggregateScore } from "@/types";
 import type { Movie } from "@/types";
-import { createServerClient } from "@/lib/supabase";
+import { createClient } from "@supabase/supabase-js";
+import { fetchRatingsByTitle, type ParsedRatings } from "@/lib/omdb";
 import HeroRecommender from "./HeroRecommender";
 
 // Don't pre-render at build time — needs TMDB API at runtime
@@ -21,21 +22,51 @@ async function TrendingSection() {
   const trending = await getPopularMovies();
   const tmdbIds = trending.results.slice(0, 12).map((m) => m.id);
 
-  // Fetch FlickPick aggregate scores from DB
+  // Fetch FlickPick aggregate scores from DB, backfill from OMDB if missing
   let dbScores: Record<number, Movie> = {};
   try {
-    const supabase = createServerClient();
-    const { data } = await supabase
-      .from("movies")
-      .select("tmdb_id, rotten_tomatoes_score, imdb_rating, metacritic_score")
-      .in("tmdb_id", tmdbIds);
-    if (data) {
-      for (const row of data) {
-        dbScores[row.tmdb_id] = row as unknown as Movie;
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (supabaseUrl && supabaseKey) {
+      const supabase = createClient(supabaseUrl, supabaseKey);
+      const { data } = await supabase
+        .from("movies")
+        .select("tmdb_id, rotten_tomatoes_score, imdb_rating, metacritic_score")
+        .in("tmdb_id", tmdbIds);
+      if (data) {
+        for (const row of data) {
+          dbScores[row.tmdb_id] = row as unknown as Movie;
+        }
       }
     }
   } catch {
     // Fall back to TMDB scores if DB unavailable
+  }
+
+  // For trending movies missing external ratings, fetch from OMDB by title
+  const moviesNeedingRatings = trending.results.slice(0, 12).filter((m) => {
+    const db = dbScores[m.id];
+    if (!db) return true;
+    return db.rotten_tomatoes_score == null && db.imdb_rating == null && db.metacritic_score == null;
+  });
+
+  if (moviesNeedingRatings.length > 0) {
+    const omdbResults = await Promise.all(
+      moviesNeedingRatings.map(async (m) => {
+        const year = m.release_date ? new Date(m.release_date).getFullYear().toString() : undefined;
+        const ratings = await fetchRatingsByTitle(m.title, year);
+        return { tmdbId: m.id, ratings };
+      })
+    );
+    for (const { tmdbId, ratings } of omdbResults) {
+      if (ratings) {
+        dbScores[tmdbId] = {
+          rotten_tomatoes_score: ratings.rotten_tomatoes_score,
+          imdb_rating: ratings.imdb_rating,
+          metacritic_score: ratings.metacritic_score,
+        } as unknown as Movie;
+      }
+    }
   }
 
   return (
