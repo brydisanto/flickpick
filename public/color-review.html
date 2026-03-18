@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLICKPICK — Color Theme Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   PAGE CHROME — the review page itself
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Sora', system-ui, sans-serif;
+  background: #111;
+  color: #e8e4dc;
+  line-height: 1.5;
+}
+
+/* ---------- sticky jump-nav ---------- */
+.jump-nav {
+  position: sticky; top: 0; z-index: 1000;
+  background: #0a0a0a; border-bottom: 1px solid #2a2a2a;
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 24px; overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.jump-nav .label {
+  font-weight: 600; font-size: 13px; color: #888;
+  white-space: nowrap; margin-right: 8px; text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.jump-nav a {
+  display: inline-block; padding: 6px 14px;
+  font-size: 12px; font-weight: 500; border-radius: 999px;
+  text-decoration: none; white-space: nowrap;
+  background: #1e1e1e; color: #ccc; border: 1px solid #333;
+  transition: all 150ms ease;
+}
+.jump-nav a:hover, .jump-nav a:focus-visible {
+  background: #E05A22; color: #fff; border-color: #E05A22;
+}
+
+/* ---------- page header ---------- */
+.page-header {
+  text-align: center; padding: 64px 24px 48px;
+  border-bottom: 1px solid #222;
+}
+.page-header h1 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(32px, 5vw, 56px); font-weight: 400; color: #f0ece2;
+  margin-bottom: 12px;
+}
+.page-header h1 span { color: #E05A22; }
+.page-header p {
+  font-size: 15px; color: #888; max-width: 640px; margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ---------- theme section ---------- */
+.theme-section {
+  padding: 64px 24px 80px;
+  border-bottom: 1px solid #222;
+}
+.theme-section:last-of-type { border-bottom: none; }
+
+.theme-title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(24px, 3vw, 36px); font-weight: 400;
+  margin-bottom: 4px; color: #f0ece2;
+}
+.theme-subtitle {
+  font-size: 14px; color: #888; margin-bottom: 32px; max-width: 600px;
+}
+
+/* ---------- palette swatches ---------- */
+.palette-row {
+  display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px;
+}
+.swatch {
+  width: 80px; text-align: center;
+}
+.swatch-color {
+  width: 80px; height: 56px; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 4px;
+}
+.swatch-label { font-size: 10px; color: #999; line-height: 1.3; }
+.swatch-hex { font-size: 11px; font-weight: 600; color: #ccc; font-family: 'Sora', monospace; }
+
+/* ---------- mini preview frame ---------- */
+.preview-frame {
+  width: 100%; max-width: 720px;
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid #333;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  margin-bottom: 32px;
+}
+
+/* ---------- score badge row ---------- */
+.detail-section { margin-bottom: 32px; }
+.detail-section h3 {
+  font-size: 13px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.05em; color: #888; margin-bottom: 12px;
+}
+.badge-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.score-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: 8px;
+  font-size: 14px; font-weight: 700; font-family: 'Sora', sans-serif;
+}
+.badge-label { font-size: 10px; color: #999; margin-top: 2px; text-align: center; }
+
+/* ---------- component samples row ---------- */
+.components-row {
+  display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start;
+}
+.component-sample {
+  border-radius: 10px; padding: 16px; border: 1px solid #333;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 780px) {
+  .preview-frame { max-width: 100%; }
+  .theme-section { padding: 48px 16px 56px; }
+}
+
+/* ============================================================
+   MINI PREVIEW — shared internal styles
+   Each .preview-frame gets a theme class that sets CSS vars
+   ============================================================ */
+.mp { --mp-radius: 8px; font-family: 'Sora', sans-serif; }
+
+/* header */
+.mp-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 20px;
+  background: var(--mp-header-bg);
+  border-bottom: var(--mp-header-border, none);
+}
+.mp-logo {
+  display: flex; align-items: center; gap: 6px;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 18px; font-weight: 400;
+  color: var(--mp-header-text);
+  text-decoration: none; white-space: nowrap;
+}
+.mp-logo svg { flex-shrink: 0; }
+.mp-nav { display: flex; gap: 16px; margin-left: auto; }
+.mp-nav a {
+  font-size: 11px; font-weight: 500; color: var(--mp-header-text-dim);
+  text-decoration: none; opacity: 0.7;
+}
+.mp-search {
+  width: 140px; padding: 5px 10px; border-radius: 6px;
+  font-size: 11px; font-family: 'Sora', sans-serif;
+  background: var(--mp-input-bg); color: var(--mp-text);
+  border: 1px solid var(--mp-input-border);
+  outline: none;
+}
+
+/* hero */
+.mp-hero {
+  padding: 28px 20px 20px;
+  background: var(--mp-bg);
+  text-align: center;
+}
+.mp-hero h2 {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 22px; font-weight: 400; color: var(--mp-text);
+  margin-bottom: 14px; line-height: 1.2;
+}
+.mp-tabs {
+  display: flex; justify-content: center; gap: 8px; margin-bottom: 16px;
+}
+.mp-tab {
+  padding: 6px 14px; border-radius: 999px;
+  font-size: 10px; font-weight: 500; cursor: default;
+  background: var(--mp-surface); color: var(--mp-text-sec);
+  border: 1px solid var(--mp-border);
+  transition: all 150ms;
+}
+.mp-tab.active {
+  background: var(--mp-accent); color: #fff;
+  border-color: var(--mp-accent);
+}
+
+/* mood cards */
+.mp-moods {
+  display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+}
+.mp-mood {
+  padding: 8px 14px; border-radius: 10px;
+  font-size: 10px; font-weight: 500;
+  background: var(--mp-surface); color: var(--mp-text-sec);
+  border: 1px solid var(--mp-border); cursor: default;
+}
+.mp-mood.selected {
+  background: var(--mp-accent-light, rgba(224,90,34,0.12));
+  color: var(--mp-accent);
+  border-color: var(--mp-accent);
+}
+
+/* movie cards */
+.mp-movies {
+  padding: 20px;
+  background: var(--mp-bg);
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+}
+@media (max-width: 540px) {
+  .mp-movies { grid-template-columns: repeat(2, 1fr); }
+}
+.mp-movie-card {
+  border-radius: var(--mp-radius); overflow: hidden;
+  background: var(--mp-elevated); border: 1px solid var(--mp-border);
+}
+.mp-poster {
+  width: 100%; aspect-ratio: 2/3;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: rgba(128,128,128,0.5);
+  position: relative;
+}
+.mp-poster .mp-score {
+  position: absolute; top: 6px; right: 6px;
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: #fff;
+}
+.mp-movie-info {
+  padding: 8px 10px;
+}
+.mp-movie-title {
+  font-size: 11px; font-weight: 600; color: var(--mp-text);
+  margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.mp-movie-year { font-size: 10px; color: var(--mp-text-sec); }
+
+/* CTA button */
+.mp-cta-section {
+  padding: 0 20px 20px;
+  background: var(--mp-bg);
+  text-align: center;
+}
+.mp-cta {
+  display: inline-block; padding: 10px 28px;
+  border-radius: 8px; font-size: 12px; font-weight: 600;
+  border: none; cursor: default; color: #fff;
+  background: var(--mp-accent);
+  font-family: 'Sora', sans-serif;
+}
+.mp-cta.gradient { background: var(--mp-accent-gradient, var(--mp-accent)); }
+
+/* footer */
+.mp-footer {
+  padding: 14px 20px;
+  background: var(--mp-header-bg);
+  border-top: var(--mp-header-border, none);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.mp-footer-logo {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 13px; color: var(--mp-header-text); opacity: 0.6;
+}
+.mp-footer-links { display: flex; gap: 12px; }
+.mp-footer-links a {
+  font-size: 10px; color: var(--mp-header-text-dim); text-decoration: none; opacity: 0.5;
+}
+
+/* input samples */
+.mp-input-sample {
+  padding: 16px 20px; background: var(--mp-bg);
+  display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-start;
+}
+.mp-input-full {
+  flex: 1; min-width: 180px; padding: 8px 12px; border-radius: 8px;
+  font-size: 12px; font-family: 'Sora', sans-serif;
+  background: var(--mp-input-bg); color: var(--mp-text);
+  border: 1px solid var(--mp-input-border);
+  outline: none;
+}
+.mp-input-full:focus { border-color: var(--mp-accent); }
+.mp-textarea {
+  flex: 1; min-width: 180px; padding: 8px 12px; border-radius: 8px;
+  font-size: 12px; font-family: 'Sora', sans-serif;
+  background: var(--mp-input-bg); color: var(--mp-text);
+  border: 1px solid var(--mp-input-border);
+  outline: none; resize: none; height: 56px;
+}
+
+/* ============================================================
+   THEME VARIABLE SETS
+   ============================================================ */
+
+/* Theme 1 — Warm Cream + Amber (Current) */
+.theme-1 {
+  --mp-bg: #EFECD5;
+  --mp-surface: #E8E5CE;
+  --mp-elevated: #F8F6E9;
+  --mp-border: #D8D4BB;
+  --mp-text: #1C1612;
+  --mp-text-sec: #4A3F35;
+  --mp-text-ter: #7A7060;
+  --mp-accent: #E05A22;
+  --mp-accent-light: rgba(224,90,34,0.10);
+  --mp-header-bg: #1A1A1A;
+  --mp-header-text: #EFECD5;
+  --mp-header-text-dim: #9A9489;
+  --mp-input-bg: #F8F6E9;
+  --mp-input-border: #D8D4BB;
+  --mp-poster-1: #B8A88A;
+  --mp-poster-2: #C9A96E;
+  --mp-poster-3: #8A7A6A;
+  --mp-poster-4: #A0927E;
+}
+
+/* Theme 2 — Midnight Cinema */
+.theme-2 {
+  --mp-bg: #0F0F0F;
+  --mp-surface: #1A1A1A;
+  --mp-elevated: #252525;
+  --mp-border: #333;
+  --mp-text: #E8E4DC;
+  --mp-text-sec: #9A9489;
+  --mp-text-ter: #6A6459;
+  --mp-accent: #FF6B35;
+  --mp-accent-light: rgba(255,107,53,0.12);
+  --mp-header-bg: #1A1A1A;
+  --mp-header-text: #E8E4DC;
+  --mp-header-text-dim: #7A7469;
+  --mp-header-border: 1px solid #2a2a2a;
+  --mp-input-bg: #1A1A1A;
+  --mp-input-border: #333;
+  --mp-poster-1: #3A2A1A;
+  --mp-poster-2: #2A3A2A;
+  --mp-poster-3: #2A2A3A;
+  --mp-poster-4: #3A3020;
+}
+
+/* Theme 3 — Cool Slate */
+.theme-3 {
+  --mp-bg: #F5F5F0;
+  --mp-surface: #EAEAE5;
+  --mp-elevated: #FFFFFF;
+  --mp-border: #D5D5D0;
+  --mp-text: #1A1D23;
+  --mp-text-sec: #5A5E6B;
+  --mp-text-ter: #8A8E9B;
+  --mp-accent: #2563EB;
+  --mp-accent-light: rgba(37,99,235,0.08);
+  --mp-header-bg: #1A1D23;
+  --mp-header-text: #F5F5F0;
+  --mp-header-text-dim: #8A8E9B;
+  --mp-input-bg: #FFFFFF;
+  --mp-input-border: #D5D5D0;
+  --mp-poster-1: #9AA0B0;
+  --mp-poster-2: #7A8090;
+  --mp-poster-3: #A5ABB5;
+  --mp-poster-4: #8A90A0;
+}
+
+/* Theme 4 — Noir & Gold */
+.theme-4 {
+  --mp-bg: #111111;
+  --mp-surface: #1A1A1A;
+  --mp-elevated: #222222;
+  --mp-border: #333;
+  --mp-text: #F0ECE2;
+  --mp-text-sec: #8A8578;
+  --mp-text-ter: #5A5548;
+  --mp-accent: #D4A843;
+  --mp-accent-light: rgba(212,168,67,0.10);
+  --mp-header-bg: #0A0A0A;
+  --mp-header-text: #F0ECE2;
+  --mp-header-text-dim: #6A6558;
+  --mp-header-border: 1px solid #D4A843;
+  --mp-input-bg: #1A1A1A;
+  --mp-input-border: #333;
+  --mp-poster-1: #2A2518;
+  --mp-poster-2: #1A2A1A;
+  --mp-poster-3: #2A1A2A;
+  --mp-poster-4: #2A2A18;
+}
+
+/* Theme 5 — Forest & Terracotta */
+.theme-5 {
+  --mp-bg: #F2EDE4;
+  --mp-surface: #E8E2D6;
+  --mp-elevated: #FAF6EF;
+  --mp-border: #D4CEBC;
+  --mp-text: #2D2A24;
+  --mp-text-sec: #6B6459;
+  --mp-text-ter: #8A8378;
+  --mp-accent: #C4531A;
+  --mp-accent-2: #3D6B4F;
+  --mp-accent-light: rgba(196,83,26,0.10);
+  --mp-header-bg: #2D2A24;
+  --mp-header-text: #F2EDE4;
+  --mp-header-text-dim: #8A8378;
+  --mp-input-bg: #FAF6EF;
+  --mp-input-border: #D4CEBC;
+  --mp-poster-1: #A89880;
+  --mp-poster-2: #6A8A6A;
+  --mp-poster-3: #8A7A6A;
+  --mp-poster-4: #7A9A7A;
+}
+
+/* Theme 6 — Sunset Gradient */
+.theme-6 {
+  --mp-bg: #FAFAFA;
+  --mp-surface: #F0F0F0;
+  --mp-elevated: #FFFFFF;
+  --mp-border: #E0E0E0;
+  --mp-text: #1A1A1A;
+  --mp-text-sec: #666666;
+  --mp-text-ter: #999999;
+  --mp-accent: #FF6B35;
+  --mp-accent-2: #FF4757;
+  --mp-accent-light: rgba(255,107,53,0.08);
+  --mp-accent-gradient: linear-gradient(135deg, #FF6B35, #E05A22);
+  --mp-header-bg: #1A1A1A;
+  --mp-header-text: #FAFAFA;
+  --mp-header-text-dim: #999;
+  --mp-header-border: 3px solid transparent;
+  --mp-input-bg: #FFFFFF;
+  --mp-input-border: #E0E0E0;
+  --mp-poster-1: #FFB89A;
+  --mp-poster-2: #FF9A9A;
+  --mp-poster-3: #FFC89A;
+  --mp-poster-4: #FFAA8A;
+}
+.theme-6 .mp-header {
+  border-bottom: 3px solid transparent;
+  border-image: linear-gradient(90deg, #FF6B35, #E05A22, #FF4757) 1;
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     STICKY JUMP NAV
+     ============================================================ -->
+<nav class="jump-nav" role="navigation" aria-label="Theme navigation">
+  <span class="label">Themes</span>
+  <a href="#theme-1">1. Warm Cream</a>
+  <a href="#theme-2">2. Midnight Cinema</a>
+  <a href="#theme-3">3. Cool Slate</a>
+  <a href="#theme-4">4. Noir &amp; Gold</a>
+  <a href="#theme-5">5. Forest &amp; Terracotta</a>
+  <a href="#theme-6">6. Sunset Gradient</a>
+</nav>
+
+<!-- ============================================================
+     PAGE HEADER
+     ============================================================ -->
+<header class="page-header">
+  <h1>FLICK<span>PICK</span> Color Theme Review</h1>
+  <p>Compare 6 distinct color themes for the FLICKPICK platform. Each mini-preview shows the header, hero, movie cards, buttons, inputs, and footer in context. Scroll down or use the jump nav above.</p>
+</header>
+
+<!-- ============================================================
+     TICKET STUB SVG (reusable via template)
+     ============================================================ -->
+<template id="ticket-svg">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 4h16a1 1 0 0 1 1 1v4.5a1 1 0 0 1-.75.97 2.5 2.5 0 0 0 0 4.06A1 1 0 0 1 21 15.5V19a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-3.5a1 1 0 0 1 .75-.97 2.5 2.5 0 0 0 0-4.06A1 1 0 0 1 3 9.5V5a1 1 0 0 1 1-1z" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M9 4v16" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2.5" stroke-linecap="round"/>
+    <circle cx="14.5" cy="10" r="1" fill="currentColor"/>
+    <circle cx="14.5" cy="14" r="1" fill="currentColor"/>
+  </svg>
+</template>
+
+<!-- ============================================================
+     HELPER SCRIPT — clone SVG into every .mp-logo
+     ============================================================ -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const tmpl = document.getElementById('ticket-svg');
+  document.querySelectorAll('.mp-logo').forEach(el => {
+    const clone = tmpl.content.cloneNode(true);
+    el.prepend(clone);
+  });
+});
+</script>
+
+<!-- ============================================================
+     THEME 1 — WARM CREAM + AMBER (Current)
+     ============================================================ -->
+<section class="theme-section" id="theme-1">
+  <h2 class="theme-title">Theme 1: Warm Cream + Amber</h2>
+  <p class="theme-subtitle">The current palette. Warm, editorial, A24-meets-Letterboxd. Cream backgrounds with amber accent and dark header.</p>
+
+  <!-- Palette Swatches -->
+  <div class="palette-row">
+    <div class="swatch"><div class="swatch-color" style="background:#EFECD5;border-color:#ccc;"></div><div class="swatch-label">Background</div><div class="swatch-hex">#EFECD5</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#E8E5CE;border-color:#ccc;"></div><div class="swatch-label">Surface</div><div class="swatch-hex">#E8E5CE</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F8F6E9;border-color:#ccc;"></div><div class="swatch-label">Elevated</div><div class="swatch-hex">#F8F6E9</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#1C1612;"></div><div class="swatch-label">Ink Text</div><div class="swatch-hex">#1C1612</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#4A3F35;"></div><div class="swatch-label">Secondary</div><div class="swatch-hex">#4A3F35</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#7A7060;"></div><div class="swatch-label">Tertiary</div><div class="swatch-hex">#7A7060</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#E05A22;"></div><div class="swatch-label">Accent</div><div class="swatch-hex">#E05A22</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F06A32;"></div><div class="swatch-label">Hover</div><div class="swatch-hex">#F06A32</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#1A1A1A;"></div><div class="swatch-label">Header</div><div class="swatch-hex">#1A1A1A</div></div>
+  </div>
+
+  <!-- Score Badges -->
+  <div class="detail-section">
+    <h3>Score Badges</h3>
+    <div class="badge-row">
+      <div style="text-align:center"><div class="score-badge" style="background:#2E7D32;color:#fff;">92</div><div class="badge-label">High</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#558B2F;color:#fff;">76</div><div class="badge-label">Good</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#F9A825;color:#1C1612;">58</div><div class="badge-label">Mixed</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#C62828;color:#fff;">32</div><div class="badge-label">Low</div></div>
+    </div>
+  </div>
+
+  <!-- Mini Preview -->
+  <div class="preview-frame mp theme-1">
+    <!-- Header -->
+    <div class="mp-header">
+      <a class="mp-logo" style="color:var(--mp-accent);">FLICKPICK</a>
+      <nav class="mp-nav">
+        <a href="#">Discover</a><a href="#">My List</a><a href="#">Social</a>
+      </nav>
+      <input class="mp-search" type="text" placeholder="Search movies..." readonly>
+    </div>
+    <!-- Hero -->
+    <div class="mp-hero">
+      <h2>What are you in the mood<br>to watch?</h2>
+      <div class="mp-tabs">
+        <div class="mp-tab active">Pick Favorites</div>
+        <div class="mp-tab">Describe It</div>
+        <div class="mp-tab">Choose Your Mood</div>
+      </div>
+      <div class="mp-moods">
+        <div class="mp-mood selected">Thought-Provoking</div>
+        <div class="mp-mood">Feel-Good</div>
+        <div class="mp-mood">Intense</div>
+        <div class="mp-mood selected">Visually Stunning</div>
+        <div class="mp-mood">Quirky</div>
+      </div>
+    </div>
+    <!-- Input samples -->
+    <div class="mp-input-sample">
+      <input class="mp-input-full" type="text" placeholder="Search for a movie, genre, or director..." readonly>
+      <textarea class="mp-textarea" placeholder="Describe what you want to watch..." readonly></textarea>
+    </div>
+    <!-- Movie Grid -->
+    <div class="mp-movies">
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-1);"><div class="mp-score" style="background:#2E7D32;">92</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Past Lives</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-2);"><div class="mp-score" style="background:#558B2F;">78</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">The Holdovers</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-3);"><div class="mp-score" style="background:#F9A825;color:#1C1612;">55</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Priscilla</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-4);"><div class="mp-score" style="background:#2E7D32;">88</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Anatomy of a Fall</div><div class="mp-movie-year">2023</div></div>
+      </div>
+    </div>
+    <!-- CTA -->
+    <div class="mp-cta-section">
+      <button class="mp-cta">Get Recommendations</button>
+    </div>
+    <!-- Footer -->
+    <div class="mp-footer">
+      <span class="mp-footer-logo">FLICKPICK</span>
+      <div class="mp-footer-links"><a href="#">About</a><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     THEME 2 — MIDNIGHT CINEMA
+     ============================================================ -->
+<section class="theme-section" id="theme-2">
+  <h2 class="theme-title">Theme 2: Midnight Cinema</h2>
+  <p class="theme-subtitle">Dark and moody like a theater at showtime. Near-black backgrounds with warm white text and bright orange accent.</p>
+
+  <div class="palette-row">
+    <div class="swatch"><div class="swatch-color" style="background:#0F0F0F;"></div><div class="swatch-label">Background</div><div class="swatch-hex">#0F0F0F</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#1A1A1A;"></div><div class="swatch-label">Surface</div><div class="swatch-hex">#1A1A1A</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#252525;"></div><div class="swatch-label">Elevated</div><div class="swatch-hex">#252525</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#E8E4DC;"></div><div class="swatch-label">Text</div><div class="swatch-hex">#E8E4DC</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#9A9489;"></div><div class="swatch-label">Secondary</div><div class="swatch-hex">#9A9489</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#6A6459;"></div><div class="swatch-label">Tertiary</div><div class="swatch-hex">#6A6459</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#FF6B35;"></div><div class="swatch-label">Accent</div><div class="swatch-hex">#FF6B35</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#333;"></div><div class="swatch-label">Border</div><div class="swatch-hex">#333333</div></div>
+  </div>
+
+  <div class="detail-section">
+    <h3>Score Badges</h3>
+    <div class="badge-row">
+      <div style="text-align:center"><div class="score-badge" style="background:#1B5E20;color:#66BB6A;">92</div><div class="badge-label">High</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#33691E;color:#9CCC65;">76</div><div class="badge-label">Good</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#4A3800;color:#FFD54F;">58</div><div class="badge-label">Mixed</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#4A0000;color:#EF5350;">32</div><div class="badge-label">Low</div></div>
+    </div>
+  </div>
+
+  <div class="preview-frame mp theme-2">
+    <div class="mp-header">
+      <a class="mp-logo" style="color:var(--mp-accent);">FLICKPICK</a>
+      <nav class="mp-nav"><a href="#">Discover</a><a href="#">My List</a><a href="#">Social</a></nav>
+      <input class="mp-search" type="text" placeholder="Search movies..." readonly>
+    </div>
+    <div class="mp-hero">
+      <h2>What are you in the mood<br>to watch?</h2>
+      <div class="mp-tabs">
+        <div class="mp-tab active">Pick Favorites</div>
+        <div class="mp-tab">Describe It</div>
+        <div class="mp-tab">Choose Your Mood</div>
+      </div>
+      <div class="mp-moods">
+        <div class="mp-mood selected">Thought-Provoking</div>
+        <div class="mp-mood">Feel-Good</div>
+        <div class="mp-mood">Intense</div>
+        <div class="mp-mood selected">Visually Stunning</div>
+        <div class="mp-mood">Quirky</div>
+      </div>
+    </div>
+    <div class="mp-input-sample">
+      <input class="mp-input-full" type="text" placeholder="Search for a movie, genre, or director..." readonly>
+      <textarea class="mp-textarea" placeholder="Describe what you want to watch..." readonly></textarea>
+    </div>
+    <div class="mp-movies">
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-1);"><div class="mp-score" style="background:#1B5E20;color:#66BB6A;">92</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Past Lives</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-2);"><div class="mp-score" style="background:#33691E;color:#9CCC65;">78</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">The Holdovers</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-3);"><div class="mp-score" style="background:#4A3800;color:#FFD54F;">55</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Priscilla</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-4);"><div class="mp-score" style="background:#1B5E20;color:#66BB6A;">88</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Anatomy of a Fall</div><div class="mp-movie-year">2023</div></div>
+      </div>
+    </div>
+    <div class="mp-cta-section"><button class="mp-cta">Get Recommendations</button></div>
+    <div class="mp-footer">
+      <span class="mp-footer-logo">FLICKPICK</span>
+      <div class="mp-footer-links"><a href="#">About</a><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     THEME 3 — COOL SLATE
+     ============================================================ -->
+<section class="theme-section" id="theme-3">
+  <h2 class="theme-title">Theme 3: Cool Slate</h2>
+  <p class="theme-subtitle">Modern and clean with cool undertones. Blue-black header, royal blue accent, cool off-white backgrounds. Calm and professional.</p>
+
+  <div class="palette-row">
+    <div class="swatch"><div class="swatch-color" style="background:#F5F5F0;border-color:#ccc;"></div><div class="swatch-label">Background</div><div class="swatch-hex">#F5F5F0</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#EAEAE5;border-color:#ccc;"></div><div class="swatch-label">Surface</div><div class="swatch-hex">#EAEAE5</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#FFFFFF;border-color:#ccc;"></div><div class="swatch-label">Elevated</div><div class="swatch-hex">#FFFFFF</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#1A1D23;"></div><div class="swatch-label">Text</div><div class="swatch-hex">#1A1D23</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#5A5E6B;"></div><div class="swatch-label">Secondary</div><div class="swatch-hex">#5A5E6B</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#8A8E9B;"></div><div class="swatch-label">Tertiary</div><div class="swatch-hex">#8A8E9B</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#2563EB;"></div><div class="swatch-label">Accent</div><div class="swatch-hex">#2563EB</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#D5D5D0;border-color:#bbb;"></div><div class="swatch-label">Border</div><div class="swatch-hex">#D5D5D0</div></div>
+  </div>
+
+  <div class="detail-section">
+    <h3>Score Badges</h3>
+    <div class="badge-row">
+      <div style="text-align:center"><div class="score-badge" style="background:#16A34A;color:#fff;">92</div><div class="badge-label">High</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#65A30D;color:#fff;">76</div><div class="badge-label">Good</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#EAB308;color:#1A1D23;">58</div><div class="badge-label">Mixed</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#DC2626;color:#fff;">32</div><div class="badge-label">Low</div></div>
+    </div>
+  </div>
+
+  <div class="preview-frame mp theme-3">
+    <div class="mp-header">
+      <a class="mp-logo" style="color:var(--mp-accent);">FLICKPICK</a>
+      <nav class="mp-nav"><a href="#">Discover</a><a href="#">My List</a><a href="#">Social</a></nav>
+      <input class="mp-search" type="text" placeholder="Search movies..." readonly>
+    </div>
+    <div class="mp-hero">
+      <h2>What are you in the mood<br>to watch?</h2>
+      <div class="mp-tabs">
+        <div class="mp-tab active">Pick Favorites</div>
+        <div class="mp-tab">Describe It</div>
+        <div class="mp-tab">Choose Your Mood</div>
+      </div>
+      <div class="mp-moods">
+        <div class="mp-mood selected">Thought-Provoking</div>
+        <div class="mp-mood">Feel-Good</div>
+        <div class="mp-mood">Intense</div>
+        <div class="mp-mood selected">Visually Stunning</div>
+        <div class="mp-mood">Quirky</div>
+      </div>
+    </div>
+    <div class="mp-input-sample">
+      <input class="mp-input-full" type="text" placeholder="Search for a movie, genre, or director..." readonly>
+      <textarea class="mp-textarea" placeholder="Describe what you want to watch..." readonly></textarea>
+    </div>
+    <div class="mp-movies">
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-1);"><div class="mp-score" style="background:#16A34A;color:#fff;">92</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Past Lives</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-2);"><div class="mp-score" style="background:#65A30D;color:#fff;">78</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">The Holdovers</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-3);"><div class="mp-score" style="background:#EAB308;color:#1A1D23;">55</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Priscilla</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-4);"><div class="mp-score" style="background:#16A34A;color:#fff;">88</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Anatomy of a Fall</div><div class="mp-movie-year">2023</div></div>
+      </div>
+    </div>
+    <div class="mp-cta-section"><button class="mp-cta">Get Recommendations</button></div>
+    <div class="mp-footer">
+      <span class="mp-footer-logo">FLICKPICK</span>
+      <div class="mp-footer-links"><a href="#">About</a><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     THEME 4 — NOIR & GOLD
+     ============================================================ -->
+<section class="theme-section" id="theme-4">
+  <h2 class="theme-title">Theme 4: Noir &amp; Gold</h2>
+  <p class="theme-subtitle">High-contrast and luxurious. Deep black with warm cream text and true gold accent. Feels like an awards ceremony invitation.</p>
+
+  <div class="palette-row">
+    <div class="swatch"><div class="swatch-color" style="background:#111111;"></div><div class="swatch-label">Background</div><div class="swatch-hex">#111111</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#1A1A1A;"></div><div class="swatch-label">Surface</div><div class="swatch-hex">#1A1A1A</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#222222;"></div><div class="swatch-label">Elevated</div><div class="swatch-hex">#222222</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F0ECE2;"></div><div class="swatch-label">Text</div><div class="swatch-hex">#F0ECE2</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#8A8578;"></div><div class="swatch-label">Secondary</div><div class="swatch-hex">#8A8578</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#5A5548;"></div><div class="swatch-label">Tertiary</div><div class="swatch-hex">#5A5548</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#D4A843;"></div><div class="swatch-label">Gold Accent</div><div class="swatch-hex">#D4A843</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#0A0A0A;"></div><div class="swatch-label">Header</div><div class="swatch-hex">#0A0A0A</div></div>
+  </div>
+
+  <div class="detail-section">
+    <h3>Score Badges</h3>
+    <div class="badge-row">
+      <div style="text-align:center"><div class="score-badge" style="background:#1B5E20;color:#81C784;">92</div><div class="badge-label">High</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#33691E;color:#AED581;">76</div><div class="badge-label">Good</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#5C4800;color:#D4A843;">58</div><div class="badge-label">Mixed</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#5C0000;color:#EF5350;">32</div><div class="badge-label">Low</div></div>
+    </div>
+  </div>
+
+  <div class="preview-frame mp theme-4">
+    <div class="mp-header" style="border-bottom:1px solid #D4A843;">
+      <a class="mp-logo" style="color:#D4A843;">FLICKPICK</a>
+      <nav class="mp-nav"><a href="#">Discover</a><a href="#">My List</a><a href="#">Social</a></nav>
+      <input class="mp-search" type="text" placeholder="Search movies..." readonly>
+    </div>
+    <div class="mp-hero">
+      <h2>What are you in the mood<br>to watch?</h2>
+      <div class="mp-tabs">
+        <div class="mp-tab active">Pick Favorites</div>
+        <div class="mp-tab">Describe It</div>
+        <div class="mp-tab">Choose Your Mood</div>
+      </div>
+      <div class="mp-moods">
+        <div class="mp-mood selected">Thought-Provoking</div>
+        <div class="mp-mood">Feel-Good</div>
+        <div class="mp-mood">Intense</div>
+        <div class="mp-mood selected">Visually Stunning</div>
+        <div class="mp-mood">Quirky</div>
+      </div>
+    </div>
+    <div class="mp-input-sample">
+      <input class="mp-input-full" type="text" placeholder="Search for a movie, genre, or director..." readonly>
+      <textarea class="mp-textarea" placeholder="Describe what you want to watch..." readonly></textarea>
+    </div>
+    <div class="mp-movies">
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-1);"><div class="mp-score" style="background:#1B5E20;color:#81C784;">92</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Past Lives</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-2);"><div class="mp-score" style="background:#33691E;color:#AED581;">78</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">The Holdovers</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-3);"><div class="mp-score" style="background:#5C4800;color:#D4A843;">55</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Priscilla</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-4);"><div class="mp-score" style="background:#1B5E20;color:#81C784;">88</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Anatomy of a Fall</div><div class="mp-movie-year">2023</div></div>
+      </div>
+    </div>
+    <div class="mp-cta-section"><button class="mp-cta">Get Recommendations</button></div>
+    <div class="mp-footer" style="border-top:1px solid #D4A843;">
+      <span class="mp-footer-logo">FLICKPICK</span>
+      <div class="mp-footer-links"><a href="#">About</a><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     THEME 5 — FOREST & TERRACOTTA
+     ============================================================ -->
+<section class="theme-section" id="theme-5">
+  <h2 class="theme-title">Theme 5: Forest &amp; Terracotta</h2>
+  <p class="theme-subtitle">Earthy, warm, and organic. Linen backgrounds with terracotta accent and forest green secondary. Natural and grounded.</p>
+
+  <div class="palette-row">
+    <div class="swatch"><div class="swatch-color" style="background:#F2EDE4;border-color:#ccc;"></div><div class="swatch-label">Background</div><div class="swatch-hex">#F2EDE4</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#E8E2D6;border-color:#ccc;"></div><div class="swatch-label">Surface</div><div class="swatch-hex">#E8E2D6</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#FAF6EF;border-color:#ccc;"></div><div class="swatch-label">Elevated</div><div class="swatch-hex">#FAF6EF</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#2D2A24;"></div><div class="swatch-label">Text</div><div class="swatch-hex">#2D2A24</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#6B6459;"></div><div class="swatch-label">Secondary</div><div class="swatch-hex">#6B6459</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#C4531A;"></div><div class="swatch-label">Terracotta</div><div class="swatch-hex">#C4531A</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#3D6B4F;"></div><div class="swatch-label">Forest</div><div class="swatch-hex">#3D6B4F</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#2D2A24;"></div><div class="swatch-label">Header</div><div class="swatch-hex">#2D2A24</div></div>
+  </div>
+
+  <div class="detail-section">
+    <h3>Score Badges</h3>
+    <div class="badge-row">
+      <div style="text-align:center"><div class="score-badge" style="background:#3D6B4F;color:#fff;">92</div><div class="badge-label">High</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#5A8A5A;color:#fff;">76</div><div class="badge-label">Good</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#D4A030;color:#2D2A24;">58</div><div class="badge-label">Mixed</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#B33A1A;color:#fff;">32</div><div class="badge-label">Low</div></div>
+    </div>
+  </div>
+
+  <div class="preview-frame mp theme-5">
+    <div class="mp-header">
+      <a class="mp-logo" style="color:#C4531A;">FLICKPICK</a>
+      <nav class="mp-nav"><a href="#">Discover</a><a href="#">My List</a><a href="#">Social</a></nav>
+      <input class="mp-search" type="text" placeholder="Search movies..." readonly>
+    </div>
+    <div class="mp-hero">
+      <h2>What are you in the mood<br>to watch?</h2>
+      <div class="mp-tabs">
+        <div class="mp-tab active">Pick Favorites</div>
+        <div class="mp-tab">Describe It</div>
+        <div class="mp-tab" style="background:var(--mp-accent-2);color:#fff;border-color:var(--mp-accent-2);">Choose Your Mood</div>
+      </div>
+      <div class="mp-moods">
+        <div class="mp-mood selected">Thought-Provoking</div>
+        <div class="mp-mood">Feel-Good</div>
+        <div class="mp-mood">Intense</div>
+        <div class="mp-mood" style="background:rgba(61,107,79,0.10);color:#3D6B4F;border-color:#3D6B4F;">Visually Stunning</div>
+        <div class="mp-mood">Quirky</div>
+      </div>
+    </div>
+    <div class="mp-input-sample">
+      <input class="mp-input-full" type="text" placeholder="Search for a movie, genre, or director..." readonly>
+      <textarea class="mp-textarea" placeholder="Describe what you want to watch..." readonly></textarea>
+    </div>
+    <div class="mp-movies">
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-1);"><div class="mp-score" style="background:#3D6B4F;color:#fff;">92</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Past Lives</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-2);"><div class="mp-score" style="background:#5A8A5A;color:#fff;">78</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">The Holdovers</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-3);"><div class="mp-score" style="background:#D4A030;color:#2D2A24;">55</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Priscilla</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-4);"><div class="mp-score" style="background:#3D6B4F;color:#fff;">88</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Anatomy of a Fall</div><div class="mp-movie-year">2023</div></div>
+      </div>
+    </div>
+    <div class="mp-cta-section">
+      <button class="mp-cta">Get Recommendations</button>
+      <button class="mp-cta" style="background:#3D6B4F;margin-left:8px;">Browse Curated</button>
+    </div>
+    <div class="mp-footer">
+      <span class="mp-footer-logo">FLICKPICK</span>
+      <div class="mp-footer-links"><a href="#">About</a><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     THEME 6 — SUNSET GRADIENT
+     ============================================================ -->
+<section class="theme-section" id="theme-6">
+  <h2 class="theme-title">Theme 6: Sunset Gradient</h2>
+  <p class="theme-subtitle">Vibrant, energetic, and modern. Clean white background with sunset orange gradient accent and gradient header border. Bold and inviting.</p>
+
+  <div class="palette-row">
+    <div class="swatch"><div class="swatch-color" style="background:#FAFAFA;border-color:#ccc;"></div><div class="swatch-label">Background</div><div class="swatch-hex">#FAFAFA</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F0F0F0;border-color:#ccc;"></div><div class="swatch-label">Surface</div><div class="swatch-hex">#F0F0F0</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#FFFFFF;border-color:#ccc;"></div><div class="swatch-label">Elevated</div><div class="swatch-hex">#FFFFFF</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#1A1A1A;"></div><div class="swatch-label">Text</div><div class="swatch-hex">#1A1A1A</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#666666;"></div><div class="swatch-label">Secondary</div><div class="swatch-hex">#666666</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:linear-gradient(135deg,#FF6B35,#E05A22);"></div><div class="swatch-label">Gradient</div><div class="swatch-hex">#FF6B35</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#FF4757;"></div><div class="swatch-label">Coral</div><div class="swatch-hex">#FF4757</div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#E0E0E0;border-color:#ccc;"></div><div class="swatch-label">Border</div><div class="swatch-hex">#E0E0E0</div></div>
+  </div>
+
+  <div class="detail-section">
+    <h3>Score Badges</h3>
+    <div class="badge-row">
+      <div style="text-align:center"><div class="score-badge" style="background:#16A34A;color:#fff;">92</div><div class="badge-label">High</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#65A30D;color:#fff;">76</div><div class="badge-label">Good</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#EAB308;color:#1A1A1A;">58</div><div class="badge-label">Mixed</div></div>
+      <div style="text-align:center"><div class="score-badge" style="background:#FF4757;color:#fff;">32</div><div class="badge-label">Low</div></div>
+    </div>
+  </div>
+
+  <div class="preview-frame mp theme-6">
+    <div class="mp-header">
+      <a class="mp-logo" style="color:#FF6B35;">FLICKPICK</a>
+      <nav class="mp-nav"><a href="#">Discover</a><a href="#">My List</a><a href="#">Social</a></nav>
+      <input class="mp-search" type="text" placeholder="Search movies..." readonly>
+    </div>
+    <div class="mp-hero">
+      <h2>What are you in the mood<br>to watch?</h2>
+      <div class="mp-tabs">
+        <div class="mp-tab" style="background:linear-gradient(135deg,#FF6B35,#E05A22);color:#fff;border-color:transparent;">Pick Favorites</div>
+        <div class="mp-tab">Describe It</div>
+        <div class="mp-tab">Choose Your Mood</div>
+      </div>
+      <div class="mp-moods">
+        <div class="mp-mood" style="background:rgba(255,107,53,0.08);color:#E05A22;border-color:#FF6B35;">Thought-Provoking</div>
+        <div class="mp-mood">Feel-Good</div>
+        <div class="mp-mood">Intense</div>
+        <div class="mp-mood" style="background:rgba(255,71,87,0.08);color:#FF4757;border-color:#FF4757;">Visually Stunning</div>
+        <div class="mp-mood">Quirky</div>
+      </div>
+    </div>
+    <div class="mp-input-sample">
+      <input class="mp-input-full" type="text" placeholder="Search for a movie, genre, or director..." readonly>
+      <textarea class="mp-textarea" placeholder="Describe what you want to watch..." readonly></textarea>
+    </div>
+    <div class="mp-movies">
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-1);"><div class="mp-score" style="background:#16A34A;color:#fff;">92</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Past Lives</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-2);"><div class="mp-score" style="background:#65A30D;color:#fff;">78</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">The Holdovers</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-3);"><div class="mp-score" style="background:#EAB308;color:#1A1A1A;">55</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Priscilla</div><div class="mp-movie-year">2023</div></div>
+      </div>
+      <div class="mp-movie-card">
+        <div class="mp-poster" style="background:var(--mp-poster-4);"><div class="mp-score" style="background:#16A34A;color:#fff;">88</div></div>
+        <div class="mp-movie-info"><div class="mp-movie-title">Anatomy of a Fall</div><div class="mp-movie-year">2023</div></div>
+      </div>
+    </div>
+    <div class="mp-cta-section">
+      <button class="mp-cta gradient" style="background:linear-gradient(135deg,#FF6B35,#E05A22);">Get Recommendations</button>
+    </div>
+    <div class="mp-footer">
+      <span class="mp-footer-logo">FLICKPICK</span>
+      <div class="mp-footer-links"><a href="#">About</a><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PAGE FOOTER
+     ============================================================ -->
+<footer style="text-align:center;padding:48px 24px 64px;border-top:1px solid #222;">
+  <p style="font-size:13px;color:#666;">FLICKPICK Color Theme Review &mdash; Pick a direction, mix and match, or iterate.</p>
+  <p style="font-size:11px;color:#444;margin-top:8px;">Fonts: Instrument Serif + Sora &bull; All previews are self-contained CSS-variable-driven mockups</p>
+</footer>
+
+<!-- Smooth scroll -->
+<script>
+document.querySelectorAll('.jump-nav a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+
+</body>
+</html>
