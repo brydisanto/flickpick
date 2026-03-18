@@ -112,13 +112,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
+        // Unblock the UI immediately — profile fetch happens in background
+        setIsLoading(false);
 
         if (currentSession?.user) {
-          await fetchProfile(currentSession.user.id);
+          fetchProfile(currentSession.user.id);
         }
       } catch (err) {
         console.error("Auth init error:", err);
-      } finally {
         setIsLoading(false);
       }
     };
