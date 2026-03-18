@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
-import { Bookmark, BookmarkCheck, Star, Share2, Check, LogIn } from "lucide-react";
+import { Bookmark, BookmarkCheck, Star, Share2, Check } from "lucide-react";
 import StarRating from "@/components/ui/StarRating";
+import { useAuth } from "@/lib/auth-context";
 
 const RATING_REACTIONS: Record<number, string> = {
   0.5: "Ouch. Noted.",
@@ -20,14 +21,14 @@ const RATING_REACTIONS: Record<number, string> = {
 interface MovieActionsProps {
   movieId: string;
   movieTitle: string;
-  userId?: string;
 }
 
 export default function MovieActions({
   movieId,
   movieTitle,
-  userId,
 }: MovieActionsProps) {
+  const { user, session } = useAuth();
+  const userId = user?.id;
   const [inWatchlist, setInWatchlist] = useState(false);
   const [watchlistLoading, setWatchlistLoading] = useState(false);
   const [showRater, setShowRater] = useState(false);
@@ -38,6 +39,30 @@ export default function MovieActions({
   const [reactionText, setReactionText] = useState("");
   const raterRef = useRef<HTMLDivElement>(null);
   const reactionTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Fetch initial watchlist and rating state
+  useEffect(() => {
+    if (!userId || !session?.access_token) return;
+    const headers = { Authorization: `Bearer ${session.access_token}` };
+    // Check watchlist
+    fetch("/api/watchlist", { headers })
+      .then((r) => r.ok ? r.json() : null)
+      .then((data) => {
+        if (data?.watchlist?.some((w: { movie_id: string }) => w.movie_id === movieId)) {
+          setInWatchlist(true);
+        }
+      })
+      .catch(() => {});
+    // Check existing rating
+    fetch(`/api/ratings?movie_id=${encodeURIComponent(movieId)}`, { headers })
+      .then((r) => r.ok ? r.json() : null)
+      .then((data) => {
+        if (data?.rating?.rating) {
+          setQuickRating(data.rating.rating);
+        }
+      })
+      .catch(() => {});
+  }, [userId, movieId, session?.access_token]);
 
   // Close rater on outside click
   useEffect(() => {
@@ -68,7 +93,10 @@ export default function MovieActions({
     try {
       const res = await fetch("/api/watchlist", {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(session?.access_token && { Authorization: `Bearer ${session.access_token}` }),
+        },
         body: JSON.stringify({ movie_id: movieId }),
       });
       if (res.ok) {
@@ -101,7 +129,10 @@ export default function MovieActions({
       try {
         const res = await fetch("/api/ratings", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...(session?.access_token && { Authorization: `Bearer ${session.access_token}` }),
+          },
           body: JSON.stringify({ movie_id: movieId, rating: value }),
         });
         if (res.ok) {

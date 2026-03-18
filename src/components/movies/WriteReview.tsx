@@ -3,21 +3,22 @@
 import { useState, useEffect, useCallback } from "react";
 import { Send, Pencil, LogIn, AlertTriangle } from "lucide-react";
 import StarRating from "@/components/ui/StarRating";
+import { useAuth } from "@/lib/auth-context";
 import type { Review } from "@/types";
 
 interface WriteReviewProps {
   movieId: string;
   movieTitle: string;
-  userId?: string;
   onReviewSubmitted?: () => void;
 }
 
 export default function WriteReview({
   movieId,
   movieTitle,
-  userId,
   onReviewSubmitted,
 }: WriteReviewProps) {
+  const { user, session } = useAuth();
+  const userId = user?.id;
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
   const [containsSpoilers, setContainsSpoilers] = useState(false);
@@ -85,7 +86,10 @@ export default function WriteReview({
     try {
       const res = await fetch("/api/reviews", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(session?.access_token && { Authorization: `Bearer ${session.access_token}` }),
+        },
         body: JSON.stringify({
           movie_id: movieId,
           rating,

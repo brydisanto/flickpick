@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { ThumbsUp, ChevronDown, AlertTriangle, MessageSquare } from "lucide-react";
 import StarRating from "@/components/ui/StarRating";
+import { useAuth } from "@/lib/auth-context";
 import type { Review } from "@/types";
 
 type SortOption = "recent" | "rating" | "likes";
@@ -11,7 +12,6 @@ type SortOption = "recent" | "rating" | "likes";
 interface ReviewSectionProps {
   movieId: string;
   movieTitle: string;
-  userId?: string;
 }
 
 interface ReviewsResponse {
@@ -136,8 +136,9 @@ function ReviewCard({
 export default function ReviewSection({
   movieId,
   movieTitle,
-  userId,
 }: ReviewSectionProps) {
+  const { user, session } = useAuth();
+  const userId = user?.id;
   const [reviews, setReviews] = useState<Review[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -203,7 +204,10 @@ export default function ReviewSection({
     try {
       const res = await fetch(`/api/reviews/like`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(session?.access_token && { Authorization: `Bearer ${session.access_token}` }),
+        },
         body: JSON.stringify({ review_id: reviewId }),
       });
       if (!res.ok) {

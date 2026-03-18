@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Clock, Calendar } from "lucide-react";
+import { createClient } from "@supabase/supabase-js";
 import { getMovieDetails, getMovieCredits, getSimilarMovies } from "@/lib/tmdb";
 import { fetchRatings } from "@/lib/omdb";
 import { getTmdbImageUrl, computeAggregateScore, getScoreLevel, getScoreLabel } from "@/types";
@@ -203,6 +204,20 @@ export default async function MoviePage({ params }: PageProps) {
     getSimilarMovies(tmdbId).catch(() => null),
   ]);
 
+  // Look up Supabase movie UUID for interactive features (watchlist, ratings, reviews)
+  let dbMovieId: string | null = null;
+  try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (supabaseUrl && supabaseKey) {
+      const supabase = createClient(supabaseUrl, supabaseKey);
+      const { data } = await supabase.from("movies").select("id").eq("tmdb_id", tmdbId).single();
+      dbMovieId = data?.id ?? null;
+    }
+  } catch {
+    // Movie may not be in DB yet — interactive features won't work until it is
+  }
+
   const directors =
     credits?.crew.filter((c) => c.job === "Director").slice(0, 3) || [];
   const cast = credits?.cast.slice(0, 10) || [];
@@ -326,7 +341,7 @@ export default async function MoviePage({ params }: PageProps) {
             )}
 
             <MovieActions
-              movieId={String(tmdbId)}
+              movieId={dbMovieId || String(tmdbId)}
               movieTitle={movie.title}
             />
           </div>
@@ -468,13 +483,13 @@ export default async function MoviePage({ params }: PageProps) {
 
         {/* -- Write Review -- */}
         <WriteReview
-          movieId={String(tmdbId)}
+          movieId={dbMovieId || String(tmdbId)}
           movieTitle={movie.title}
         />
 
         {/* -- Review Section -- */}
         <ReviewSection
-          movieId={String(tmdbId)}
+          movieId={dbMovieId || String(tmdbId)}
           movieTitle={movie.title}
         />
 
