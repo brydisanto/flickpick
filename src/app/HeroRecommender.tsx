@@ -200,7 +200,7 @@ export default function HeroRecommender() {
     <div className="space-y-6">
       {/* Mode Tabs */}
       <div className="flex justify-center">
-        <div className="inline-flex bg-bg-tertiary border border-border-subtle rounded-[var(--radius-lg)] p-1 gap-1">
+        <div className="inline-flex bg-white/8 border border-white/10 rounded-[var(--radius-lg)] p-1 gap-1">
           {([
             { key: "seeds", label: "Pick Favorites" },
             { key: "natural", label: "Describe It" },
@@ -213,8 +213,8 @@ export default function HeroRecommender() {
                 px-4 sm:px-6 py-2 rounded-[var(--radius-md)] text-sm font-medium transition-all duration-200
                 ${
                   mode === tab.key
-                    ? "bg-bg-elevated text-text-primary shadow-[var(--shadow-sm)]"
-                    : "text-text-tertiary hover:text-text-primary"
+                    ? "bg-white/15 text-bg-primary shadow-[var(--shadow-sm)]"
+                    : "text-bg-primary/50 hover:text-bg-primary"
                 }
               `}
             >
@@ -234,6 +234,7 @@ export default function HeroRecommender() {
               onSearch={searchMovies}
               onSelect={handleSelectSeed}
               className="max-w-lg mx-auto"
+              variant="dark"
             />
 
             {seeds.length > 0 && (
@@ -259,7 +260,7 @@ export default function HeroRecommender() {
               </div>
             )}
 
-            <p className="text-center text-sm text-text-tertiary">
+            <p className="text-center text-sm text-bg-primary/40">
               {seedMessage}
             </p>
           </div>
@@ -271,7 +272,7 @@ export default function HeroRecommender() {
             <div className="relative">
               <MessageSquareText
                 size={18}
-                className="absolute left-3 top-3.5 text-text-tertiary pointer-events-none"
+                className="absolute left-3 top-3.5 text-bg-primary/40 pointer-events-none"
               />
               <textarea
                 value={nlQuery}
@@ -280,14 +281,14 @@ export default function HeroRecommender() {
                 rows={3}
                 className="
                   w-full pl-10 pr-4 py-3 rounded-[var(--radius-md)]
-                  bg-bg-secondary border border-border-subtle
-                  text-text-primary text-sm placeholder:text-text-tertiary
+                  bg-white/8 border border-white/10
+                  text-bg-primary text-sm placeholder:text-bg-primary/30
                   focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold
                   transition-colors resize-none
                 "
               />
             </div>
-            <p className="text-center text-sm text-text-tertiary">
+            <p className="text-center text-sm text-bg-primary/40">
               Describe the vibe, genre, mood, or anything about the movie you
               want to watch
             </p>
@@ -326,7 +327,7 @@ export default function HeroRecommender() {
             ${
               canSubmit && !isLoading
                 ? "bg-gold text-bg-primary shadow-[var(--shadow-md)] hover:bg-gold-hover hover:shadow-[var(--shadow-lg)] active:scale-[0.98]"
-                : "bg-bg-tertiary text-text-tertiary cursor-not-allowed"
+                : "bg-white/8 text-bg-primary/30 cursor-not-allowed"
             }
           `}
         >

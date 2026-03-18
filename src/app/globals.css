@@ -316,6 +316,53 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ===================================================
+   HERO — SPOTLIGHT / STAGE LIGHTING
+   =================================================== */
+
+.hero-spotlight {
+  position: relative;
+  overflow: hidden;
+  background: #1E1B16;
+}
+
+.hero-spotlight::before {
+  content: '';
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(224, 90, 34, 0.12) 0%, rgba(224, 90, 34, 0.04) 35%, transparent 70%);
+  z-index: 0;
+  animation: spotlightPulse 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.hero-spotlight::after {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  bottom: -100px;
+  right: -100px;
+  background: radial-gradient(ellipse, rgba(240, 180, 90, 0.06) 0%, transparent 60%);
+  z-index: 0;
+  animation: spotlightPulse 12s ease-in-out infinite reverse;
+  pointer-events: none;
+}
+
+@keyframes spotlightPulse {
+  0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+  50% { opacity: 0.7; transform: translateX(-50%) scale(1.1); }
+}
+
+.hero-spotlight-fade {
+  height: 80px;
+  background: linear-gradient(180deg, #1E1B16 0%, var(--bg-primary) 100%);
+}
+
+/* ===================================================
    BUTTONS
    =================================================== */
 

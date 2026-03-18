@@ -108,15 +108,15 @@ function TrendingSkeleton() {
 export default function HomePage() {
   return (
     <div className="bg-bg-primary">
-      {/* Hero Section */}
-      <section className="relative">
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-28 pb-14">
+      {/* Hero Section — Spotlight / Stage Lighting */}
+      <section className="hero-spotlight">
+        <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-28 pb-14">
           <div className="text-center mb-10">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal text-text-primary tracking-[-0.03em] leading-[1.1]">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal text-bg-primary tracking-[-0.03em] leading-[1.1]">
               What are you in the<br />
               <em className="text-gold-gradient italic pr-2">mood to watch?</em>
             </h1>
-            <p className="mt-5 text-text-secondary max-w-xl mx-auto text-base leading-relaxed">
+            <p className="mt-5 text-bg-primary/60 max-w-xl mx-auto text-base leading-relaxed">
               Tell us what you love. We&rsquo;ll find your next obsession.
             </p>
           </div>
@@ -124,6 +124,7 @@ export default function HomePage() {
           <HeroRecommender />
         </div>
       </section>
+      <div className="hero-spotlight-fade" />
 
       {/* Trending */}
       <div className="border-t border-border-subtle">

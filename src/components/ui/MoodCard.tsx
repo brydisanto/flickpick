@@ -32,8 +32,8 @@ export default function MoodCard({
         active:scale-[0.98] btn-press
         ${
           selected
-            ? "border-gold bg-gold-subtle shadow-[0_0_0_1px_var(--gold)]"
-            : "border-border-subtle bg-bg-elevated text-text-secondary hover:text-gold hover:border-border-accent"
+            ? "border-gold bg-gold/10 shadow-[0_0_0_1px_var(--gold)]"
+            : "border-white/10 bg-white/6 text-bg-primary/60 hover:text-gold hover:border-gold/30"
         }
         ${className}
       `}

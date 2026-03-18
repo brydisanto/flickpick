@@ -22,6 +22,7 @@ interface SearchInputProps {
   onSelect: (result: SearchResult) => void;
   debounceMs?: number;
   className?: string;
+  variant?: "light" | "dark";
 }
 
 export default function SearchInput({
@@ -30,7 +31,9 @@ export default function SearchInput({
   onSelect,
   debounceMs = 300,
   className = "",
+  variant = "light",
 }: SearchInputProps) {
+  const isDark = variant === "dark";
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -153,7 +156,7 @@ export default function SearchInput({
       <div className="relative">
         <Search
           size={18}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary pointer-events-none"
+          className={`absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none ${isDark ? "text-bg-primary/40" : "text-text-tertiary"}`}
         />
         <input
           ref={inputRef}
@@ -173,13 +176,14 @@ export default function SearchInput({
             if (results.length > 0 && query.trim().length >= 2) setIsOpen(true);
           }}
           onKeyDown={handleKeyDown}
-          className="
+          className={`
             w-full pl-10 pr-10 py-2.5 rounded-[var(--radius-md)]
-            bg-bg-secondary border border-border-subtle
-            text-text-primary text-sm placeholder:text-text-tertiary
-            focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-border-accent
-            transition-colors
-          "
+            text-sm focus:outline-none focus:ring-2 focus:ring-gold/30 transition-colors
+            ${isDark
+              ? "bg-white/8 border border-white/10 text-bg-primary placeholder:text-bg-primary/30 focus:border-gold"
+              : "bg-bg-secondary border border-border-subtle text-text-primary placeholder:text-text-tertiary focus:border-border-accent"
+            }
+          `}
         />
         <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center">
           {isLoading && (
