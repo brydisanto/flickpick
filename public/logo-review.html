@@ -15,9 +15,9 @@
     }
 
     :root {
-      --gold: #D4A843;
-      --gold-light: #E8C96A;
-      --gold-dark: #B8923A;
+      --gold: #E05A22;
+      --gold-light: #F06A32;
+      --gold-dark: #C44E1D;
       --cream: #FAF6F1;
       --dark: #1A1A1A;
       --dark-header: #000000;
@@ -73,11 +73,45 @@
       font-weight: 600;
     }
 
+    /* Section Dividers */
+    .section-divider {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 56px 40px 8px;
+    }
+
+    .section-divider h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .section-divider h2 span {
+      color: var(--gold);
+    }
+
+    .section-divider p {
+      font-size: 14px;
+      color: var(--mid-gray);
+      max-width: 640px;
+      line-height: 1.7;
+    }
+
+    .section-divider .divider-line {
+      width: 60px;
+      height: 3px;
+      background: var(--gold);
+      margin-top: 20px;
+      border-radius: 2px;
+    }
+
     /* Layout */
     .concepts {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 48px 40px 80px;
+      padding: 24px 40px 80px;
     }
 
     .concept {
@@ -102,7 +136,7 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--gold);
-      background: rgba(212, 168, 67, 0.1);
+      background: rgba(224, 90, 34, 0.08);
       padding: 4px 12px;
       border-radius: 4px;
       white-space: nowrap;
@@ -180,7 +214,30 @@
     }
 
     /* ==========================================
-       LOGO STYLES
+       ICON + WORDMARK LOGO STYLES
+       ========================================== */
+
+    .icon-wordmark {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .icon-wordmark.hero-size {
+      gap: 14px;
+    }
+
+    .icon-wordmark svg {
+      flex-shrink: 0;
+    }
+
+    .iw-text {
+      line-height: 1;
+    }
+
+    /* ==========================================
+       ORIGINAL LOGO STYLES (A-H)
        ========================================== */
 
     /* --- A: Classic Wordmark --- */
@@ -288,11 +345,11 @@
     }
     .logo-d-mark-dark {
       color: var(--gold);
-      background: rgba(212, 168, 67, 0.08);
+      background: rgba(224, 90, 34, 0.08);
     }
     .logo-d-mark-light {
       color: var(--gold-dark);
-      background: rgba(212, 168, 67, 0.06);
+      background: rgba(224, 90, 34, 0.06);
     }
 
     .logo-d-text {
@@ -424,7 +481,9 @@
         grid-template-columns: 1fr;
       }
       .page-header { padding: 32px 20px; }
-      .concepts { padding: 32px 20px 60px; }
+      .section-divider { padding: 40px 20px 8px; }
+      .section-divider h2 { font-size: 26px; }
+      .concepts { padding: 24px 20px 60px; }
       .concept-header { padding: 20px 20px; }
       .preview { padding: 36px 20px; }
       .concept-notes { padding: 16px 20px; }
@@ -434,6 +493,7 @@
       .logo-h.hero-size { font-size: 32px !important; }
       .hero-size .logo-d-mark { width: 48px; height: 48px; font-size: 24px; }
       .hero-size .logo-d-text { font-size: 28px; }
+      .icon-wordmark.hero-size { gap: 10px; }
     }
   </style>
 </head>
@@ -448,10 +508,745 @@
     </p>
     <div class="meta">
       <span><strong>Fonts</strong> Instrument Serif + Sora</span>
-      <span><strong>Brand Gold</strong> #D4A843</span>
-      <span><strong>Options</strong> 8 concepts</span>
+      <span><strong>Brand Amber</strong> #E05A22</span>
+      <span><strong>Options</strong> 18 concepts (10 icon + 8 wordmark)</span>
       <span><strong>Date</strong> March 18, 2026</span>
     </div>
+  </div>
+
+  <!-- =============================================
+       SECTION: ICON + WORDMARK LOGOS
+       ============================================= -->
+  <div class="section-divider">
+    <h2>Icon + Wordmark <span>Logos</span></h2>
+    <p>
+      Each concept pairs a custom inline SVG icon with the FLICKPICK wordmark. Icons use the brand amber (#E05A22) and are designed to scale cleanly from 16px to 48px. Shown on dark (header) and light (cream) backgrounds at two sizes.
+    </p>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="concepts">
+
+    <!-- ============================================
+         IW1: Film Frame
+         ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-label">Icon 01</span>
+        <span class="concept-title">Film Frame</span>
+      </div>
+      <div class="concept-body">
+        <div class="preview preview-dark">
+          <span class="preview-label">Dark Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="2" width="20" height="20" rx="2" stroke="#E05A22" stroke-width="2"/>
+              <rect x="4" y="1" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="10.5" y="1" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="17" y="1" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="4" y="19" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="10.5" y="19" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="17" y="19" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="6" y="6" width="12" height="12" rx="1" fill="#E05A22" opacity="0.15"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:600; font-size:20px; letter-spacing:0.16em; text-transform:uppercase; color:var(--cream);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Light / Cream</span>
+          <!-- shown on dark for comparison -->
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="2" width="20" height="20" rx="2" stroke="#E05A22" stroke-width="1.5"/>
+              <rect x="4" y="1" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="10.5" y="1" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="17" y="1" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="4" y="19" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="10.5" y="19" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="17" y="19" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="6" y="6" width="12" height="12" rx="1" fill="#E05A22" opacity="0.15"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:600; font-size:44px; letter-spacing:0.16em; text-transform:uppercase; color:var(--cream);">FLICKPICK</span>
+          </span>
+        </div>
+        <div class="preview preview-light">
+          <span class="preview-label">Light Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="2" width="20" height="20" rx="2" stroke="#E05A22" stroke-width="2"/>
+              <rect x="4" y="1" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="10.5" y="1" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="17" y="1" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="4" y="19" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="10.5" y="19" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="17" y="19" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="6" y="6" width="12" height="12" rx="1" fill="#E05A22" opacity="0.1"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:600; font-size:20px; letter-spacing:0.16em; text-transform:uppercase; color:var(--dark);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="2" width="20" height="20" rx="2" stroke="#E05A22" stroke-width="1.5"/>
+              <rect x="4" y="1" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="10.5" y="1" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="17" y="1" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="4" y="19" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="10.5" y="19" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="17" y="19" width="3" height="4" rx="0.5" fill="#E05A22"/>
+              <rect x="6" y="6" width="12" height="12" rx="1" fill="#E05A22" opacity="0.1"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:600; font-size:44px; letter-spacing:0.16em; text-transform:uppercase; color:var(--dark);">FLICKPICK</span>
+          </span>
+        </div>
+      </div>
+      <div class="concept-notes">
+        <strong>Film Frame:</strong> A single film frame with sprocket holes top and bottom, referencing the physical medium of cinema. The icon is geometric and immediately readable at any size. Paired with Sora bold uppercase for a clean, modern lockup. The inner frame area has a subtle amber tint. Works well as a standalone favicon or app icon.
+      </div>
+    </div>
+
+    <!-- ============================================
+         IW2: Play Button
+         ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-label">Icon 02</span>
+        <span class="concept-title">Play Button</span>
+      </div>
+      <div class="concept-body">
+        <div class="preview preview-dark">
+          <span class="preview-label">Dark Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <rect x="1.5" y="3" width="21" height="18" rx="3" stroke="#E05A22" stroke-width="1.8"/>
+              <path d="M10 8.5L16 12L10 15.5V8.5Z" fill="#E05A22"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:700; font-size:20px; letter-spacing:0.12em; text-transform:uppercase; color:var(--cream);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <rect x="1.5" y="3" width="21" height="18" rx="3" stroke="#E05A22" stroke-width="1.4"/>
+              <path d="M10 8.5L16 12L10 15.5V8.5Z" fill="#E05A22"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:700; font-size:44px; letter-spacing:0.12em; text-transform:uppercase; color:var(--cream);">FLICKPICK</span>
+          </span>
+        </div>
+        <div class="preview preview-light">
+          <span class="preview-label">Light Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <rect x="1.5" y="3" width="21" height="18" rx="3" stroke="#E05A22" stroke-width="1.8"/>
+              <path d="M10 8.5L16 12L10 15.5V8.5Z" fill="#E05A22"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:700; font-size:20px; letter-spacing:0.12em; text-transform:uppercase; color:var(--dark);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <rect x="1.5" y="3" width="21" height="18" rx="3" stroke="#E05A22" stroke-width="1.4"/>
+              <path d="M10 8.5L16 12L10 15.5V8.5Z" fill="#E05A22"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:700; font-size:44px; letter-spacing:0.12em; text-transform:uppercase; color:var(--dark);">FLICKPICK</span>
+          </span>
+        </div>
+      </div>
+      <div class="concept-notes">
+        <strong>Play Button:</strong> A rounded-rectangle screen shape with a centered play triangle. Universally recognized as "press play" -- immediately signals video/film content. The rounded rectangle gives it a screen or device quality. Paired with Sora 700 weight for extra confidence. The play icon doubles nicely as a standalone app icon. Simple, scalable, and unambiguous.
+      </div>
+    </div>
+
+    <!-- ============================================
+         IW3: Ticket Stub
+         ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-label">Icon 03</span>
+        <span class="concept-title">Ticket Stub</span>
+      </div>
+      <div class="concept-body">
+        <div class="preview preview-dark">
+          <span class="preview-label">Dark Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="24" height="20" viewBox="0 0 28 20" fill="none">
+              <path d="M2 2C2 0.9 2.9 0 4 0H10V3C10 3.55 10.45 4 11 4C11.55 4 12 3.55 12 3V0H24C25.1 0 26 0.9 26 2V7C24.9 7 24 7.9 24 9V11C24 12.1 24.9 13 26 13V18C26 19.1 25.1 20 24 20H12V17C12 16.45 11.55 16 11 16C10.45 16 10 16.45 10 17V20H4C2.9 20 2 19.1 2 18V2Z" fill="#E05A22"/>
+              <line x1="11" y1="7" x2="11" y2="8.5" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="11" y1="11.5" x2="11" y2="13" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Instrument Serif',serif; font-size:22px; font-weight:400; letter-spacing:0.04em; color:var(--cream);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="52" height="42" viewBox="0 0 28 20" fill="none">
+              <path d="M2 2C2 0.9 2.9 0 4 0H10V3C10 3.55 10.45 4 11 4C11.55 4 12 3.55 12 3V0H24C25.1 0 26 0.9 26 2V7C24.9 7 24 7.9 24 9V11C24 12.1 24.9 13 26 13V18C26 19.1 25.1 20 24 20H12V17C12 16.45 11.55 16 11 16C10.45 16 10 16.45 10 17V20H4C2.9 20 2 19.1 2 18V2Z" fill="#E05A22"/>
+              <line x1="11" y1="7" x2="11" y2="8.5" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="11" y1="11.5" x2="11" y2="13" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Instrument Serif',serif; font-size:46px; font-weight:400; letter-spacing:0.04em; color:var(--cream);">FLICKPICK</span>
+          </span>
+        </div>
+        <div class="preview preview-light">
+          <span class="preview-label">Light Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="24" height="20" viewBox="0 0 28 20" fill="none">
+              <path d="M2 2C2 0.9 2.9 0 4 0H10V3C10 3.55 10.45 4 11 4C11.55 4 12 3.55 12 3V0H24C25.1 0 26 0.9 26 2V7C24.9 7 24 7.9 24 9V11C24 12.1 24.9 13 26 13V18C26 19.1 25.1 20 24 20H12V17C12 16.45 11.55 16 11 16C10.45 16 10 16.45 10 17V20H4C2.9 20 2 19.1 2 18V2Z" fill="#E05A22"/>
+              <line x1="11" y1="7" x2="11" y2="8.5" stroke="var(--cream)" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="11" y1="11.5" x2="11" y2="13" stroke="var(--cream)" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Instrument Serif',serif; font-size:22px; font-weight:400; letter-spacing:0.04em; color:var(--dark);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="52" height="42" viewBox="0 0 28 20" fill="none">
+              <path d="M2 2C2 0.9 2.9 0 4 0H10V3C10 3.55 10.45 4 11 4C11.55 4 12 3.55 12 3V0H24C25.1 0 26 0.9 26 2V7C24.9 7 24 7.9 24 9V11C24 12.1 24.9 13 26 13V18C26 19.1 25.1 20 24 20H12V17C12 16.45 11.55 16 11 16C10.45 16 10 16.45 10 17V20H4C2.9 20 2 19.1 2 18V2Z" fill="#E05A22"/>
+              <line x1="11" y1="7" x2="11" y2="8.5" stroke="var(--cream)" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="11" y1="11.5" x2="11" y2="13" stroke="var(--cream)" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Instrument Serif',serif; font-size:46px; font-weight:400; letter-spacing:0.04em; color:var(--dark);">FLICKPICK</span>
+          </span>
+        </div>
+      </div>
+      <div class="concept-notes">
+        <strong>Ticket Stub:</strong> A movie ticket silhouette with a perforated tear line and semicircular notch on the right edge. The tear line uses dashed white strokes for the perforation detail. Paired with Instrument Serif for an editorial, vintage-cinema feel. The ticket shape is nostalgic but the execution is modern and geometric. Evokes the physical ritual of moviegoing while staying clean enough for digital contexts.
+      </div>
+    </div>
+
+    <!-- ============================================
+         IW4: Popcorn
+         ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-label">Icon 04</span>
+        <span class="concept-title">Popcorn</span>
+      </div>
+      <div class="concept-body">
+        <div class="preview preview-dark">
+          <span class="preview-label">Dark Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="20" height="22" viewBox="0 0 20 24" fill="none">
+              <path d="M4 10L3 22C3 22.55 3.45 23 4 23H16C16.55 23 17 22.55 17 22L16 10H4Z" fill="#E05A22"/>
+              <path d="M3.5 10H16.5L17 9C17 8.45 16.7 8 16.2 8H3.8C3.3 8 3 8.45 3 9L3.5 10Z" fill="#E05A22" opacity="0.7"/>
+              <circle cx="7" cy="5" r="2.5" fill="#E05A22"/>
+              <circle cx="13" cy="5" r="2.5" fill="#E05A22"/>
+              <circle cx="10" cy="3" r="2.8" fill="#E05A22"/>
+              <circle cx="5.5" cy="6.5" r="1.8" fill="#E05A22"/>
+              <circle cx="14.5" cy="6.5" r="1.8" fill="#E05A22"/>
+              <line x1="8" y1="12" x2="7" y2="20" stroke="white" stroke-width="0.7" opacity="0.3"/>
+              <line x1="12" y1="12" x2="13" y2="20" stroke="white" stroke-width="0.7" opacity="0.3"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:600; font-size:20px; letter-spacing:0.14em; text-transform:uppercase; color:var(--cream);">FLICK<span style="color:#E05A22;">PICK</span></span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="44" height="48" viewBox="0 0 20 24" fill="none">
+              <path d="M4 10L3 22C3 22.55 3.45 23 4 23H16C16.55 23 17 22.55 17 22L16 10H4Z" fill="#E05A22"/>
+              <path d="M3.5 10H16.5L17 9C17 8.45 16.7 8 16.2 8H3.8C3.3 8 3 8.45 3 9L3.5 10Z" fill="#E05A22" opacity="0.7"/>
+              <circle cx="7" cy="5" r="2.5" fill="#E05A22"/>
+              <circle cx="13" cy="5" r="2.5" fill="#E05A22"/>
+              <circle cx="10" cy="3" r="2.8" fill="#E05A22"/>
+              <circle cx="5.5" cy="6.5" r="1.8" fill="#E05A22"/>
+              <circle cx="14.5" cy="6.5" r="1.8" fill="#E05A22"/>
+              <line x1="8" y1="12" x2="7" y2="20" stroke="white" stroke-width="0.7" opacity="0.3"/>
+              <line x1="12" y1="12" x2="13" y2="20" stroke="white" stroke-width="0.7" opacity="0.3"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:600; font-size:44px; letter-spacing:0.14em; text-transform:uppercase; color:var(--cream);">FLICK<span style="color:#E05A22;">PICK</span></span>
+          </span>
+        </div>
+        <div class="preview preview-light">
+          <span class="preview-label">Light Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="20" height="22" viewBox="0 0 20 24" fill="none">
+              <path d="M4 10L3 22C3 22.55 3.45 23 4 23H16C16.55 23 17 22.55 17 22L16 10H4Z" fill="#E05A22"/>
+              <path d="M3.5 10H16.5L17 9C17 8.45 16.7 8 16.2 8H3.8C3.3 8 3 8.45 3 9L3.5 10Z" fill="#E05A22" opacity="0.7"/>
+              <circle cx="7" cy="5" r="2.5" fill="#E05A22"/>
+              <circle cx="13" cy="5" r="2.5" fill="#E05A22"/>
+              <circle cx="10" cy="3" r="2.8" fill="#E05A22"/>
+              <circle cx="5.5" cy="6.5" r="1.8" fill="#E05A22"/>
+              <circle cx="14.5" cy="6.5" r="1.8" fill="#E05A22"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:600; font-size:20px; letter-spacing:0.14em; text-transform:uppercase; color:var(--dark);">FLICK<span style="color:#E05A22;">PICK</span></span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="44" height="48" viewBox="0 0 20 24" fill="none">
+              <path d="M4 10L3 22C3 22.55 3.45 23 4 23H16C16.55 23 17 22.55 17 22L16 10H4Z" fill="#E05A22"/>
+              <path d="M3.5 10H16.5L17 9C17 8.45 16.7 8 16.2 8H3.8C3.3 8 3 8.45 3 9L3.5 10Z" fill="#E05A22" opacity="0.7"/>
+              <circle cx="7" cy="5" r="2.5" fill="#E05A22"/>
+              <circle cx="13" cy="5" r="2.5" fill="#E05A22"/>
+              <circle cx="10" cy="3" r="2.8" fill="#E05A22"/>
+              <circle cx="5.5" cy="6.5" r="1.8" fill="#E05A22"/>
+              <circle cx="14.5" cy="6.5" r="1.8" fill="#E05A22"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:600; font-size:44px; letter-spacing:0.14em; text-transform:uppercase; color:var(--dark);">FLICK<span style="color:#E05A22;">PICK</span></span>
+          </span>
+        </div>
+      </div>
+      <div class="concept-notes">
+        <strong>Popcorn:</strong> A geometric popcorn bucket with rounded kernel shapes spilling over the top. The bucket has a gentle trapezoid taper and subtle stripe accents. Paired with Sora 600 and a split color treatment where "PICK" turns amber to match the icon. Fun and approachable without being childish. The icon reads clearly at small sizes as a rounded cluster above a container shape.
+      </div>
+    </div>
+
+    <!-- ============================================
+         IW5: Projector Beam
+         ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-label">Icon 05</span>
+        <span class="concept-title">Projector Beam</span>
+      </div>
+      <div class="concept-body">
+        <div class="preview preview-dark">
+          <span class="preview-label">Dark Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="24" height="22" viewBox="0 0 26 24" fill="none">
+              <circle cx="5" cy="12" r="4" stroke="#E05A22" stroke-width="1.8" fill="none"/>
+              <circle cx="5" cy="12" r="1.5" fill="#E05A22"/>
+              <path d="M9 6L24 1V23L9 18Z" fill="#E05A22" opacity="0.12"/>
+              <path d="M9 7L24 2.5" stroke="#E05A22" stroke-width="1" opacity="0.5"/>
+              <path d="M9 12L24 12" stroke="#E05A22" stroke-width="1" opacity="0.5"/>
+              <path d="M9 17L24 21.5" stroke="#E05A22" stroke-width="1" opacity="0.5"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:500; font-size:20px; letter-spacing:0.18em; text-transform:uppercase; color:var(--cream);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="52" height="48" viewBox="0 0 26 24" fill="none">
+              <circle cx="5" cy="12" r="4" stroke="#E05A22" stroke-width="1.4" fill="none"/>
+              <circle cx="5" cy="12" r="1.5" fill="#E05A22"/>
+              <path d="M9 6L24 1V23L9 18Z" fill="#E05A22" opacity="0.12"/>
+              <path d="M9 7L24 2.5" stroke="#E05A22" stroke-width="0.8" opacity="0.5"/>
+              <path d="M9 12L24 12" stroke="#E05A22" stroke-width="0.8" opacity="0.5"/>
+              <path d="M9 17L24 21.5" stroke="#E05A22" stroke-width="0.8" opacity="0.5"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:500; font-size:44px; letter-spacing:0.18em; text-transform:uppercase; color:var(--cream);">FLICKPICK</span>
+          </span>
+        </div>
+        <div class="preview preview-light">
+          <span class="preview-label">Light Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="24" height="22" viewBox="0 0 26 24" fill="none">
+              <circle cx="5" cy="12" r="4" stroke="#E05A22" stroke-width="1.8" fill="none"/>
+              <circle cx="5" cy="12" r="1.5" fill="#E05A22"/>
+              <path d="M9 6L24 1V23L9 18Z" fill="#E05A22" opacity="0.08"/>
+              <path d="M9 7L24 2.5" stroke="#E05A22" stroke-width="1" opacity="0.4"/>
+              <path d="M9 12L24 12" stroke="#E05A22" stroke-width="1" opacity="0.4"/>
+              <path d="M9 17L24 21.5" stroke="#E05A22" stroke-width="1" opacity="0.4"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:500; font-size:20px; letter-spacing:0.18em; text-transform:uppercase; color:var(--dark);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="52" height="48" viewBox="0 0 26 24" fill="none">
+              <circle cx="5" cy="12" r="4" stroke="#E05A22" stroke-width="1.4" fill="none"/>
+              <circle cx="5" cy="12" r="1.5" fill="#E05A22"/>
+              <path d="M9 6L24 1V23L9 18Z" fill="#E05A22" opacity="0.08"/>
+              <path d="M9 7L24 2.5" stroke="#E05A22" stroke-width="0.8" opacity="0.4"/>
+              <path d="M9 12L24 12" stroke="#E05A22" stroke-width="0.8" opacity="0.4"/>
+              <path d="M9 17L24 21.5" stroke="#E05A22" stroke-width="0.8" opacity="0.4"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:500; font-size:44px; letter-spacing:0.18em; text-transform:uppercase; color:var(--dark);">FLICKPICK</span>
+          </span>
+        </div>
+      </div>
+      <div class="concept-notes">
+        <strong>Projector Beam:</strong> An abstract projector lens (circle with inner dot) emitting light rays that fan outward in a cone. The beam is rendered with subtle lines and a translucent fill, creating a sense of light and projection without being heavy. Paired with Sora 500 weight and wide tracking for an airy, cinematic feel. The projector metaphor connects directly to the film experience while feeling abstract and modern.
+      </div>
+    </div>
+
+    <!-- ============================================
+         IW6: Film Reel
+         ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-label">Icon 06</span>
+        <span class="concept-title">Film Reel</span>
+      </div>
+      <div class="concept-body">
+        <div class="preview preview-dark">
+          <span class="preview-label">Dark Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="#E05A22" stroke-width="1.8"/>
+              <circle cx="12" cy="12" r="3" stroke="#E05A22" stroke-width="1.5"/>
+              <circle cx="12" cy="5" r="1.5" fill="#E05A22"/>
+              <circle cx="18.06" cy="8.5" r="1.5" fill="#E05A22"/>
+              <circle cx="18.06" cy="15.5" r="1.5" fill="#E05A22"/>
+              <circle cx="12" cy="19" r="1.5" fill="#E05A22"/>
+              <circle cx="5.94" cy="15.5" r="1.5" fill="#E05A22"/>
+              <circle cx="5.94" cy="8.5" r="1.5" fill="#E05A22"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Instrument Serif',serif; font-style:italic; font-size:22px; letter-spacing:0.03em; color:var(--cream);">FlickPick</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="#E05A22" stroke-width="1.4"/>
+              <circle cx="12" cy="12" r="3" stroke="#E05A22" stroke-width="1.2"/>
+              <circle cx="12" cy="5" r="1.5" fill="#E05A22"/>
+              <circle cx="18.06" cy="8.5" r="1.5" fill="#E05A22"/>
+              <circle cx="18.06" cy="15.5" r="1.5" fill="#E05A22"/>
+              <circle cx="12" cy="19" r="1.5" fill="#E05A22"/>
+              <circle cx="5.94" cy="15.5" r="1.5" fill="#E05A22"/>
+              <circle cx="5.94" cy="8.5" r="1.5" fill="#E05A22"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Instrument Serif',serif; font-style:italic; font-size:46px; letter-spacing:0.03em; color:var(--cream);">FlickPick</span>
+          </span>
+        </div>
+        <div class="preview preview-light">
+          <span class="preview-label">Light Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="#E05A22" stroke-width="1.8"/>
+              <circle cx="12" cy="12" r="3" stroke="#E05A22" stroke-width="1.5"/>
+              <circle cx="12" cy="5" r="1.5" fill="#E05A22"/>
+              <circle cx="18.06" cy="8.5" r="1.5" fill="#E05A22"/>
+              <circle cx="18.06" cy="15.5" r="1.5" fill="#E05A22"/>
+              <circle cx="12" cy="19" r="1.5" fill="#E05A22"/>
+              <circle cx="5.94" cy="15.5" r="1.5" fill="#E05A22"/>
+              <circle cx="5.94" cy="8.5" r="1.5" fill="#E05A22"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Instrument Serif',serif; font-style:italic; font-size:22px; letter-spacing:0.03em; color:var(--dark);">FlickPick</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="#E05A22" stroke-width="1.4"/>
+              <circle cx="12" cy="12" r="3" stroke="#E05A22" stroke-width="1.2"/>
+              <circle cx="12" cy="5" r="1.5" fill="#E05A22"/>
+              <circle cx="18.06" cy="8.5" r="1.5" fill="#E05A22"/>
+              <circle cx="18.06" cy="15.5" r="1.5" fill="#E05A22"/>
+              <circle cx="12" cy="19" r="1.5" fill="#E05A22"/>
+              <circle cx="5.94" cy="15.5" r="1.5" fill="#E05A22"/>
+              <circle cx="5.94" cy="8.5" r="1.5" fill="#E05A22"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Instrument Serif',serif; font-style:italic; font-size:46px; letter-spacing:0.03em; color:var(--dark);">FlickPick</span>
+          </span>
+        </div>
+      </div>
+      <div class="concept-notes">
+        <strong>Film Reel:</strong> A simplified film reel with six sprocket holes arranged in a ring around a center hub. The geometry is precise and satisfying, creating a recognizable silhouette even at very small sizes. Paired with Instrument Serif italic in mixed case for a classic cinema journal aesthetic. The reel icon is perhaps the most timeless cinema symbol and works beautifully as a standalone mark for favicons and app icons.
+      </div>
+    </div>
+
+    <!-- ============================================
+         IW7: Clapperboard
+         ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-label">Icon 07</span>
+        <span class="concept-title">Clapperboard</span>
+      </div>
+      <div class="concept-body">
+        <div class="preview preview-dark">
+          <span class="preview-label">Dark Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="8" width="20" height="14" rx="1.5" fill="#E05A22"/>
+              <path d="M2 8L2 6.5C2 5.95 2.45 5.5 3 5.5H21C21.55 5.5 22 5.95 22 6.5V8H2Z" fill="#E05A22"/>
+              <line x1="5" y1="5.5" x2="8" y2="8" stroke="white" stroke-width="1.3"/>
+              <line x1="10" y1="5.5" x2="13" y2="8" stroke="white" stroke-width="1.3"/>
+              <line x1="15" y1="5.5" x2="18" y2="8" stroke="white" stroke-width="1.3"/>
+              <rect x="5" y="11" width="14" height="1" rx="0.5" fill="white" opacity="0.25"/>
+              <rect x="5" y="14" width="10" height="1" rx="0.5" fill="white" opacity="0.18"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:700; font-size:20px; letter-spacing:0.1em; text-transform:uppercase; color:var(--cream);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="8" width="20" height="14" rx="1.5" fill="#E05A22"/>
+              <path d="M2 8L2 6.5C2 5.95 2.45 5.5 3 5.5H21C21.55 5.5 22 5.95 22 6.5V8H2Z" fill="#E05A22"/>
+              <line x1="5" y1="5.5" x2="8" y2="8" stroke="white" stroke-width="1.3"/>
+              <line x1="10" y1="5.5" x2="13" y2="8" stroke="white" stroke-width="1.3"/>
+              <line x1="15" y1="5.5" x2="18" y2="8" stroke="white" stroke-width="1.3"/>
+              <rect x="5" y="11" width="14" height="1" rx="0.5" fill="white" opacity="0.25"/>
+              <rect x="5" y="14" width="10" height="1" rx="0.5" fill="white" opacity="0.18"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:700; font-size:44px; letter-spacing:0.1em; text-transform:uppercase; color:var(--cream);">FLICKPICK</span>
+          </span>
+        </div>
+        <div class="preview preview-light">
+          <span class="preview-label">Light Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="8" width="20" height="14" rx="1.5" fill="#E05A22"/>
+              <path d="M2 8L2 6.5C2 5.95 2.45 5.5 3 5.5H21C21.55 5.5 22 5.95 22 6.5V8H2Z" fill="#E05A22"/>
+              <line x1="5" y1="5.5" x2="8" y2="8" stroke="#FAF6F1" stroke-width="1.3"/>
+              <line x1="10" y1="5.5" x2="13" y2="8" stroke="#FAF6F1" stroke-width="1.3"/>
+              <line x1="15" y1="5.5" x2="18" y2="8" stroke="#FAF6F1" stroke-width="1.3"/>
+              <rect x="5" y="11" width="14" height="1" rx="0.5" fill="white" opacity="0.35"/>
+              <rect x="5" y="14" width="10" height="1" rx="0.5" fill="white" opacity="0.25"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:700; font-size:20px; letter-spacing:0.1em; text-transform:uppercase; color:var(--dark);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="8" width="20" height="14" rx="1.5" fill="#E05A22"/>
+              <path d="M2 8L2 6.5C2 5.95 2.45 5.5 3 5.5H21C21.55 5.5 22 5.95 22 6.5V8H2Z" fill="#E05A22"/>
+              <line x1="5" y1="5.5" x2="8" y2="8" stroke="#FAF6F1" stroke-width="1.3"/>
+              <line x1="10" y1="5.5" x2="13" y2="8" stroke="#FAF6F1" stroke-width="1.3"/>
+              <line x1="15" y1="5.5" x2="18" y2="8" stroke="#FAF6F1" stroke-width="1.3"/>
+              <rect x="5" y="11" width="14" height="1" rx="0.5" fill="white" opacity="0.35"/>
+              <rect x="5" y="14" width="10" height="1" rx="0.5" fill="white" opacity="0.25"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:700; font-size:44px; letter-spacing:0.1em; text-transform:uppercase; color:var(--dark);">FLICKPICK</span>
+          </span>
+        </div>
+      </div>
+      <div class="concept-notes">
+        <strong>Clapperboard:</strong> A minimal movie slate with the distinctive angled stripes on the hinged top section. The body has subtle line details suggesting text fields. Paired with Sora 700 and tighter tracking for a punchy, production-ready feel. The clapperboard is one of the most universally recognized film symbols and reads clearly even at 16px. The angled stripes on the clapper arm give it kinetic energy.
+      </div>
+    </div>
+
+    <!-- ============================================
+         IW8: Star Cursor
+         ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-label">Icon 08</span>
+        <span class="concept-title">Star Cursor</span>
+      </div>
+      <div class="concept-body">
+        <div class="preview preview-dark">
+          <span class="preview-label">Dark Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L13.8 8.2L20 8.2L15.1 12.1L16.9 18.3L12 14.4L7.1 18.3L8.9 12.1L4 8.2L10.2 8.2L12 2Z" fill="#E05A22"/>
+              <path d="M19 3L19.6 5L21.5 5L20 6.1L20.5 8L19 6.9L17.5 8L18 6.1L16.5 5L18.4 5L19 3Z" fill="#E05A22" opacity="0.5"/>
+              <path d="M21 14L21.3 15L22.5 15L21.6 15.6L21.9 16.5L21 15.9L20.1 16.5L20.4 15.6L19.5 15L20.7 15L21 14Z" fill="#E05A22" opacity="0.35"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:600; font-size:20px; letter-spacing:0.15em; text-transform:uppercase; color:var(--cream);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L13.8 8.2L20 8.2L15.1 12.1L16.9 18.3L12 14.4L7.1 18.3L8.9 12.1L4 8.2L10.2 8.2L12 2Z" fill="#E05A22"/>
+              <path d="M19 3L19.6 5L21.5 5L20 6.1L20.5 8L19 6.9L17.5 8L18 6.1L16.5 5L18.4 5L19 3Z" fill="#E05A22" opacity="0.5"/>
+              <path d="M21 14L21.3 15L22.5 15L21.6 15.6L21.9 16.5L21 15.9L20.1 16.5L20.4 15.6L19.5 15L20.7 15L21 14Z" fill="#E05A22" opacity="0.35"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:600; font-size:44px; letter-spacing:0.15em; text-transform:uppercase; color:var(--cream);">FLICKPICK</span>
+          </span>
+        </div>
+        <div class="preview preview-light">
+          <span class="preview-label">Light Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L13.8 8.2L20 8.2L15.1 12.1L16.9 18.3L12 14.4L7.1 18.3L8.9 12.1L4 8.2L10.2 8.2L12 2Z" fill="#E05A22"/>
+              <path d="M19 3L19.6 5L21.5 5L20 6.1L20.5 8L19 6.9L17.5 8L18 6.1L16.5 5L18.4 5L19 3Z" fill="#E05A22" opacity="0.5"/>
+              <path d="M21 14L21.3 15L22.5 15L21.6 15.6L21.9 16.5L21 15.9L20.1 16.5L20.4 15.6L19.5 15L20.7 15L21 14Z" fill="#E05A22" opacity="0.35"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:600; font-size:20px; letter-spacing:0.15em; text-transform:uppercase; color:var(--dark);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L13.8 8.2L20 8.2L15.1 12.1L16.9 18.3L12 14.4L7.1 18.3L8.9 12.1L4 8.2L10.2 8.2L12 2Z" fill="#E05A22"/>
+              <path d="M19 3L19.6 5L21.5 5L20 6.1L20.5 8L19 6.9L17.5 8L18 6.1L16.5 5L18.4 5L19 3Z" fill="#E05A22" opacity="0.5"/>
+              <path d="M21 14L21.3 15L22.5 15L21.6 15.6L21.9 16.5L21 15.9L20.1 16.5L20.4 15.6L19.5 15L20.7 15L21 14Z" fill="#E05A22" opacity="0.35"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:600; font-size:44px; letter-spacing:0.15em; text-transform:uppercase; color:var(--dark);">FLICKPICK</span>
+          </span>
+        </div>
+      </div>
+      <div class="concept-notes">
+        <strong>Star Cursor:</strong> A five-pointed star (representing ratings and "picking" your favorites) accompanied by two smaller sparkle stars that suggest discovery and delight. The cluster of stars creates a sense of curation and selection. Paired with Sora 600 for confidence. Connects to the rating/review aspect of the platform while the sparkle effect adds energy and approachability. The star cluster reads as a single mark at small sizes.
+      </div>
+    </div>
+
+    <!-- ============================================
+         IW9: Spotlight
+         ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-label">Icon 09</span>
+        <span class="concept-title">Spotlight</span>
+      </div>
+      <div class="concept-body">
+        <div class="preview preview-dark">
+          <span class="preview-label">Dark Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <ellipse cx="12" cy="21" rx="8" ry="2" fill="#E05A22" opacity="0.15"/>
+              <path d="M12 1L6 21H18L12 1Z" fill="#E05A22" opacity="0.1"/>
+              <path d="M12 1L7 21" stroke="#E05A22" stroke-width="1" opacity="0.4"/>
+              <path d="M12 1L17 21" stroke="#E05A22" stroke-width="1" opacity="0.4"/>
+              <circle cx="12" cy="2" r="2" fill="#E05A22"/>
+              <ellipse cx="12" cy="21" rx="5" ry="1.2" stroke="#E05A22" stroke-width="1" opacity="0.5"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Instrument Serif',serif; font-size:22px; letter-spacing:0.06em; text-transform:uppercase; color:var(--cream);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <ellipse cx="12" cy="21" rx="8" ry="2" fill="#E05A22" opacity="0.15"/>
+              <path d="M12 1L6 21H18L12 1Z" fill="#E05A22" opacity="0.1"/>
+              <path d="M12 1L7 21" stroke="#E05A22" stroke-width="0.8" opacity="0.4"/>
+              <path d="M12 1L17 21" stroke="#E05A22" stroke-width="0.8" opacity="0.4"/>
+              <circle cx="12" cy="2" r="2" fill="#E05A22"/>
+              <ellipse cx="12" cy="21" rx="5" ry="1.2" stroke="#E05A22" stroke-width="0.8" opacity="0.5"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Instrument Serif',serif; font-size:46px; letter-spacing:0.06em; text-transform:uppercase; color:var(--cream);">FLICKPICK</span>
+          </span>
+        </div>
+        <div class="preview preview-light">
+          <span class="preview-label">Light Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <ellipse cx="12" cy="21" rx="8" ry="2" fill="#E05A22" opacity="0.1"/>
+              <path d="M12 1L6 21H18L12 1Z" fill="#E05A22" opacity="0.06"/>
+              <path d="M12 1L7 21" stroke="#E05A22" stroke-width="1" opacity="0.3"/>
+              <path d="M12 1L17 21" stroke="#E05A22" stroke-width="1" opacity="0.3"/>
+              <circle cx="12" cy="2" r="2" fill="#E05A22"/>
+              <ellipse cx="12" cy="21" rx="5" ry="1.2" stroke="#E05A22" stroke-width="1" opacity="0.4"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Instrument Serif',serif; font-size:22px; letter-spacing:0.06em; text-transform:uppercase; color:var(--dark);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <ellipse cx="12" cy="21" rx="8" ry="2" fill="#E05A22" opacity="0.1"/>
+              <path d="M12 1L6 21H18L12 1Z" fill="#E05A22" opacity="0.06"/>
+              <path d="M12 1L7 21" stroke="#E05A22" stroke-width="0.8" opacity="0.3"/>
+              <path d="M12 1L17 21" stroke="#E05A22" stroke-width="0.8" opacity="0.3"/>
+              <circle cx="12" cy="2" r="2" fill="#E05A22"/>
+              <ellipse cx="12" cy="21" rx="5" ry="1.2" stroke="#E05A22" stroke-width="0.8" opacity="0.4"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Instrument Serif',serif; font-size:46px; letter-spacing:0.06em; text-transform:uppercase; color:var(--dark);">FLICKPICK</span>
+          </span>
+        </div>
+      </div>
+      <div class="concept-notes">
+        <strong>Spotlight:</strong> A cone of light emanating downward from a solid light source at the top, creating an elliptical pool of light at the bottom. The beam uses layered transparency for depth. Paired with Instrument Serif uppercase with moderate tracking for a theatrical, cinematic headline quality. Evokes premiere nights, theater stages, and the dramatic reveal. The top circle works as a minimal standalone mark.
+      </div>
+    </div>
+
+    <!-- ============================================
+         IW10: FP Monogram Mark
+         ============================================ -->
+    <div class="concept">
+      <div class="concept-header">
+        <span class="concept-label">Icon 10</span>
+        <span class="concept-title">FP Monogram Mark</span>
+      </div>
+      <div class="concept-body">
+        <div class="preview preview-dark">
+          <span class="preview-label">Dark Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+              <circle cx="14" cy="14" r="13" stroke="#E05A22" stroke-width="1.8"/>
+              <path d="M8 7H14.5V9.5H10.5V12.5H14V15H10.5V21H8V7Z" fill="#E05A22"/>
+              <path d="M15 7H20C21.66 7 23 8.34 23 10V12.5C23 14.16 21.66 15.5 20 15.5H17.5V21H15V7ZM17.5 9.5V13H19.5C20.33 13 21 12.33 21 11.5V10.5C21 9.67 20.33 9 19.5 9H17.5Z" fill="white" opacity="0.9"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:500; font-size:20px; letter-spacing:0.16em; text-transform:uppercase; color:var(--cream);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="48" height="48" viewBox="0 0 28 28" fill="none">
+              <circle cx="14" cy="14" r="13" stroke="#E05A22" stroke-width="1.4"/>
+              <path d="M8 7H14.5V9.5H10.5V12.5H14V15H10.5V21H8V7Z" fill="#E05A22"/>
+              <path d="M15 7H20C21.66 7 23 8.34 23 10V12.5C23 14.16 21.66 15.5 20 15.5H17.5V21H15V7ZM17.5 9.5V13H19.5C20.33 13 21 12.33 21 11.5V10.5C21 9.67 20.33 9 19.5 9H17.5Z" fill="white" opacity="0.9"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:500; font-size:44px; letter-spacing:0.16em; text-transform:uppercase; color:var(--cream);">FLICKPICK</span>
+          </span>
+        </div>
+        <div class="preview preview-light">
+          <span class="preview-label">Light Background</span>
+
+          <span class="logo-size-label">Header / 20px</span>
+          <span class="icon-wordmark">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+              <circle cx="14" cy="14" r="13" stroke="#E05A22" stroke-width="1.8"/>
+              <path d="M8 7H14.5V9.5H10.5V12.5H14V15H10.5V21H8V7Z" fill="#E05A22"/>
+              <path d="M15 7H20C21.66 7 23 8.34 23 10V12.5C23 14.16 21.66 15.5 20 15.5H17.5V21H15V7ZM17.5 9.5V13H19.5C20.33 13 21 12.33 21 11.5V10.5C21 9.67 20.33 9 19.5 9H17.5Z" fill="var(--dark)"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:500; font-size:20px; letter-spacing:0.16em; text-transform:uppercase; color:var(--dark);">FLICKPICK</span>
+          </span>
+
+          <span class="logo-size-label">Hero / 44px</span>
+          <span class="icon-wordmark hero-size">
+            <svg width="48" height="48" viewBox="0 0 28 28" fill="none">
+              <circle cx="14" cy="14" r="13" stroke="#E05A22" stroke-width="1.4"/>
+              <path d="M8 7H14.5V9.5H10.5V12.5H14V15H10.5V21H8V7Z" fill="#E05A22"/>
+              <path d="M15 7H20C21.66 7 23 8.34 23 10V12.5C23 14.16 21.66 15.5 20 15.5H17.5V21H15V7ZM17.5 9.5V13H19.5C20.33 13 21 12.33 21 11.5V10.5C21 9.67 20.33 9 19.5 9H17.5Z" fill="var(--dark)"/>
+            </svg>
+            <span class="iw-text" style="font-family:'Sora',sans-serif; font-weight:500; font-size:44px; letter-spacing:0.16em; text-transform:uppercase; color:var(--dark);">FLICKPICK</span>
+          </span>
+        </div>
+      </div>
+      <div class="concept-notes">
+        <strong>FP Monogram Mark:</strong> Intertwined F and P letterforms inside a circle. The F is rendered in amber and the P in white (dark bg) or dark (light bg), creating a two-tone effect where the letters share a vertical stroke and overlap naturally. The circle container gives it a seal or badge quality, perfect for app icons, watermarks, and social avatars. Paired with Sora 500 for a balanced, professional lockup. The most versatile standalone mark of any concept.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- =============================================
+       SECTION: WORDMARK-ONLY LOGOS (Original A-H)
+       ============================================= -->
+  <div class="section-divider">
+    <h2>Wordmark-Only <span>Logos</span></h2>
+    <p>
+      Pure typographic treatments exploring different font pairings, weights, and visual devices. No icon, just the name.
+    </p>
+    <div class="divider-line"></div>
   </div>
 
   <div class="concepts">
