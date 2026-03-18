@@ -114,7 +114,7 @@ export default function HomePage() {
           <div className="text-center mb-10">
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-normal text-text-primary tracking-[-0.03em] leading-[1.1]">
               What are you in the<br />
-              <em className="text-gold-gradient italic pr-2">mood for?</em>
+              <em className="text-gold-gradient italic pr-2">mood to watch?</em>
             </h1>
             <p className="mt-5 text-text-secondary max-w-xl mx-auto text-base leading-relaxed">
               Tell us what you love. We&rsquo;ll find your next obsession.
