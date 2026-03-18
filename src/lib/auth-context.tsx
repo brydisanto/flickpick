@@ -32,11 +32,31 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
+function readCache<T>(key: string): T | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const v = localStorage.getItem(key);
+    return v ? JSON.parse(v) : null;
+  } catch { return null; }
+}
+
+function writeCache(key: string, value: unknown) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+}
+
+function clearCache(...keys: string[]) {
+  try { keys.forEach((k) => localStorage.removeItem(k)); } catch {}
+}
+
+const CACHE_USER = "fp_user";
+const CACHE_PROFILE = "fp_profile";
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [user, setUser] = useState<User | null>(() => readCache(CACHE_USER));
+  const [profile, setProfile] = useState<Profile | null>(() => readCache(CACHE_PROFILE));
   const [session, setSession] = useState<Session | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // If we have a cached user, skip the loading state — header renders instantly
+  const [isLoading, setIsLoading] = useState(() => !readCache(CACHE_USER));
 
   const fetchProfile = useCallback(async (userId: string) => {
     const supabase = getSupabase();
@@ -49,8 +69,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (error && error.code !== "PGRST116") {
       console.error("Error fetching profile:", error);
     }
-    setProfile(data as Profile | null);
-    return data as Profile | null;
+    const p = data as Profile | null;
+    setProfile(p);
+    if (p) writeCache(CACHE_PROFILE, p);
+    return p;
   }, []);
 
   const ensureProfile = useCallback(
@@ -65,6 +87,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (existing) {
         setProfile(existing as Profile);
+        writeCache(CACHE_PROFILE, existing);
         return existing as Profile;
       }
 
@@ -95,6 +118,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       setProfile(newProfile as Profile);
+      writeCache(CACHE_PROFILE, newProfile);
       return newProfile as Profile;
     },
     []
@@ -111,8 +135,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         } = await supabase.auth.getSession();
 
         setSession(currentSession);
-        setUser(currentSession?.user ?? null);
-        // Unblock the UI immediately — profile fetch happens in background
+        const u = currentSession?.user ?? null;
+        setUser(u);
+        if (u) writeCache(CACHE_USER, u);
+        else clearCache(CACHE_USER, CACHE_PROFILE);
         setIsLoading(false);
 
         if (currentSession?.user) {
@@ -130,7 +156,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, newSession) => {
       setSession(newSession);
-      setUser(newSession?.user ?? null);
+      const u = newSession?.user ?? null;
+      setUser(u);
+      if (u) writeCache(CACHE_USER, u);
 
       if (event === "SIGNED_IN" && newSession?.user) {
         const p = await fetchProfile(newSession.user.id);
@@ -142,6 +170,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (event === "SIGNED_OUT") {
         setProfile(null);
+        clearCache(CACHE_USER, CACHE_PROFILE);
       }
     });
 
@@ -220,6 +249,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
     setProfile(null);
     setSession(null);
+    clearCache(CACHE_USER, CACHE_PROFILE);
   }, []);
 
   const updateProfile = useCallback(
@@ -240,6 +270,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (error) return { error: error.message };
       setProfile(data as Profile);
+      writeCache(CACHE_PROFILE, data);
       return { error: null };
     },
     [user]
