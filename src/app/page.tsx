@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getPopularMovies } from "@/lib/tmdb";
+import { getPopularMovies, getMovieDetails } from "@/lib/tmdb";
 import { getTmdbImageUrl, computeAggregateScore } from "@/types";
 import type { Movie } from "@/types";
 import { createClient } from "@supabase/supabase-js";
-import { fetchRatingsByTitle } from "@/lib/omdb";
+import { fetchRatings } from "@/lib/omdb";
 import HeroRecommender from "./HeroRecommender";
 
 // Don't pre-render at build time — needs TMDB API at runtime
@@ -43,29 +43,51 @@ async function TrendingSection() {
     // Fall back to TMDB scores if DB unavailable
   }
 
-  // For trending movies missing external ratings, fetch from OMDB by title
-  const moviesNeedingRatings = trending.results.slice(0, 12).filter((m) => {
-    const db = dbScores[m.id];
-    if (!db) return true;
-    return db.rotten_tomatoes_score == null && db.imdb_rating == null && db.metacritic_score == null;
-  });
+  // For trending movies not yet in DB, fetch TMDB details + OMDB ratings and cache them.
+  // This only fires once per movie — subsequent loads read from DB cache.
+  const missingTmdbIds = trending.results
+    .slice(0, 12)
+    .filter((m) => !dbScores[m.id])
+    .map((m) => m.id);
 
-  if (moviesNeedingRatings.length > 0) {
-    const omdbResults = await Promise.all(
-      moviesNeedingRatings.map(async (m) => {
-        const year = m.release_date ? new Date(m.release_date).getFullYear().toString() : undefined;
-        const ratings = await fetchRatingsByTitle(m.title, year);
-        return { tmdbId: m.id, ratings };
-      })
-    );
-    for (const { tmdbId, ratings } of omdbResults) {
-      if (ratings) {
-        dbScores[tmdbId] = {
-          rotten_tomatoes_score: ratings.rotten_tomatoes_score,
-          imdb_rating: ratings.imdb_rating,
-          metacritic_score: ratings.metacritic_score,
-        } as unknown as Movie;
-      }
+  if (missingTmdbIds.length > 0) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (supabaseUrl && supabaseKey) {
+      const supabase = createClient(supabaseUrl, supabaseKey);
+      await Promise.all(
+        missingTmdbIds.map(async (tmdbId) => {
+          try {
+            const tmdb = await getMovieDetails(tmdbId);
+            let ratings = null;
+            if (tmdb.imdb_id) {
+              ratings = await fetchRatings(tmdb.imdb_id);
+            }
+            const row = {
+              tmdb_id: tmdb.id,
+              imdb_id: tmdb.imdb_id || null,
+              title: tmdb.title,
+              poster_path: tmdb.poster_path,
+              backdrop_path: tmdb.backdrop_path,
+              overview: tmdb.overview || null,
+              release_date: tmdb.release_date || null,
+              runtime_minutes: tmdb.runtime || null,
+              popularity: tmdb.popularity,
+              imdb_rating: ratings?.imdb_rating ?? null,
+              imdb_votes: ratings?.imdb_votes ?? null,
+              rotten_tomatoes_score: ratings?.rotten_tomatoes_score ?? null,
+              metacritic_score: ratings?.metacritic_score ?? null,
+              external_ratings_updated_at: ratings ? new Date().toISOString() : null,
+            };
+            await supabase.from("movies").upsert(row, { onConflict: "tmdb_id" });
+            if (ratings) {
+              dbScores[tmdbId] = row as unknown as Movie;
+            }
+          } catch {
+            // Skip this movie silently
+          }
+        })
+      );
     }
   }
 
